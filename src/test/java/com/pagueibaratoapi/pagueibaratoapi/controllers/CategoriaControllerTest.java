@@ -1,6 +1,7 @@
 package com.pagueibaratoapi.pagueibaratoapi.controllers;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -14,11 +15,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pagueibaratoapi.controllers.CategoriaController;
+import com.pagueibaratoapi.models.exceptions.DadosConflitantesException;
 import com.pagueibaratoapi.models.requests.Categoria;
 import com.pagueibaratoapi.models.responses.ResponseCategoria;
 import com.pagueibaratoapi.repository.CategoriaRepository;
@@ -70,39 +74,83 @@ public class CategoriaControllerTest {
 
     }
 
+    @Test
+    public void criarCategoriaComNomeExistente() throws Exception {
+
+        when(categoriaRepository.existsByNomeIgnoreCase(any())).thenReturn(true);
+
+        try {
+            categoriaController.criar(categoria);
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(409, e.getRawStatusCode());
+        }
+
+    }
+
+    @Test
+    public void criarCategoriaComDadosInvalidos() throws Exception {
+
+        try {
+            categoriaController.criar(null);
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+        }
+
+    }
+
+    @Test
+    public void criarCategoriaComExcecaoDataViolation() throws Exception {
+
+        when(categoriaRepository.save(categoria)).thenThrow(new DataIntegrityViolationException("erro_insercao"));
+
+        try {
+
+            categoriaController.criar(categoria);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_insercao", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void criarCategoriaComExcecaoIllegalArgument() throws Exception {
+
+        when(categoriaRepository.save(categoria)).thenThrow(new IllegalArgumentException("erro_inesperado"));
+
+        try {
+
+            categoriaController.criar(categoria);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_inesperado", e.getReason());
+            assertTrue(e.getCause().toString().contains("java.lang.IllegalArgumentException"));
+        }
+
+    }
+
     // @Test
-    // public void criarCategoriaComNomeExistente() throws Exception {
-    //     Categoria categoria = new Categoria("Eletrônicos");
+    // public void criarCategoriaComExcecao() throws Exception {
 
-    //     when(categoriaRepository.existsByNomeIgnoreCase(any())).thenReturn(true);
+    //     when(categoriaRepository.save(any())).thenThrow(new RuntimeException("erro_inesperado"));
 
-    //     mockMvc.perform(post("/categorias")
-    //             .contentType(MediaType.APPLICATION_JSON)
-    //             .content(objectMapper.writeValueAsString(categoria)))
-    //             .andExpect(status().isConflict())
-    //             .andExpect(jsonPath("$.message").value("nome_existente"));
-    // }
+    //     try {
 
-    // @Test
-    // public void criarCategoriaComDadosInvalidos() throws Exception {
-    //     Categoria categoria = new Categoria("");
+    //         categoriaController.criar(categoria);
 
-    //     mockMvc.perform(post("/categorias")
-    //             .contentType(MediaType.APPLICATION_JSON)
-    //             .content(objectMapper.writeValueAsString(categoria)))
-    //             .andExpect(status().isBadRequest());
-    // }
+    //     }
+    //     catch (ResponseStatusException e) {
+    //         System.out.println(e);
+    //         assertEquals(500, e.getRawStatusCode());
+    //         assertEquals("erro_inesperado", e.getReason());
+    //         assertTrue(e.getCause().toString().contains("java.lang.IllegalArgumentException"));
+    //     }
 
-    // @Test
-    // public void criarCategoriaComErroInesperado() throws Exception {
-    //     Categoria categoria = new Categoria("Eletrônicos");
-
-    //     when(categoriaRepository.existsByNomeIgnoreCase(any())).thenThrow(new RuntimeException());
-
-    //     mockMvc.perform(post("/categorias")
-    //             .contentType(MediaType.APPLICATION_JSON)
-    //             .content(objectMapper.writeValueAsString(categoria)))
-    //             .andExpect(status().isInternalServerError())
-    //             .andExpect(jsonPath("$.message").value("erro_inesperado"));
     // }
 }

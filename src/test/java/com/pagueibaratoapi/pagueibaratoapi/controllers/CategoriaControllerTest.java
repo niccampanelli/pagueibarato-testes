@@ -5,6 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import java.util.NoSuchElementException;
+import java.util.Optional;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -44,7 +47,12 @@ public class CategoriaControllerTest {
     @Mock
     private CategoriaRepository categoriaRepository;
 
+    @Mock
+    private Optional<Categoria> optionalCategoriaMock;
+
     private Categoria categoria;
+
+
 
     @Before
     public void setUp() {
@@ -54,19 +62,15 @@ public class CategoriaControllerTest {
         categoria.setDescricao("Eletrodomésticos em geral");
     }
 
+
+    /* ------------------------  CRIAÇÃO DE CATEGORIA  ------------------------ */
+
     @Test
     public void criarCategoriaComSucesso() throws Exception {
 
 
         when(categoriaRepository.existsByNomeIgnoreCase(any())).thenReturn(false);
         when(categoriaRepository.save(any())).thenReturn(categoria);
-
-
-        // mockMvc.perform(post("/categorias")
-        //         .contentType(MediaType.APPLICATION_JSON)
-        //         .content(objectMapper.writeValueAsString(categoria)))
-        //         .andExpect(status().isOk())
-        //         .andExpect(jsonPath("$.nome").value("Eletrônicos"));
 
         ResponseCategoria responseCategoria = categoriaController.criar(categoria);
 
@@ -153,4 +157,53 @@ public class CategoriaControllerTest {
     //     }
 
     // }
+
+    /* -------------------------------------------------------------------------- */
+
+
+
+
+
+    /* ---------------------  LEITURA DE CATEGORIA POR ID  ---------------------- */
+
+    @Test
+    public void lerCategoriaPorIdComSucesso() throws Exception {
+
+        when(categoriaRepository.findById(any())).thenReturn(Optional.ofNullable(categoria));
+
+        ResponseCategoria responseCategoria = categoriaController.ler(1);
+
+        assertTrue(categoria.getNome().equals(responseCategoria.getNome()));
+    }
+
+    @Test
+    public void lerCategoriaPorIdComExcecaoNoSuchElement() throws Exception {
+
+        when(categoriaRepository.findById(any())).thenThrow(new NoSuchElementException("nao_encontrado"));
+
+        try {
+            categoriaController.ler(1986);
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(404, e.getRawStatusCode());
+            assertEquals("nao_encontrado", e.getReason());
+        }
+    }
+
+    @Test
+    public void lerCategoriaPorIdComExcecao() throws Exception {
+
+        when(categoriaRepository.findById(any())).thenReturn(optionalCategoriaMock);
+        when(optionalCategoriaMock.get()).thenThrow(new NullPointerException());
+
+        try {
+            categoriaController.ler(1986);
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_inesperado", e.getReason());
+        }
+    }
+
+    /* -------------------------------------------------------------------------- */
 }

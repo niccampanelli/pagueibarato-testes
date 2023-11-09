@@ -3,6 +3,7 @@ package com.pagueibaratoapi.pagueibaratoapi.controllers;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -334,6 +335,129 @@ public class CategoriaControllerTest {
             // Verifica se a causa da exceção é UnsupportedOperationException
             assertTrue(e.getCause().toString().contains("java.lang.UnsupportedOperationException"));
         }
+    }
+
+    /* -------------------------------------------------------------------------- */
+
+
+
+
+
+    /* -------------------------  EDIÇÃO DE CATEGORIAS  ------------------------- */
+
+    @Test
+    public void editarCategoriaComSucesso() throws Exception {
+
+        when(categoriaRepository.findById(any())).thenReturn(Optional.ofNullable(categoria));
+        when(categoriaRepository.save(any())).thenReturn(categoria);
+
+        ResponseCategoria response = categoriaController.editar(1, categoria);
+
+        assertTrue(categoria.getNome().equals(response.getNome()));
+    }
+
+    @Test
+    public void editarCategoriaComExcecaoDadosConflitantes() throws Exception {
+
+        when(categoriaRepository.existsByNomeIgnoreCase(any())).thenReturn(true);
+
+        try {
+
+            categoriaController.editar(1, categoria);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(409, e.getRawStatusCode());
+            assertEquals("nome_existente", e.getReason());
+        }
+    }
+
+    @Test
+    public void editarCategoriaComExcecaoDadosInvalidos() throws Exception {
+
+        try {
+
+            categoriaController.editar(1, null);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+        }
+
+    }
+
+    @Test
+    public void editarCategoriaComExcecaoDataViolation() throws Exception {
+
+        when(categoriaRepository.findById(anyInt())).thenReturn(optionalCategoriaMock);
+        when(optionalCategoriaMock.get()).thenReturn(categoria);
+        when(categoriaRepository.save(any())).thenThrow(new DataIntegrityViolationException("erro_insercao"));
+
+        try {
+
+            categoriaController.editar(1, categoria);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_insercao", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void editarCategoriaComExcecaoIllegalArgument() throws Exception {
+
+        when(categoriaRepository.findById(anyInt())).thenReturn(optionalCategoriaMock);
+        when(optionalCategoriaMock.get()).thenReturn(categoria);
+        when(categoriaRepository.save(any())).thenThrow(new IllegalArgumentException("erro_inesperado"));
+
+        try {
+
+            categoriaController.editar(1, categoria);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_inesperado", e.getReason());
+            assertTrue(e.getCause().toString().contains("java.lang.IllegalArgumentException"));
+        }
+
+    }
+
+    @Test
+    public void editarCategoriaComExcecaoNoSuchElement() throws Exception {
+
+        when(categoriaRepository.findById(anyInt())).thenThrow(new NoSuchElementException());
+
+        try {
+
+            categoriaController.editar(2023, categoria);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(404, e.getRawStatusCode());
+            assertEquals("nao_encontrado", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void editarCategoriaComExcecao() throws Exception {
+
+        when(categoriaRepository.findById(any())).thenReturn(optionalCategoriaMock);
+        when(optionalCategoriaMock.get()).thenThrow(new NullPointerException());
+
+        try {
+
+            categoriaController.editar(1, categoria);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_inesperado", e.getReason());
+        }
+
     }
 
     /* -------------------------------------------------------------------------- */

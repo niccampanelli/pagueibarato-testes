@@ -4,6 +4,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -47,6 +48,8 @@ public class CategoriaControllerTest {
 
     private Categoria categoria;
 
+    private Categoria categoriaInvalida;
+
     private List<Categoria> categorias;
 
 
@@ -67,6 +70,10 @@ public class CategoriaControllerTest {
         categoria = new Categoria();
         categoria.setNome("Eletrodomésticos");
         categoria.setDescricao("Eletrodomésticos em geral");
+
+        categoriaInvalida = new Categoria();
+        categoriaInvalida.setNome("Eletrodomésticos em geral e mais um pouco");
+        categoriaInvalida.setDescricao("Eletrodomésticos em geral e mais um pouco.");
     }
 
     private void inicializarCategorias() {
@@ -451,6 +458,131 @@ public class CategoriaControllerTest {
         try {
 
             categoriaController.editar(1, categoria);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_inesperado", e.getReason());
+        }
+
+    }
+
+    /* -------------------------------------------------------------------------- */
+
+
+
+
+
+    /* ----------------------  ATUALIZAÇÃO DE CATEGORIAS  ----------------------- */
+
+    @Test
+    public void atualizarCategoriaComSucesso() throws Exception {
+
+        when(categoriaRepository.existsByNomeIgnoreCase(any())).thenReturn(false);
+        when(categoriaRepository.existsById(anyInt())).thenReturn(true);
+        when(categoriaRepository.save(any())).thenReturn(categoria);
+
+        ResponseCategoria response = categoriaController.atualizar(1, categoria);
+
+        assertTrue(categoria.getNome().equals(response.getNome()));
+    }
+
+    @Test
+    public void atualizarCategoriaComExcecaoDadosConflitantes() throws Exception {
+
+        when(categoriaRepository.existsByNomeIgnoreCase(any())).thenReturn(true);
+
+        try {
+
+            categoriaController.atualizar(1, categoria);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(409, e.getRawStatusCode());
+            assertEquals("nome_existente", e.getReason());
+        }
+    }
+
+    @Test
+    public void atualizarCategoriaComExcecaoDadosInvalidos() throws Exception {
+
+        try {
+
+            categoriaController.atualizar(1, categoriaInvalida);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+        }
+
+    }
+
+    @Test
+    public void atualizarCategoriaComExcecaoNoSuchElement() throws Exception {
+
+        when(categoriaRepository.existsById(anyInt())).thenReturn(false);
+
+        try {
+
+            categoriaController.atualizar(2023, categoria);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(404, e.getRawStatusCode());
+            assertEquals("nao_encontrado", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void atualizarCategoriaComExcecaoDataViolation() throws Exception {
+
+        when(categoriaRepository.existsByNomeIgnoreCase(anyString())).thenReturn(false);
+        when(categoriaRepository.existsById(anyInt())).thenReturn(true);
+        when(categoriaRepository.save(any())).thenThrow(new DataIntegrityViolationException("erro_insercao"));
+
+        try {
+
+            categoriaController.atualizar(1, categoria);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_insercao", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void atualizarCategoriaComExcecaoIllegalArgument() throws Exception {
+
+        when(categoriaRepository.existsByNomeIgnoreCase(anyString())).thenReturn(false);
+        when(categoriaRepository.existsById(anyInt())).thenReturn(true);
+        when(categoriaRepository.save(any())).thenThrow(new IllegalArgumentException("erro_inesperado"));
+
+        try {
+
+            categoriaController.atualizar(1, categoria);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_inesperado", e.getReason());
+            assertTrue(e.getCause().toString().contains("java.lang.IllegalArgumentException"));
+        }
+
+    }
+
+    @Test
+    public void atualizarCategoriaComExcecao() throws Exception {
+
+        when(categoriaRepository.existsByNomeIgnoreCase(anyString())).thenReturn(false);
+        when(categoriaRepository.existsById(anyInt())).thenReturn(true);
+        when(categoriaRepository.save(any())).thenThrow(new NullPointerException());
+
+        try {
+
+            categoriaController.atualizar(1, categoria);
 
         }
         catch (ResponseStatusException e) {

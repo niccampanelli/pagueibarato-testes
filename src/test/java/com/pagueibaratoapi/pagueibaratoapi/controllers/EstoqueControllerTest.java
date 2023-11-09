@@ -305,4 +305,73 @@ public class EstoqueControllerTest {
             assertTrue(e.getCause().getMessage().equals("erro_insercao"));
         }
     }
+
+    @Test
+    public void criarEstoqueComExcecaoIllegalArgument() {
+
+        Estoque requestEstoque = new Estoque();
+        requestEstoque.setCriadoPor(1);
+        requestEstoque.setMercadoId(1);
+        requestEstoque.setProdutoId(1);
+
+        Usuario usuario = new Usuario();
+        usuario.setId(1);
+        usuario.setEmail("john@email.com");
+
+        when(usuarioRepository.existsById(requestEstoque.getCriadoPor())).thenReturn(true);
+        when(usuarioRepository.findById(requestEstoque.getCriadoPor())).thenReturn(optionalUsuario);
+        when(optionalUsuario.get()).thenReturn(usuario);
+
+        when(mercadoRepository.existsById(requestEstoque.getMercadoId())).thenReturn(true);
+
+        when(produtoRepository.existsById(requestEstoque.getProdutoId())).thenReturn(true);
+
+        when(estoqueRepository.findAll(
+                Example.of(
+                        requestEstoque,
+                        ExampleMatcher
+                                .matching()
+                                .withIgnoreCase()
+                                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING))))
+                .thenReturn(new ArrayList<Estoque>());
+
+        Estoque estoqueSalvo = new Estoque();
+        estoqueSalvo.setId(1);
+        estoqueSalvo.setCriadoPor(1);
+        estoqueSalvo.setMercadoId(1);
+        estoqueSalvo.setProdutoId(1);
+
+        when(estoqueRepository.save(requestEstoque)).thenThrow(new IllegalArgumentException("erro_inesperado"));
+
+        try {
+            estoqueController.criar(requestEstoque);
+        } catch (Exception e) {
+            System.out.println(e.getCause().toString());
+            assertTrue(e.getCause().toString().contains("java.lang.IllegalArgumentException"));
+        }
+    }
+
+    @Test
+    public void criarEstoqueComExcecao() {
+
+        Estoque requestEstoque = new Estoque();
+        requestEstoque.setCriadoPor(1);
+        requestEstoque.setMercadoId(1);
+        requestEstoque.setProdutoId(1);
+
+        Usuario usuario = new Usuario();
+        usuario.setId(1);
+        usuario.setEmail("john@email.com");
+
+        when(usuarioRepository.existsById(requestEstoque.getCriadoPor())).thenReturn(true);
+        when(usuarioRepository.findById(requestEstoque.getCriadoPor())).thenReturn(optionalUsuario);
+        when(optionalUsuario.get()).thenReturn(null);
+
+        try {
+            estoqueController.criar(requestEstoque);
+        } catch (ResponseStatusException e) {
+            System.out.println(e.getStatus());
+            assertTrue(e.getStatus().toString().equals(HttpStatus.INTERNAL_SERVER_ERROR.toString()));
+        }
+    }
 }

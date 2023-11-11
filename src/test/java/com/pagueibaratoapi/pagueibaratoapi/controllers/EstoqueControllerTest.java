@@ -3,6 +3,8 @@ package com.pagueibaratoapi.pagueibaratoapi.controllers;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -636,6 +638,78 @@ public class EstoqueControllerTest {
 
         try {
             estoqueController.listar(estoqueExemplo);
+        }
+        catch (ResponseStatusException e) {
+            System.out.println(e.getStatus());
+            assertTrue(e.getStatus().toString().equals(HttpStatus.INTERNAL_SERVER_ERROR.toString()));
+        }
+    }
+
+    @Test
+    public void removerEstoqueComSucesso() {
+
+        when(estoqueRepository.existsById(anyInt())).thenReturn(true);
+
+        estoqueController.remover(anyInt());
+
+        verify(estoqueRepository).deleteById(anyInt());
+    }
+    
+    @Test
+    public void removerEstoqueComExcecaoNoSuchElement() {
+
+        when(estoqueRepository.existsById(anyInt())).thenReturn(false);
+
+        try {
+            estoqueController.remover(anyInt());
+        }
+        catch (ResponseStatusException e) {
+            System.out.println(e.getStatus());
+            assertTrue(e.getStatus().toString().equals(HttpStatus.NOT_FOUND.toString()));
+        }
+    }
+
+    @Test
+    public void removerEstoqueComExcecaoDataIntegrityViolation() {
+
+        when(estoqueRepository.existsById(anyInt())).thenReturn(true);
+
+        doThrow(new DataIntegrityViolationException("erro_remocao")).when(estoqueRepository).deleteById(anyInt());
+
+        try {
+            estoqueController.remover(anyInt());
+        }
+        catch (ResponseStatusException e) {
+            System.out.println(e.getCause().toString());
+            assertTrue(e.getCause().toString().contains("org.springframework.dao.DataIntegrityViolationException"));
+        }
+    }
+
+    @Test
+    public void removerEstoqueComExcecaoIllegalArgument() {
+
+        when(estoqueRepository.existsById(anyInt())).thenReturn(true);
+
+        doThrow(new IllegalArgumentException("erro_inesperado")).when(estoqueRepository).deleteById(anyInt());
+
+        try {
+            estoqueController.remover(anyInt());
+        }
+        catch (ResponseStatusException e) {
+            System.out.println(e.getCause().toString());
+            assertTrue(e.getCause().toString().contains("java.lang.IllegalArgumentException"));
+        }
+    }
+
+    @Test
+    public void removerEstoqueComExcecao() {
+
+        when(estoqueRepository.existsById(anyInt())).thenReturn(true);
+
+        doThrow(new RuntimeException("erro_inesperado")).when(estoqueRepository).deleteById(anyInt());
+
+        try {
+            estoqueController.remover(anyInt());
         }
         catch (ResponseStatusException e) {
             System.out.println(e.getStatus());

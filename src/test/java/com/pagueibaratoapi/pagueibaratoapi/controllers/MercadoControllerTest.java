@@ -25,9 +25,12 @@ import org.springframework.web.server.ResponseStatusException;
 import com.pagueibaratoapi.controllers.MercadoController;
 import com.pagueibaratoapi.models.requests.Estoque;
 import com.pagueibaratoapi.models.requests.Mercado;
+import com.pagueibaratoapi.models.requests.Produto;
 import com.pagueibaratoapi.models.requests.Usuario;
 import com.pagueibaratoapi.models.responses.ResponseEstoque;
+import com.pagueibaratoapi.models.responses.ResponseEstoqueProduto;
 import com.pagueibaratoapi.models.responses.ResponseMercado;
+import com.pagueibaratoapi.repository.CategoriaRepository;
 import com.pagueibaratoapi.repository.EstoqueRepository;
 import com.pagueibaratoapi.repository.MercadoRepository;
 import com.pagueibaratoapi.repository.ProdutoRepository;
@@ -55,6 +58,9 @@ public class MercadoControllerTest {
     private EstoqueRepository estoqueRepository;
 
     @Mock
+    private CategoriaRepository categoriaRepository;
+
+    @Mock
     private Optional<Usuario> optionalUsuario;
 
     private Mercado mercado;
@@ -67,6 +73,8 @@ public class MercadoControllerTest {
 
     private Estoque estoqueInexistente;
 
+    private Produto produto;
+
     private List<Estoque> estoques;
 
     @Before
@@ -76,6 +84,7 @@ public class MercadoControllerTest {
         this.inicializarMercado();
         this.inicializarUsuario();
         this.inicializarEstoque();
+        this.inicializarProduto();
     }
 
     private void inicializarMercado() {
@@ -137,6 +146,17 @@ public class MercadoControllerTest {
         estoque.setCriadoPor(1);
 
         estoques = List.of(estoque);
+    }
+
+    private void inicializarProduto() {
+        produto = new Produto();
+
+        produto.setNome("Teste produto");
+        produto.setMarca("Teste marca");
+        produto.setTamanho("Teste tamanho");
+        produto.setCor("Teste cor");
+        produto.setCriadoPor(1);
+        produto.setCategoriaId(1);
     }
 
 
@@ -521,4 +541,186 @@ public class MercadoControllerTest {
 
     /* -------------------------------------------------------------------------- */
     
+
+
+
+
+    /* ---------------------  CRIAÇÃO DE PRODUTO NO MERCADO --------------------- */
+
+    @Test
+    public void criarProdutoComSucesso() throws Exception {
+
+        when(usuarioRepository.existsById(anyInt())).thenReturn(true);
+
+        when(categoriaRepository.existsById(anyInt())).thenReturn(true);
+
+        when(produtoRepository.findByCaracteristicas(anyString(), anyString(), anyString(), anyString())).thenReturn(null);
+
+        when(usuarioRepository.findById(anyInt())).thenReturn(optionalUsuario);
+        when(optionalUsuario.get()).thenReturn(usuario);
+
+        when(mercadoRepository.existsById(anyInt())).thenReturn(true);
+
+        Produto responseProduto = new Produto();
+
+        responseProduto.setId(1);
+        responseProduto.setNome("Teste produto");
+        responseProduto.setMarca("Teste marca");
+        responseProduto.setTamanho("Teste tamanho");
+        responseProduto.setCor("Teste cor");
+        responseProduto.setCriadoPor(1);
+        responseProduto.setCategoriaId(1);
+
+        estoque = new Estoque();
+
+        estoque.setId(1);
+        estoque.setProdutoId(1);
+        estoque.setCriadoPor(1);
+        estoque.setMercadoId(1);
+
+
+        when(produtoRepository.save(any())).thenReturn(responseProduto);
+
+        when(estoqueRepository.save(any())).thenReturn(estoque);
+
+        ResponseEstoqueProduto responseEstoque = mercadoController.criarProduto(1, produto);
+
+        assertEquals("Teste produto", responseEstoque.getNome());
+        assertEquals(produto.getMarca(), responseEstoque.getMarca());
+        assertEquals(produto.getTamanho(), responseEstoque.getTamanho());
+        assertEquals(produto.getCor(), responseEstoque.getCor());
+    }
+
+    @Test
+    public void criarProdutoComUsuarioNaoEncontrado() throws Exception {
+
+        when(usuarioRepository.existsById(anyInt())).thenReturn(false);
+
+        try {
+
+            mercadoController.criarProduto(1, produto);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("usuario_nao_encontrado", e.getReason());
+        }
+    }
+
+    @Test
+    public void criarProdutoComCategoriaNaoEncontrada() throws Exception {
+
+        when(usuarioRepository.existsById(anyInt())).thenReturn(true);
+
+        when(categoriaRepository.existsById(anyInt())).thenReturn(false);
+
+        try {
+
+            mercadoController.criarProduto(1, produto);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("categoria_nao_encontrado", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void criarProdutoComCaracteristicasExistentes() throws Exception {
+
+        when(usuarioRepository.existsById(anyInt())).thenReturn(true);
+
+        when(categoriaRepository.existsById(anyInt())).thenReturn(true);
+
+        when(produtoRepository.findByCaracteristicas(anyString(), anyString(), anyString(), anyString())).thenReturn(produto);
+
+        try {
+
+            mercadoController.criarProduto(1, produto);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(409, e.getRawStatusCode());
+            assertEquals("produto_existente", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void criarProdutoComUsuarioInvalido() throws Exception {
+
+        when(usuarioRepository.existsById(anyInt())).thenReturn(true);
+
+        when(categoriaRepository.existsById(anyInt())).thenReturn(true);
+
+        when(produtoRepository.findByCaracteristicas(anyString(), anyString(), anyString(), anyString())).thenReturn(null);
+
+        when(usuarioRepository.findById(anyInt())).thenReturn(optionalUsuario);
+        when(optionalUsuario.get()).thenReturn(usuarioInexistente);
+
+        try {
+
+            mercadoController.criarProduto(1, produto);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(404, e.getRawStatusCode());
+            assertEquals("usuario_nao_encontrado", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void criarProdutoComMercadoInvalido() throws Exception {
+
+        when(usuarioRepository.existsById(anyInt())).thenReturn(true);
+
+        when(categoriaRepository.existsById(anyInt())).thenReturn(true);
+
+        when(produtoRepository.findByCaracteristicas(anyString(), anyString(), anyString(), anyString())).thenReturn(null);
+
+        when(usuarioRepository.findById(anyInt())).thenReturn(optionalUsuario);
+        when(optionalUsuario.get()).thenReturn(usuario);
+
+        when(mercadoRepository.existsById(anyInt())).thenReturn(false);
+
+        try {
+
+            mercadoController.criarProduto(1, produto);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("mercado_invalido", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void criarProdutoComExcecao() throws Exception {
+
+        when(usuarioRepository.existsById(anyInt())).thenReturn(true);
+
+        when(categoriaRepository.existsById(anyInt())).thenReturn(true);
+
+        when(produtoRepository.findByCaracteristicas(anyString(), anyString(), anyString(), anyString())).thenReturn(null);
+
+        when(usuarioRepository.findById(anyInt())).thenReturn(optionalUsuario);
+        when(optionalUsuario.get()).thenReturn(null);
+
+        try {
+
+            mercadoController.criarProduto(1, produto);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_inesperado", e.getReason());
+        }
+
+    }
+
+    /* -------------------------------------------------------------------------- */
+
 }

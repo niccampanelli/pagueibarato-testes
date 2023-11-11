@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -593,4 +595,88 @@ public class CategoriaControllerTest {
     }
 
     /* -------------------------------------------------------------------------- */
+
+
+
+
+
+    /* -------------------------  DELEÇÃO DE CATEGORIAS  ------------------------ */
+
+    @Test
+    public void removerCategoriaComSucesso() throws Exception {
+
+        when(categoriaRepository.existsById(anyInt())).thenReturn(true);
+
+        categoriaController.remover(1);
+        
+        verify(categoriaRepository).deleteById(1);
+
+    }
+
+    @Test
+    public void removerCategoriaComExcecaoNoSuchElement() throws Exception {
+
+        when(categoriaRepository.existsById(anyInt())).thenReturn(false);
+
+        try {
+
+            categoriaController.remover(1986);
+
+        } catch (ResponseStatusException e) {
+            assertEquals(404, e.getRawStatusCode());
+            assertEquals("nao_encontrado", e.getReason());
+        }
+    }
+
+    @Test
+    public void removerCategoriaComExcecaoDataViolation() throws Exception {
+
+        when(categoriaRepository.existsById(anyInt())).thenReturn(true);
+        doThrow(new DataIntegrityViolationException("erro_remocao")).when(categoriaRepository).deleteById(anyInt());
+
+        try {
+
+            categoriaController.remover(2023);
+
+        } catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_remocao", e.getReason());
+        }
+    }
+
+    @Test
+    public void removerCategoriaComExcecaoIllegalArgument() throws Exception {
+
+        when(categoriaRepository.existsById(anyInt())).thenReturn(true);
+        doThrow(new IllegalArgumentException("erro_inesperado")).when(categoriaRepository).deleteById(anyInt());
+
+        try {
+
+            categoriaController.remover(1);
+
+        } catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_inesperado", e.getReason());
+            assertTrue(e.getCause().toString().contains("java.lang.IllegalArgumentException"));
+        }
+    }
+
+    @Test
+    public void removerCategoriaComExcecao() throws Exception {
+
+        when(categoriaRepository.existsById(anyInt())).thenReturn(true);
+        doThrow(new NullPointerException("erro_inesperado")).when(categoriaRepository).deleteById(anyInt());
+
+        try {
+
+            categoriaController.remover(1);
+
+        } catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_inesperado", e.getReason());
+        }
+    }
+
+    /* -------------------------------------------------------------------------- */
+
 }

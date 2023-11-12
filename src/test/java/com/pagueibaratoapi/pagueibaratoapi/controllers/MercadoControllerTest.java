@@ -1,7 +1,6 @@
 package com.pagueibaratoapi.pagueibaratoapi.controllers;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -11,7 +10,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.junit.Before;
@@ -25,7 +23,6 @@ import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.pagueibaratoapi.controllers.MercadoController;
-import com.pagueibaratoapi.models.exceptions.DadosInvalidosException;
 import com.pagueibaratoapi.models.requests.Estoque;
 import com.pagueibaratoapi.models.requests.Mercado;
 import com.pagueibaratoapi.models.requests.Produto;
@@ -34,6 +31,7 @@ import com.pagueibaratoapi.models.requests.Usuario;
 import com.pagueibaratoapi.models.responses.ResponseEstoque;
 import com.pagueibaratoapi.models.responses.ResponseEstoqueProduto;
 import com.pagueibaratoapi.models.responses.ResponseMercado;
+import com.pagueibaratoapi.models.responses.ResponsePagina;
 import com.pagueibaratoapi.models.responses.ResponseProduto;
 import com.pagueibaratoapi.models.responses.ResponseSugestao;
 import com.pagueibaratoapi.repository.CategoriaRepository;
@@ -75,6 +73,9 @@ public class MercadoControllerTest {
 
     @Mock
     private Optional<Mercado> optionalMercado;
+    
+    @Mock
+    private Optional<Produto> optionalProduto;
 
     private Mercado mercado;
 
@@ -1080,7 +1081,95 @@ public class MercadoControllerTest {
             assertEquals(500, e.getRawStatusCode());
             assertEquals("erro_inesperado", e.getReason());
         }
+
+    }
+
+    /* -------------------------------------------------------------------------- */
+
+
+
+
+
+    /* ---------------  LISTAGEM PAGINADA DE PRODUTOS DO MERCADO ---------------- */
+
+    @Test
+    public void listarProdutosPaginadosComSucesso() {
+
+        produto.setId(1);
+
+        when(mercadoRepository.existsById(anyInt())).thenReturn(true);
+
+        when(estoqueRepository.findByMercadoId(anyInt())).thenReturn(estoques);
+
+        when(produtoRepository.findById(anyInt())).thenReturn(optionalProduto);
+        when(optionalProduto.get()).thenReturn(produto);
+
+        ResponsePagina responseProdutosPaginados = mercadoController.listarProdutos(1, 0, 1);
+
+        assertTrue(responseProdutosPaginados.getPaginaAtual() == 0);
+        assertTrue(responseProdutosPaginados.getItensPorPagina() == 1);
+        assertTrue(responseProdutosPaginados.getTotalRegistros() == 1);
+        assertTrue(responseProdutosPaginados.getTotalPaginas() == 1);
+        assertTrue(responseProdutosPaginados.getTotalRegistros() == 1);
+    }
+
+    @Test
+    public void listarProdutosPaginadosComMercadoInexistente() {
+
+        when(mercadoRepository.existsById(anyInt())).thenReturn(false);
         
+        try {
+
+            mercadoController.listarProdutos(1, 0, 1);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(404, e.getRawStatusCode());
+            assertEquals("mercado_nao_encontrado", e.getReason());
+        }
+    }
+
+    @Test
+    public void listarProdutosPaginadosComEstoqueInexistente() {
+
+        when(mercadoRepository.existsById(anyInt())).thenReturn(true);
+
+        when(estoqueRepository.findByMercadoId(anyInt())).thenReturn(new ArrayList<>());
+
+            try {
+
+                mercadoController.listarProdutos(1, 0, 1);
+
+            }
+            catch (ResponseStatusException e) {
+                assertEquals(404, e.getRawStatusCode());
+                assertEquals("estoque_nao_encontrado", e.getReason());
+            }
+
+    }
+
+    @Test
+    public void listarProdutosPaginadosComExcecao() {
+
+        produto.setId(1);
+
+        when(mercadoRepository.existsById(anyInt())).thenReturn(true);
+
+        when(estoqueRepository.findByMercadoId(anyInt())).thenReturn(estoques);
+
+        when(produtoRepository.findById(anyInt())).thenReturn(optionalProduto);
+        when(optionalProduto.get()).thenReturn(produto);
+
+        try {
+
+            mercadoController.listarProdutos(1, 0, 900);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_inesperado", e.getReason());
+        }
+
     }
 
     /* -------------------------------------------------------------------------- */

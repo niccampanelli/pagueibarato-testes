@@ -1,6 +1,7 @@
 package com.pagueibaratoapi.pagueibaratoapi.controllers;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -10,6 +11,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.junit.Before;
@@ -1163,6 +1165,84 @@ public class MercadoControllerTest {
         try {
 
             mercadoController.listarProdutos(1, 0, 900);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_inesperado", e.getReason());
+        }
+
+    }
+
+    /* -------------------------------------------------------------------------- */
+
+
+
+
+
+    /* ---------------  LISTAGEM ORDENADA DE PRODUTOS DO MERCADO ---------------- */
+
+    @Test
+    public void listarProdutosOrdenadosComSucesso() {
+
+        when(mercadoRepository.existsById(anyInt())).thenReturn(true);
+
+        when(estoqueRepository.findByMercadoId(anyInt())).thenReturn(estoques);
+
+        when(produtoRepository.findById(anyInt())).thenReturn(optionalProduto);
+        when(optionalProduto.get()).thenReturn(produto);
+
+        List<ResponseProduto> responseProdutos = mercadoController.listarProdutos(1, "id", "asc");
+
+        assertEquals(1, responseProdutos.size());
+        assertEquals(produto.getId(), responseProdutos.get(0).getId());
+        assertEquals(produto.getNome(), responseProdutos.get(0).getNome());
+    }
+
+    @Test
+    public void listarProdutosOrdenadosComMercadoNaoEncontrado() {
+
+        when(mercadoRepository.existsById(anyInt())).thenReturn(false);
+
+        try {
+
+            mercadoController.listarProdutos(1, "id", "asc");
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(404, e.getRawStatusCode());
+            assertEquals("mercado_nao_encontrado", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void listarProdutosOrdenadosComEstoqueNaoEncontrado() {
+
+        when(mercadoRepository.existsById(anyInt())).thenReturn(true);
+
+        when(estoqueRepository.findByMercadoId(anyInt())).thenReturn(new ArrayList<>());
+
+        try {
+
+            mercadoController.listarProdutos(1, "id", "asc");
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(404, e.getRawStatusCode());
+            assertEquals("estoque_nao_encontrado", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void listarProdutosOrdenadosComExcecao() throws Exception {
+
+        when(mercadoRepository.existsById(anyInt())).thenThrow(new RuntimeException());
+
+        try {
+
+            mercadoController.listarProdutos(1, "id", "asc");
 
         }
         catch (ResponseStatusException e) {

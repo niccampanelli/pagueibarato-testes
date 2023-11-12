@@ -72,6 +72,9 @@ public class MercadoControllerTest {
     @Mock
     private Optional<Usuario> optionalUsuario;
 
+    @Mock
+    private Optional<Mercado> optionalMercado;
+
     private Mercado mercado;
 
     private Usuario usuario;
@@ -954,5 +957,63 @@ public class MercadoControllerTest {
         }
 
     }
+
+    /* -------------------------------------------------------------------------- */
+
+
+
+
+
+    /* -----------------------  LEITURA DE MERCADO POR ID ----------------------- */
+
+    @Test
+    public void lerMercadoPorIdComSucesso() {
+
+        mercado.setId(1);
+
+        when(mercadoRepository.findById(anyInt())).thenReturn(optionalMercado);
+        when(optionalMercado.get()).thenReturn(mercado);
+
+        ResponseMercado responseMercado = mercadoController.ler(1);
+
+        assertTrue(1 == responseMercado.getId());
+
+    }
+
+    @Test
+    public void lerMercadoPorIdComExcecaoNoSuchElement() {
+
+        when(mercadoRepository.findById(anyInt())).thenReturn(Optional.empty());
+
+        try {
+
+            mercadoController.ler(1);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(404, e.getRawStatusCode());
+            assertEquals("nao_encontrado", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void lerMercadoPorIdComExcecao() {
+
+        when(mercadoRepository.findById(anyInt())).thenThrow(new RuntimeException());
+
+        try {
+
+            mercadoController.ler(1);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_inesperado", e.getReason());
+        }
+
+    }
+
+    /* -------------------------------------------------------------------------- */
 
 }

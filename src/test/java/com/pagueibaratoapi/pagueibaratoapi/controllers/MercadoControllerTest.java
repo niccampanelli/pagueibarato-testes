@@ -7,6 +7,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -21,7 +24,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.pagueibaratoapi.controllers.MercadoController;
@@ -30,12 +32,7 @@ import com.pagueibaratoapi.models.requests.Mercado;
 import com.pagueibaratoapi.models.requests.Produto;
 import com.pagueibaratoapi.models.requests.Sugestao;
 import com.pagueibaratoapi.models.requests.Usuario;
-import com.pagueibaratoapi.models.responses.ResponseEstoque;
-import com.pagueibaratoapi.models.responses.ResponseEstoqueProduto;
 import com.pagueibaratoapi.models.responses.ResponseMercado;
-import com.pagueibaratoapi.models.responses.ResponsePagina;
-import com.pagueibaratoapi.models.responses.ResponseProduto;
-import com.pagueibaratoapi.models.responses.ResponseSugestao;
 import com.pagueibaratoapi.repository.CategoriaRepository;
 import com.pagueibaratoapi.repository.EstoqueRepository;
 import com.pagueibaratoapi.repository.MercadoRepository;
@@ -87,13 +84,11 @@ public class MercadoControllerTest {
 
     private Estoque estoque;
 
-    private Estoque estoqueInexistente;
-
     private Produto produto;
 
     private Sugestao sugestao;
 
-    private List<Estoque> estoques;
+    private List<Mercado> mercados;
 
     @Before
     public void setUp() {
@@ -119,6 +114,32 @@ public class MercadoControllerTest {
         mercado.setCep("12345-678");
         mercado.setRamoId(1);
         mercado.setComplemento("Complemento Teste");
+
+        Mercado mercado2 = new Mercado();
+        mercado2.setCriadoPor(1);
+        mercado2.setNome("Mercado Teste 2");
+        mercado2.setLogradouro("Rua Teste 2");
+        mercado2.setNumero(123);
+        mercado2.setBairro("Bairro Teste 2");
+        mercado2.setCidade("Cidade Teste 2");
+        mercado2.setUf("SP");
+        mercado2.setCep("12345-678");
+        mercado2.setRamoId(1);
+        mercado2.setComplemento("Complemento Teste 2");
+
+        Mercado mercado3 = new Mercado();
+        mercado3.setCriadoPor(1);
+        mercado3.setNome("Mercado Teste 3");
+        mercado3.setLogradouro("Rua Teste 3");
+        mercado3.setNumero(123);
+        mercado3.setBairro("Bairro Teste 2");
+        mercado3.setCidade("Cidade Teste 2");
+        mercado3.setUf("SP");
+        mercado3.setCep("12345-678");
+        mercado3.setRamoId(1);
+        mercado3.setComplemento("Complemento Teste 3");
+
+        this.mercados = List.of(mercado, mercado2, mercado3);
     }
 
     private void inicializarUsuario() {
@@ -157,14 +178,10 @@ public class MercadoControllerTest {
         estoque.setProdutoId(1);
         estoque.setCriadoPor(1);
         estoque.setMercadoId(1);
-        
-        estoqueInexistente = new Estoque();
 
         estoque.setProdutoId(1);
         estoque.setCriadoPor(null);
         estoque.setCriadoPor(1);
-
-        estoques = List.of(estoque);
     }
 
     private void inicializarProduto() {
@@ -381,585 +398,6 @@ public class MercadoControllerTest {
 
 
 
-    /* --------------------  CRIAÇÃO DE ESTOQUE DO MERCADO  --------------------- */
-
-    @Test
-    public void criarEstoqueComSucesso() throws Exception {
-
-        when(usuarioRepository.existsById(anyInt())).thenReturn(true);
-        when(usuarioRepository.findById(anyInt())).thenReturn(optionalUsuario);
-        when(optionalUsuario.get()).thenReturn(usuario);
-
-        when(produtoRepository.existsById(anyInt())).thenReturn(true);
-
-        when(mercadoRepository.existsById(anyInt())).thenReturn(true);
-
-        when(estoqueRepository.findAll(
-            Example.of(
-                estoque,
-                ExampleMatcher
-                        .matching()
-                        .withIgnoreCase()
-                        .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING)
-            )
-        )).thenReturn(new ArrayList<Estoque>());
-
-        when(estoqueRepository.save(any())).thenReturn(estoque);
-
-        ResponseEstoque responseEstoque = mercadoController.criarEstoque(1, 1, estoque);
-
-        assertEquals(responseEstoque.getCriadoPor(), estoque.getCriadoPor());
-        assertEquals(responseEstoque.getProdutoId(), estoque.getProdutoId());
-        assertEquals(responseEstoque.getMercadoId(), estoque.getMercadoId());
-    }
-
-    @Test
-    public void criarEstoqueComUsuarioNulo() {
-
-        try {
-
-            mercadoController.criarEstoque(1, 1, estoqueInexistente);
-
-        } catch (ResponseStatusException e) {
-            assertEquals(400, e.getRawStatusCode());
-            assertEquals("usuario_nao_encontrado", e.getReason());
-        }
-    }
-
-    @Test
-    public void criarEstoqueComUsuarioInvalido() throws Exception {
-
-        when(usuarioRepository.existsById(anyInt())).thenReturn(false);
-
-        try {
-            
-            mercadoController.criarEstoque(1, 1, estoque);
-
-        }
-        catch (ResponseStatusException e) {
-            assertEquals(400, e.getRawStatusCode());
-            assertEquals("usuario_invalido", e.getReason());
-        }
-        
-    }
-
-    @Test
-    public void criarEstoqueComUsuarioInexistente() throws Exception {
-
-        when(usuarioRepository.existsById(anyInt())).thenReturn(true);
-        when(usuarioRepository.findById(anyInt())).thenReturn(optionalUsuario);
-        when(optionalUsuario.get()).thenReturn(usuarioInexistente);
-
-        try {
-            
-            mercadoController.criarEstoque(1, 1, estoque);
-
-        }
-        catch (ResponseStatusException e) {
-            assertEquals(404, e.getRawStatusCode());
-            assertEquals("usuario_nao_encontrado", e.getReason());
-        }
-        
-    }
-
-    @Test
-    public void criarEstoqueComProdutoInvalido() throws Exception {
-
-        when(usuarioRepository.existsById(anyInt())).thenReturn(true);
-        when(usuarioRepository.findById(anyInt())).thenReturn(optionalUsuario);
-        when(optionalUsuario.get()).thenReturn(usuario);
-
-        when(produtoRepository.existsById(anyInt())).thenReturn(false);
-
-        try {
-                
-            mercadoController.criarEstoque(1, 1, estoque);
-
-        }
-        catch (ResponseStatusException e) {
-            assertEquals(400, e.getRawStatusCode());
-            assertEquals("produto_invalido", e.getReason());
-        }
-
-    }
-
-    @Test
-    public void criarEstoqueComMercadoInvalido() throws Exception {
-
-        when(usuarioRepository.existsById(anyInt())).thenReturn(true);
-        when(usuarioRepository.findById(anyInt())).thenReturn(optionalUsuario);
-        when(optionalUsuario.get()).thenReturn(usuario);
-
-        when(produtoRepository.existsById(anyInt())).thenReturn(true);
-        when(mercadoRepository.existsById(anyInt())).thenReturn(false);
-
-        try {
-                    
-            mercadoController.criarEstoque(1, 1, estoque);
-
-        }
-        catch (ResponseStatusException e) {
-
-            assertEquals(400, e.getRawStatusCode());
-            assertEquals("mercado_invalido", e.getReason());
-            
-        }
-    }
-
-    @Test
-    public void criarEstoqueComEstoqueExistente() throws Exception {
-
-        when(usuarioRepository.existsById(anyInt())).thenReturn(true);
-        when(usuarioRepository.findById(anyInt())).thenReturn(optionalUsuario);
-        when(optionalUsuario.get()).thenReturn(usuario);
-
-        when(produtoRepository.existsById(anyInt())).thenReturn(true);
-
-        when(mercadoRepository.existsById(anyInt())).thenReturn(true);
-
-        when(estoqueRepository.findAll(isA(Example.class))).thenReturn(estoques);
-
-        try {
-
-            mercadoController.criarEstoque(1, 1, estoque);
-
-        }
-        catch (ResponseStatusException e) {
-            assertEquals(409, e.getRawStatusCode());
-            assertEquals("estoque_existente", e.getReason());
-        }
-
-    }
-
-    @Test
-    public void criarEstoqueComExcecao() throws Exception {
-
-        when(usuarioRepository.existsById(anyInt())).thenReturn(true);
-        when(usuarioRepository.findById(anyInt())).thenReturn(optionalUsuario);
-        when(optionalUsuario.get()).thenReturn(usuario);
-
-        when(produtoRepository.existsById(anyInt())).thenReturn(true);
-
-        when(mercadoRepository.existsById(anyInt())).thenReturn(true);
-
-        when(estoqueRepository.findAll(
-            Example.of(
-                estoque,
-                ExampleMatcher
-                        .matching()
-                        .withIgnoreCase()
-                        .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING)
-            )
-        )).thenReturn(new ArrayList<Estoque>());
-
-        when(estoqueRepository.save(any())).thenThrow(new NullPointerException("erro_inesperado"));
-
-        try {
-
-            mercadoController.criarEstoque(1, 1, estoque);
-
-        }
-        catch (ResponseStatusException e) {
-            assertEquals(500, e.getRawStatusCode());
-            assertEquals("erro_inesperado", e.getReason());
-        }
-
-    }
-
-    /* -------------------------------------------------------------------------- */
-    
-
-
-
-
-    /* ---------------------  CRIAÇÃO DE PRODUTO NO MERCADO --------------------- */
-
-    @Test
-    public void criarProdutoComSucesso() throws Exception {
-
-        when(usuarioRepository.existsById(anyInt())).thenReturn(true);
-
-        when(categoriaRepository.existsById(anyInt())).thenReturn(true);
-
-        when(produtoRepository.findByCaracteristicas(anyString(), anyString(), anyString(), anyString())).thenReturn(null);
-
-        when(usuarioRepository.findById(anyInt())).thenReturn(optionalUsuario);
-        when(optionalUsuario.get()).thenReturn(usuario);
-
-        when(mercadoRepository.existsById(anyInt())).thenReturn(true);
-
-        Produto responseProduto = new Produto();
-
-        responseProduto.setId(1);
-        responseProduto.setNome("Teste produto");
-        responseProduto.setMarca("Teste marca");
-        responseProduto.setTamanho("Teste tamanho");
-        responseProduto.setCor("Teste cor");
-        responseProduto.setCriadoPor(1);
-        responseProduto.setCategoriaId(1);
-
-        estoque = new Estoque();
-
-        estoque.setId(1);
-        estoque.setProdutoId(1);
-        estoque.setCriadoPor(1);
-        estoque.setMercadoId(1);
-
-
-        when(produtoRepository.save(any())).thenReturn(responseProduto);
-
-        when(estoqueRepository.save(any())).thenReturn(estoque);
-
-        ResponseEstoqueProduto responseEstoque = mercadoController.criarProduto(1, produto);
-
-        assertEquals("Teste produto", responseEstoque.getNome());
-        assertEquals(produto.getMarca(), responseEstoque.getMarca());
-        assertEquals(produto.getTamanho(), responseEstoque.getTamanho());
-        assertEquals(produto.getCor(), responseEstoque.getCor());
-    }
-
-    @Test
-    public void criarProdutoComUsuarioNaoEncontrado() throws Exception {
-
-        when(usuarioRepository.existsById(anyInt())).thenReturn(false);
-
-        try {
-
-            mercadoController.criarProduto(1, produto);
-
-        }
-        catch (ResponseStatusException e) {
-            assertEquals(400, e.getRawStatusCode());
-            assertEquals("usuario_nao_encontrado", e.getReason());
-        }
-    }
-
-    @Test
-    public void criarProdutoComCategoriaNaoEncontrada() throws Exception {
-
-        when(usuarioRepository.existsById(anyInt())).thenReturn(true);
-
-        when(categoriaRepository.existsById(anyInt())).thenReturn(false);
-
-        try {
-
-            mercadoController.criarProduto(1, produto);
-
-        }
-        catch (ResponseStatusException e) {
-            assertEquals(400, e.getRawStatusCode());
-            assertEquals("categoria_nao_encontrado", e.getReason());
-        }
-
-    }
-
-    @Test
-    public void criarProdutoComCaracteristicasExistentes() throws Exception {
-
-        when(usuarioRepository.existsById(anyInt())).thenReturn(true);
-
-        when(categoriaRepository.existsById(anyInt())).thenReturn(true);
-
-        when(produtoRepository.findByCaracteristicas(anyString(), anyString(), anyString(), anyString())).thenReturn(produto);
-
-        try {
-
-            mercadoController.criarProduto(1, produto);
-
-        }
-        catch (ResponseStatusException e) {
-            assertEquals(409, e.getRawStatusCode());
-            assertEquals("produto_existente", e.getReason());
-        }
-
-    }
-
-    @Test
-    public void criarProdutoComUsuarioInvalido() throws Exception {
-
-        when(usuarioRepository.existsById(anyInt())).thenReturn(true);
-
-        when(categoriaRepository.existsById(anyInt())).thenReturn(true);
-
-        when(produtoRepository.findByCaracteristicas(anyString(), anyString(), anyString(), anyString())).thenReturn(null);
-
-        when(usuarioRepository.findById(anyInt())).thenReturn(optionalUsuario);
-        when(optionalUsuario.get()).thenReturn(usuarioInexistente);
-
-        try {
-
-            mercadoController.criarProduto(1, produto);
-
-        }
-        catch (ResponseStatusException e) {
-            assertEquals(404, e.getRawStatusCode());
-            assertEquals("usuario_nao_encontrado", e.getReason());
-        }
-
-    }
-
-    @Test
-    public void criarProdutoComMercadoInvalido() throws Exception {
-
-        when(usuarioRepository.existsById(anyInt())).thenReturn(true);
-
-        when(categoriaRepository.existsById(anyInt())).thenReturn(true);
-
-        when(produtoRepository.findByCaracteristicas(anyString(), anyString(), anyString(), anyString())).thenReturn(null);
-
-        when(usuarioRepository.findById(anyInt())).thenReturn(optionalUsuario);
-        when(optionalUsuario.get()).thenReturn(usuario);
-
-        when(mercadoRepository.existsById(anyInt())).thenReturn(false);
-
-        try {
-
-            mercadoController.criarProduto(1, produto);
-
-        }
-        catch (ResponseStatusException e) {
-            assertEquals(400, e.getRawStatusCode());
-            assertEquals("mercado_invalido", e.getReason());
-        }
-
-    }
-
-    @Test
-    public void criarProdutoComExcecao() throws Exception {
-
-        when(usuarioRepository.existsById(anyInt())).thenReturn(true);
-
-        when(categoriaRepository.existsById(anyInt())).thenReturn(true);
-
-        when(produtoRepository.findByCaracteristicas(anyString(), anyString(), anyString(), anyString())).thenReturn(null);
-
-        when(usuarioRepository.findById(anyInt())).thenReturn(optionalUsuario);
-        when(optionalUsuario.get()).thenReturn(null);
-
-        try {
-
-            mercadoController.criarProduto(1, produto);
-
-        }
-        catch (ResponseStatusException e) {
-            assertEquals(500, e.getRawStatusCode());
-            assertEquals("erro_inesperado", e.getReason());
-        }
-
-    }
-
-    /* -------------------------------------------------------------------------- */
-
-
-
-
-
-    /* ---------------  CRIAÇÃO DE SUGESTÃO DE PRODUTO DO MERCADO --------------- */
-
-    @Test
-    public void criarSugestaoComSucesso() throws Exception {
-
-        this.estoque.setId(1);
-
-        when(usuarioRepository.existsById(anyInt())).thenReturn(true);
-        when(usuarioRepository.findById(anyInt())).thenReturn(optionalUsuario);
-        when(optionalUsuario.get()).thenReturn(usuario);
-
-        when(produtoRepository.existsById(anyInt())).thenReturn(true);
-
-        when(mercadoRepository.existsById(anyInt())).thenReturn(true);
-
-        when(estoqueRepository.findByProdutoIdAndMercadoId(anyInt(), anyInt())).thenReturn(estoque);
-
-        when(sugestaoRepository.save(sugestao)).thenReturn(sugestao);
-
-        ResponseSugestao responseSugestao = mercadoController.criarSugestao(1, 1, sugestao);
-
-        float precoSugestao = sugestao.getPreco() / 100;
-
-        assertTrue(precoSugestao == responseSugestao.getPreco());
-        assertEquals(estoque.getId(), responseSugestao.getEstoqueId());
-
-    }
-
-    @Test
-    public void criarSugestaoComUsuarioInvalido() throws Exception {
-
-        sugestao.setCriadoPor(null);
-
-        try {
-
-            mercadoController.criarSugestao(1, 1, sugestao);
-
-        }
-        catch (ResponseStatusException e) {
-            assertEquals(400, e.getRawStatusCode());
-            assertEquals("usuario_invalido", e.getReason());
-        }
-
-    }
-
-    @Test
-    public void criarSugestaoComPrecoInvalido() throws Exception {
-
-        sugestao.setPreco(null);
-
-        try {
-
-            mercadoController.criarSugestao(1, 1, sugestao);
-
-        }
-        catch (ResponseStatusException e) {
-            assertEquals(400, e.getRawStatusCode());
-            assertEquals("preco_invalido", e.getReason());
-        }
-
-    }
-
-    @Test
-    public void criarSugestaoComUsuarioNaoEncontrado() throws Exception {
-
-        when(usuarioRepository.existsById(anyInt())).thenReturn(false);
-
-        try {
-
-            mercadoController.criarSugestao(1, 1, sugestao);
-
-        }
-        catch (ResponseStatusException e) {
-            assertEquals(400, e.getRawStatusCode());
-            assertEquals("usuario_nao_encontrado", e.getReason());
-        }
-
-    }
-
-    @Test
-    public void criarSugestaoComProdutoInvalido() throws Exception {
-
-        when(usuarioRepository.existsById(anyInt())).thenReturn(true);
-        when(usuarioRepository.findById(anyInt())).thenReturn(optionalUsuario);
-        when(optionalUsuario.get()).thenReturn(usuario);
-
-        when(produtoRepository.existsById(anyInt())).thenReturn(false);
-
-        try {
-
-            mercadoController.criarSugestao(1, 1, sugestao);
-
-        }
-        catch (ResponseStatusException e) {
-            assertEquals(400, e.getRawStatusCode());
-            assertEquals("produto_invalido", e.getReason());
-        }
-
-    }
-
-    @Test
-    public void criarSugestaoComMercadoInexistente() throws Exception {
-
-        when(usuarioRepository.existsById(anyInt())).thenReturn(true);
-        when(usuarioRepository.findById(anyInt())).thenReturn(optionalUsuario);
-        when(optionalUsuario.get()).thenReturn(usuario);
-
-        when(produtoRepository.existsById(anyInt())).thenReturn(true);
-
-        when(mercadoRepository.existsById(anyInt())).thenReturn(false);
-
-        try {
-
-            mercadoController.criarSugestao(1, 1, sugestao);
-
-        }
-        catch (ResponseStatusException e) {
-            assertEquals(400, e.getRawStatusCode());
-            assertEquals("mercado_invalido", e.getReason());
-        }
-
-    }
-
-    @Test
-    public void criarSugestaoComUsuarioInexistente() throws Exception {
-
-        when(usuarioRepository.existsById(anyInt())).thenReturn(true);
-
-        when(usuarioRepository.findById(anyInt())).thenReturn(optionalUsuario);
-        when(optionalUsuario.get()).thenReturn(usuarioInexistente);
-
-        when(produtoRepository.existsById(anyInt())).thenReturn(true);
-
-        when(mercadoRepository.existsById(anyInt())).thenReturn(true);
-
-        try {
-
-            mercadoController.criarSugestao(1, 1, sugestao);
-
-        }
-        catch (ResponseStatusException e) {
-            assertEquals(404, e.getRawStatusCode());
-            assertEquals("usuario_nao_encontrado", e.getReason());
-        }
-
-    }
-
-    @Test
-    public void criarSugestaoComEstoqueInexistente() throws Exception {
-
-        when(usuarioRepository.existsById(anyInt())).thenReturn(true);
-        when(usuarioRepository.findById(anyInt())).thenReturn(optionalUsuario);
-        when(optionalUsuario.get()).thenReturn(usuario);
-
-        when(produtoRepository.existsById(anyInt())).thenReturn(true);
-
-        when(mercadoRepository.existsById(anyInt())).thenReturn(true);
-
-        when(estoqueRepository.findByProdutoIdAndMercadoId(anyInt(), anyInt())).thenReturn(null);
-
-        try {
-
-            mercadoController.criarSugestao(1, 1, sugestao);
-
-        }
-        catch (ResponseStatusException e) {
-            assertEquals(404, e.getRawStatusCode());
-            assertEquals("estoque_nao_encontrado", e.getReason());
-        }
-    }
-
-    @Test
-    public void criarSugestaoComExcecao() throws Exception {
-
-        this.estoque.setId(1);
-
-        when(usuarioRepository.existsById(anyInt())).thenReturn(true);
-        when(usuarioRepository.findById(anyInt())).thenReturn(optionalUsuario);
-        when(optionalUsuario.get()).thenReturn(usuario);
-
-        when(produtoRepository.existsById(anyInt())).thenReturn(true);
-
-        when(mercadoRepository.existsById(anyInt())).thenReturn(true);
-
-        when(estoqueRepository.findByProdutoIdAndMercadoId(anyInt(), anyInt())).thenReturn(estoque);
-
-        when(sugestaoRepository.save(sugestao)).thenThrow(new NullPointerException("erro_inesperado"));
-
-        try {
-
-            mercadoController.criarSugestao(1, 1, sugestao);
-
-        }
-        catch (ResponseStatusException e) {
-            assertEquals(500, e.getRawStatusCode());
-            assertEquals("erro_inesperado", e.getReason());
-        }
-
-    }
-
-    /* -------------------------------------------------------------------------- */
-
-
-
-
-
     /* -----------------------  LEITURA DE MERCADO POR ID ----------------------- */
 
     @Test
@@ -1016,72 +454,309 @@ public class MercadoControllerTest {
 
 
 
-    /* --------------------  LISTAGEM DE PRODUTOS DO MERCADO -------------------- */
+    /* -------------------------  LISTAGEM DE MERCADOS  ------------------------- */
 
     @Test
-    public void listarProdutosComSucesso() {
+    public void listarComSucesso() throws Exception {
 
-        when(mercadoRepository.existsById(anyInt())).thenReturn(true);
+        when(mercadoRepository.findAll(isA(Example.class))).thenReturn(mercados);
 
-        when(estoqueRepository.findByMercadoId(anyInt())).thenReturn(estoques);
+        List<ResponseMercado> response = mercadoController.listar(mercado);
 
-        when(produtoRepository.findById(anyInt())).thenReturn(Optional.of(produto));
-
-        List<ResponseProduto> responseProdutos = mercadoController.listarProdutos(1);
-
-        assertEquals(1, responseProdutos.size());
-        assertEquals(produto.getNome(), responseProdutos.get(0).getNome());
+        assertEquals(3, response.size());
+        assertEquals(mercado.getId(), response.get(0).getId());
+        assertEquals(mercado.getNome(), response.get(0).getNome());
+        assertEquals(mercado.getLogradouro(), response.get(0).getLogradouro());
+        assertEquals(mercado.getNumero(), response.get(0).getNumero());
+        assertEquals(mercado.getBairro(), response.get(0).getBairro());
+        assertEquals(mercado.getCidade(), response.get(0).getCidade());
+        assertEquals(mercado.getUf(), response.get(0).getUf());
+        assertEquals(mercado.getCep(), response.get(0).getCep());
+        assertEquals(mercado.getComplemento(), response.get(0).getComplemento());
     }
 
     @Test
-    public void listarProdutosComMercadoNaoEncontrado() {
-
-        when(mercadoRepository.existsById(anyInt())).thenReturn(false);
+    public void listarComFiltroInvalido() throws Exception {
 
         try {
 
-            mercadoController.listarProdutos(1);
+            mercadoController.listar(null);
 
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("corpo_nulo", e.getReason());
         }
+
+    }
+
+    @Test
+    public void listarComExcecaoNullPointer() throws Exception {
+
+        when(mercadoRepository.findAll(isA(Example.class))).thenThrow(new NullPointerException());
+
+        try {
+
+            mercadoController.listar(mercado);
+
+        } 
         catch (ResponseStatusException e) {
             assertEquals(404, e.getRawStatusCode());
-            assertEquals("mercado_nao_encontrado", e.getReason());
+            assertEquals("nao_encontrado", e.getReason());
         }
 
     }
 
     @Test
-    public void listarProdutosComEstoqueNaoEncontrado() {
+    public void listarComExcecaoUnsupportedOperation() throws Exception {
 
-        when(mercadoRepository.existsById(anyInt())).thenReturn(true);
-
-        when(estoqueRepository.findByMercadoId(anyInt())).thenReturn(new ArrayList<>());
+        when(mercadoRepository.findAll(isA(Example.class))).thenReturn(new ArrayList<>());
 
         try {
+                
+            mercadoController.listar(mercado);
 
-            mercadoController.listarProdutos(1);
-
-        }
-        catch (ResponseStatusException e) {
-            assertEquals(404, e.getRawStatusCode());
-            assertEquals("estoque_nao_encontrado", e.getReason());
-        }
-
-    }
-
-    @Test
-    public void listarProdutosComExcecao() {
-
-        when(mercadoRepository.existsById(anyInt())).thenThrow(new RuntimeException());
-
-        try {
-
-            mercadoController.listarProdutos(1);
-
-        }
+        } 
         catch (ResponseStatusException e) {
             assertEquals(500, e.getRawStatusCode());
             assertEquals("erro_inesperado", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void listarComExcecao() throws Exception {
+
+        when(mercadoRepository.findAll(isA(Example.class))).thenThrow(new RuntimeException());
+
+        try {
+
+            mercadoController.listar(mercado);
+
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_inesperado", e.getReason());
+        }
+    }
+
+    /* -------------------------------------------------------------------------- */
+
+
+
+
+
+    /* --------------------------  EDIÇÃO DE MERCADOS  -------------------------- */
+
+    @Test
+    public void editarComSucesso() {
+
+        when(mercadoRepository.findByEndereco(anyString(), anyInt(), anyString(), 
+                                              anyString(), anyString(), anyString(), 
+                                              anyString())
+        ).thenReturn(null);
+
+        when(mercadoRepository.findById(anyInt())).thenReturn(optionalMercado);
+        when(optionalMercado.get()).thenReturn(mercado);
+
+        when(ramoRepository.existsById(anyInt())).thenReturn(true);
+
+        when(mercadoRepository.existsByNomeIgnoreCase(anyString())).thenReturn(false);
+
+        when(mercadoRepository.save(any())).thenReturn(mercados.get(1));
+
+        ResponseMercado responseMercado = mercadoController.editar(1, mercados.get(1));
+
+        assertEquals("Mercado Teste 2", responseMercado.getNome());
+    }
+
+    @Test
+    public void editarComEnderecoExistente() {
+
+        when(mercadoRepository.findByEndereco(anyString(), anyInt(), anyString(), 
+                                              anyString(), anyString(), anyString(), 
+                                              anyString())
+        ).thenReturn(mercado);
+
+        try {
+
+            mercadoController.editar(1, mercados.get(1));
+
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(409, e.getRawStatusCode());
+            assertEquals(e.getCause().getMessage(), "mercado_existente");
+        }
+    }
+
+    @Test
+    public void editarComRamoInexistente() throws Exception {
+
+        when(mercadoRepository.findByEndereco(anyString(), anyInt(), anyString(), 
+                                              anyString(), anyString(), anyString(), 
+                                              anyString())
+        ).thenReturn(null);
+
+        when(mercadoRepository.findById(anyInt())).thenReturn(optionalMercado);
+        when(optionalMercado.get()).thenReturn(mercado);
+
+        when(ramoRepository.existsById(anyInt())).thenReturn(false);
+
+        try {
+
+            mercadoController.editar(1, mercados.get(1));
+
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals(e.getCause().getMessage(), "ramo_nao_encontrado");
+        }
+
+    }
+
+    @Test
+    public void editarComMercadoJaExistente() throws Exception {
+
+        when(mercadoRepository.findByEndereco(anyString(), anyInt(), anyString(), 
+                                              anyString(), anyString(), anyString(), 
+                                              anyString())
+        ).thenReturn(null);
+
+        when(mercadoRepository.findById(anyInt())).thenReturn(optionalMercado);
+        when(optionalMercado.get()).thenReturn(mercado);
+
+        when(ramoRepository.existsById(anyInt())).thenReturn(true);
+
+        when(mercadoRepository.existsByNomeIgnoreCase(anyString())).thenReturn(true);
+
+        try {
+
+            mercadoController.editar(1, mercados.get(1));
+
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(409, e.getRawStatusCode());
+            assertEquals(e.getCause().getMessage(), "mercado_existente");
+        }
+
+    }
+
+    @Test
+    public void editarMercadoComExcecaoDataIntegrity() throws Exception {
+
+        when(mercadoRepository.findByEndereco(anyString(), anyInt(), anyString(), 
+                                              anyString(), anyString(), anyString(), 
+                                              anyString())
+        ).thenReturn(null);
+
+        when(mercadoRepository.findById(anyInt())).thenReturn(optionalMercado);
+        when(optionalMercado.get()).thenReturn(mercado);
+
+        when(ramoRepository.existsById(anyInt())).thenReturn(true);
+
+        when(mercadoRepository.existsByNomeIgnoreCase(anyString())).thenReturn(false);
+
+        when(mercadoRepository.save(any())).thenThrow(new DataIntegrityViolationException("erro_insercao"));
+
+        try {
+
+            mercadoController.editar(1, mercados.get(1));
+
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_insercao", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void editarMercadoComExcecaoIllegalArgument() throws Exception {
+
+        when(mercadoRepository.findByEndereco(anyString(), anyInt(), anyString(), 
+                                              anyString(), anyString(), anyString(), 
+                                              anyString())
+        ).thenReturn(null);
+
+        when(mercadoRepository.findById(anyInt())).thenReturn(optionalMercado);
+        when(optionalMercado.get()).thenReturn(mercado);
+
+        when(ramoRepository.existsById(anyInt())).thenReturn(true);
+
+        when(mercadoRepository.existsByNomeIgnoreCase(anyString())).thenReturn(false);
+
+        when(mercadoRepository.save(any())).thenThrow(new IllegalArgumentException("erro_inesperado"));
+
+        try {
+
+            mercadoController.editar(1, mercados.get(1));
+
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_inesperado", e.getReason());
+            assertTrue(e.getCause().toString().contains("java.lang.IllegalArgumentException"));
+        }
+
+    }
+
+    @Test
+    public void editarMercadoComExcecaoNoSuchElement() throws Exception {
+
+        when(mercadoRepository.findByEndereco(anyString(), anyInt(), anyString(), 
+                                              anyString(), anyString(), anyString(), 
+                                              anyString())
+        ).thenReturn(null);
+
+        when(mercadoRepository.findById(anyInt())).thenReturn(optionalMercado);
+        when(optionalMercado.get()).thenReturn(mercado);
+
+        when(ramoRepository.existsById(anyInt())).thenReturn(true);
+
+        when(mercadoRepository.existsByNomeIgnoreCase(anyString())).thenReturn(false);
+
+        when(mercadoRepository.save(any())).thenThrow(new NoSuchElementException("nao_encontrado"));
+
+        try {
+
+            mercadoController.editar(1, mercados.get(1));
+
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(404, e.getRawStatusCode());
+            assertEquals("nao_encontrado", e.getReason());
+            assertTrue(e.getCause().toString().contains("java.util.NoSuchElementException"));
+        }
+
+    }
+
+    @Test
+    public void editarMercadoComExcecao() throws Exception {
+
+        when(mercadoRepository.findByEndereco(anyString(), anyInt(), anyString(), 
+                                              anyString(), anyString(), anyString(), 
+                                              anyString())
+        ).thenReturn(null);
+
+        when(mercadoRepository.findById(anyInt())).thenReturn(optionalMercado);
+        when(optionalMercado.get()).thenReturn(mercado);
+
+        when(ramoRepository.existsById(anyInt())).thenReturn(true);
+
+        when(mercadoRepository.existsByNomeIgnoreCase(anyString())).thenReturn(false);
+
+        when(mercadoRepository.save(any())).thenThrow(new RuntimeException());
+
+        try {
+
+            mercadoController.editar(1, mercados.get(1));
+
+        } 
+        catch (ResponseStatusException e) {
+            System.out.println(e.getCause().toString());
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_inesperado", e.getReason());
+            assertTrue(e.getCause().toString().contains("java.lang.RuntimeException"));
         }
 
     }
@@ -1092,84 +767,240 @@ public class MercadoControllerTest {
 
 
 
-    /* ---------------  LISTAGEM PAGINADA DE PRODUTOS DO MERCADO ---------------- */
+    /* -----------------------  ATUALIZAÇÃO DE MERCADOS  ------------------------ */
 
     @Test
-    public void listarProdutosPaginadosComSucesso() {
-
-        produto.setId(1);
+    public void atualizarComSucesso() throws Exception {
 
         when(mercadoRepository.existsById(anyInt())).thenReturn(true);
 
-        when(estoqueRepository.findByMercadoId(anyInt())).thenReturn(estoques);
+        when(usuarioRepository.existsById(anyInt())).thenReturn(true);
 
-        when(produtoRepository.findById(anyInt())).thenReturn(optionalProduto);
-        when(optionalProduto.get()).thenReturn(produto);
+        when(ramoRepository.existsById(anyInt())).thenReturn(true);
 
-        ResponsePagina responseProdutosPaginados = mercadoController.listarProdutos(1, 0, 1);
+        when(mercadoRepository.existsByNomeIgnoreCase(anyString())).thenReturn(false);
 
-        assertTrue(responseProdutosPaginados.getPaginaAtual() == 0);
-        assertTrue(responseProdutosPaginados.getItensPorPagina() == 1);
-        assertTrue(responseProdutosPaginados.getTotalRegistros() == 1);
-        assertTrue(responseProdutosPaginados.getTotalPaginas() == 1);
-        assertTrue(responseProdutosPaginados.getTotalRegistros() == 1);
-    }
-
-    @Test
-    public void listarProdutosPaginadosComMercadoInexistente() {
-
-        when(mercadoRepository.existsById(anyInt())).thenReturn(false);
+        when(mercadoRepository.findByEndereco(anyString(), anyInt(), anyString(), 
+                                              anyString(), anyString(), anyString(), 
+                                              anyString())
+        ).thenReturn(null);
         
+        when(mercadoRepository.findById(anyInt())).thenReturn(optionalMercado);
+        when(optionalMercado.get()).thenReturn(mercado);
+
+        when(mercadoRepository.save(any())).thenReturn(mercados.get(1));
+
+        ResponseMercado responseMercado = mercadoController.atualizar(1, mercados.get(1));
+
+        assertEquals("Mercado Teste 2", responseMercado.getNome());
+
+    }
+
+    @Test
+    public void atualizarComMercadoInexistente() throws Exception {
+
+        when(mercadoRepository.existsById(anyInt())).thenReturn(false);
+
         try {
 
-            mercadoController.listarProdutos(1, 0, 1);
+            mercadoController.atualizar(2023, mercados.get(1));
 
-        }
+        } 
         catch (ResponseStatusException e) {
             assertEquals(404, e.getRawStatusCode());
-            assertEquals("mercado_nao_encontrado", e.getReason());
+            assertEquals("nao_encontrado", e.getReason());
         }
+        
     }
 
     @Test
-    public void listarProdutosPaginadosComEstoqueInexistente() {
+    public void atualizarComUsuarioInexistente() throws Exception {
 
         when(mercadoRepository.existsById(anyInt())).thenReturn(true);
 
-        when(estoqueRepository.findByMercadoId(anyInt())).thenReturn(new ArrayList<>());
-
-            try {
-
-                mercadoController.listarProdutos(1, 0, 1);
-
-            }
-            catch (ResponseStatusException e) {
-                assertEquals(404, e.getRawStatusCode());
-                assertEquals("estoque_nao_encontrado", e.getReason());
-            }
-
-    }
-
-    @Test
-    public void listarProdutosPaginadosComExcecao() {
-
-        produto.setId(1);
-
-        when(mercadoRepository.existsById(anyInt())).thenReturn(true);
-
-        when(estoqueRepository.findByMercadoId(anyInt())).thenReturn(estoques);
-
-        when(produtoRepository.findById(anyInt())).thenReturn(optionalProduto);
-        when(optionalProduto.get()).thenReturn(produto);
+        when(usuarioRepository.existsById(anyInt())).thenReturn(false);
 
         try {
 
-            mercadoController.listarProdutos(1, 0, 900);
+            mercadoController.atualizar(1, mercados.get(1));
 
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("usuario_nao_encontrado", e.getReason());
         }
+
+    }
+
+    @Test
+    public void atualizarComRamoInexistente() throws Exception {
+
+        when(mercadoRepository.existsById(anyInt())).thenReturn(true);
+
+        when(usuarioRepository.existsById(anyInt())).thenReturn(true);
+
+        when(ramoRepository.existsById(anyInt())).thenReturn(false);
+
+        try {
+
+            mercadoController.atualizar(1, mercados.get(1));
+
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("ramo_nao_encontrado", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void atualizarComMercadoExistente() throws Exception {
+
+        when(mercadoRepository.existsById(anyInt())).thenReturn(true);
+
+        when(usuarioRepository.existsById(anyInt())).thenReturn(true);
+
+        when(ramoRepository.existsById(anyInt())).thenReturn(true);
+
+        when(mercadoRepository.existsByNomeIgnoreCase(anyString())).thenReturn(true);
+
+        try {
+
+            mercadoController.atualizar(1, mercados.get(1));
+
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(409, e.getRawStatusCode());
+            assertEquals("mercado_existente", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void atualizarComEnderecoExistente() throws Exception {
+        
+        when(mercadoRepository.existsById(anyInt())).thenReturn(true);
+
+        when(usuarioRepository.existsById(anyInt())).thenReturn(true);
+
+        when(ramoRepository.existsById(anyInt())).thenReturn(true);
+
+        when(mercadoRepository.existsByNomeIgnoreCase(anyString())).thenReturn(false);
+
+        when(mercadoRepository.findByEndereco(anyString(), anyInt(), anyString(), 
+                                              anyString(), anyString(), anyString(), 
+                                              anyString())
+        ).thenReturn(mercado);
+
+        try {
+
+            mercadoController.atualizar(1, mercados.get(1));
+
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(409, e.getRawStatusCode());
+            assertEquals("mercado_existente", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void atualizarComExcecaoDataViolaton() throws Exception {
+
+        when(mercadoRepository.existsById(anyInt())).thenReturn(true);
+
+        when(usuarioRepository.existsById(anyInt())).thenReturn(true);
+
+        when(ramoRepository.existsById(anyInt())).thenReturn(true);
+
+        when(mercadoRepository.existsByNomeIgnoreCase(anyString())).thenReturn(false);
+
+        when(mercadoRepository.findByEndereco(anyString(), anyInt(), anyString(), 
+                                              anyString(), anyString(), anyString(), 
+                                              anyString())
+        ).thenReturn(null);
+        
+        when(mercadoRepository.findById(anyInt())).thenReturn(optionalMercado);
+        when(optionalMercado.get()).thenReturn(mercado);
+
+        when(mercadoRepository.save(any())).thenThrow(new DataIntegrityViolationException("erro_insercao"));
+
+        try {
+
+            mercadoController.atualizar(1, mercados.get(1));
+
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_insercao", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void atualizarComExcecaoIllegalArgument() throws Exception {
+
+        when(mercadoRepository.existsById(anyInt())).thenReturn(true);
+
+        when(usuarioRepository.existsById(anyInt())).thenReturn(true);
+
+        when(ramoRepository.existsById(anyInt())).thenReturn(true);
+
+        when(mercadoRepository.existsByNomeIgnoreCase(anyString())).thenReturn(false);
+
+        when(mercadoRepository.findByEndereco(anyString(), anyInt(), anyString(), 
+                                              anyString(), anyString(), anyString(), 
+                                              anyString())
+        ).thenReturn(null);
+        
+        when(mercadoRepository.findById(anyInt())).thenReturn(optionalMercado);
+        when(optionalMercado.get()).thenReturn(mercado);
+
+        when(mercadoRepository.save(any())).thenThrow(new IllegalArgumentException("erro_inesperado"));
+
+        try {
+
+            mercadoController.atualizar(1, mercados.get(1));
+
+        } 
         catch (ResponseStatusException e) {
             assertEquals(500, e.getRawStatusCode());
             assertEquals("erro_inesperado", e.getReason());
+            assertTrue(e.getCause().toString().contains("java.lang.IllegalArgumentException"));
+        }
+
+    }
+
+    @Test
+    public void atualizarComExcecao() throws Exception {
+        
+        when(mercadoRepository.existsById(anyInt())).thenReturn(true);
+
+        when(usuarioRepository.existsById(anyInt())).thenReturn(true);
+
+        when(ramoRepository.existsById(anyInt())).thenReturn(true);
+
+        when(mercadoRepository.existsByNomeIgnoreCase(anyString())).thenReturn(false);
+
+        when(mercadoRepository.findByEndereco(anyString(), anyInt(), anyString(), 
+                                              anyString(), anyString(), anyString(), 
+                                              anyString())
+        ).thenReturn(null);
+        
+        when(mercadoRepository.findById(anyInt())).thenReturn(optionalMercado);
+        when(optionalMercado.get()).thenReturn(mercado);
+
+        when(mercadoRepository.save(any())).thenThrow(new RuntimeException("erro_inesperado"));
+
+        try {
+
+            mercadoController.atualizar(1, mercados.get(1));
+
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_inesperado", e.getReason());
+            assertTrue(e.getCause().toString().contains("java.lang.RuntimeException"));
         }
 
     }
@@ -1180,74 +1011,87 @@ public class MercadoControllerTest {
 
 
 
-    /* ---------------  LISTAGEM ORDENADA DE PRODUTOS DO MERCADO ---------------- */
+    /* --------------------------  DELEÇÃO DE MERCADOS  ------------------------- */
 
     @Test
-    public void listarProdutosOrdenadosComSucesso() {
+    public void removerComSucesso() throws Exception {
 
         when(mercadoRepository.existsById(anyInt())).thenReturn(true);
 
-        when(estoqueRepository.findByMercadoId(anyInt())).thenReturn(estoques);
+        mercadoController.remover(1);
 
-        when(produtoRepository.findById(anyInt())).thenReturn(optionalProduto);
-        when(optionalProduto.get()).thenReturn(produto);
-
-        List<ResponseProduto> responseProdutos = mercadoController.listarProdutos(1, "id", "asc");
-
-        assertEquals(1, responseProdutos.size());
-        assertEquals(produto.getId(), responseProdutos.get(0).getId());
-        assertEquals(produto.getNome(), responseProdutos.get(0).getNome());
+        verify(mercadoRepository).deleteById(anyInt());
     }
 
     @Test
-    public void listarProdutosOrdenadosComMercadoNaoEncontrado() {
+    public void removerComExcecaoNoSuchElement() throws Exception {
 
         when(mercadoRepository.existsById(anyInt())).thenReturn(false);
 
         try {
 
-            mercadoController.listarProdutos(1, "id", "asc");
+            mercadoController.remover(1);
 
-        }
+        } 
         catch (ResponseStatusException e) {
             assertEquals(404, e.getRawStatusCode());
-            assertEquals("mercado_nao_encontrado", e.getReason());
+            assertEquals("nao_encontrado", e.getReason());
         }
 
     }
 
     @Test
-    public void listarProdutosOrdenadosComEstoqueNaoEncontrado() {
+    public void removerComExcecaoDataViolation() throws Exception {
 
         when(mercadoRepository.existsById(anyInt())).thenReturn(true);
-
-        when(estoqueRepository.findByMercadoId(anyInt())).thenReturn(new ArrayList<>());
+        doThrow(new DataIntegrityViolationException("erro_remocao")).when(mercadoRepository).deleteById(anyInt());
 
         try {
 
-            mercadoController.listarProdutos(1, "id", "asc");
+            mercadoController.remover(1);
 
-        }
+        } 
         catch (ResponseStatusException e) {
-            assertEquals(404, e.getRawStatusCode());
-            assertEquals("estoque_nao_encontrado", e.getReason());
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_remocao", e.getReason());
         }
 
     }
 
     @Test
-    public void listarProdutosOrdenadosComExcecao() throws Exception {
+    public void removerComExcecaoIllegalArgument() throws Exception {
 
-        when(mercadoRepository.existsById(anyInt())).thenThrow(new RuntimeException());
+        when(mercadoRepository.existsById(anyInt())).thenReturn(true);
+        doThrow(new IllegalArgumentException("erro_inesperado")).when(mercadoRepository).deleteById(anyInt());
 
         try {
 
-            mercadoController.listarProdutos(1, "id", "asc");
+            mercadoController.remover(1);
 
-        }
+        } 
         catch (ResponseStatusException e) {
             assertEquals(500, e.getRawStatusCode());
             assertEquals("erro_inesperado", e.getReason());
+            assertTrue(e.getCause().toString().contains("java.lang.IllegalArgumentException"));
+        }
+
+    }
+
+    @Test
+    public void removerComExcecao() throws Exception {
+
+        when(mercadoRepository.existsById(anyInt())).thenReturn(true);
+        doThrow(new RuntimeException()).when(mercadoRepository).deleteById(anyInt());
+
+        try {
+
+            mercadoController.remover(1);
+
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_inesperado", e.getReason());
+            assertTrue(e.getCause().toString().contains("java.lang.RuntimeException"));
         }
 
     }

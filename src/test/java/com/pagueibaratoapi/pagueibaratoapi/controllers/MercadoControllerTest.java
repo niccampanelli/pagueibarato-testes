@@ -762,4 +762,248 @@ public class MercadoControllerTest {
 
     /* -------------------------------------------------------------------------- */
 
+
+
+
+
+    /* -----------------------  ATUALIZAÇÃO DE MERCADOS  ------------------------ */
+
+    @Test
+    public void atualizarComSucesso() throws Exception {
+
+        when(mercadoRepository.existsById(anyInt())).thenReturn(true);
+
+        when(usuarioRepository.existsById(anyInt())).thenReturn(true);
+
+        when(ramoRepository.existsById(anyInt())).thenReturn(true);
+
+        when(mercadoRepository.existsByNomeIgnoreCase(anyString())).thenReturn(false);
+
+        when(mercadoRepository.findByEndereco(anyString(), anyInt(), anyString(), 
+                                              anyString(), anyString(), anyString(), 
+                                              anyString())
+        ).thenReturn(null);
+        
+        when(mercadoRepository.findById(anyInt())).thenReturn(optionalMercado);
+        when(optionalMercado.get()).thenReturn(mercado);
+
+        when(mercadoRepository.save(any())).thenReturn(mercados.get(1));
+
+        ResponseMercado responseMercado = mercadoController.atualizar(1, mercados.get(1));
+
+        assertEquals("Mercado Teste 2", responseMercado.getNome());
+
+    }
+
+    @Test
+    public void atualizarComMercadoInexistente() throws Exception {
+
+        when(mercadoRepository.existsById(anyInt())).thenReturn(false);
+
+        try {
+
+            mercadoController.atualizar(2023, mercados.get(1));
+
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(404, e.getRawStatusCode());
+            assertEquals("nao_encontrado", e.getReason());
+        }
+        
+    }
+
+    @Test
+    public void atualizarComUsuarioInexistente() throws Exception {
+
+        when(mercadoRepository.existsById(anyInt())).thenReturn(true);
+
+        when(usuarioRepository.existsById(anyInt())).thenReturn(false);
+
+        try {
+
+            mercadoController.atualizar(1, mercados.get(1));
+
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("usuario_nao_encontrado", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void atualizarComRamoInexistente() throws Exception {
+
+        when(mercadoRepository.existsById(anyInt())).thenReturn(true);
+
+        when(usuarioRepository.existsById(anyInt())).thenReturn(true);
+
+        when(ramoRepository.existsById(anyInt())).thenReturn(false);
+
+        try {
+
+            mercadoController.atualizar(1, mercados.get(1));
+
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("ramo_nao_encontrado", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void atualizarComMercadoExistente() throws Exception {
+
+        when(mercadoRepository.existsById(anyInt())).thenReturn(true);
+
+        when(usuarioRepository.existsById(anyInt())).thenReturn(true);
+
+        when(ramoRepository.existsById(anyInt())).thenReturn(true);
+
+        when(mercadoRepository.existsByNomeIgnoreCase(anyString())).thenReturn(true);
+
+        try {
+
+            mercadoController.atualizar(1, mercados.get(1));
+
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(409, e.getRawStatusCode());
+            assertEquals("mercado_existente", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void atualizarComEnderecoExistente() throws Exception {
+        
+        when(mercadoRepository.existsById(anyInt())).thenReturn(true);
+
+        when(usuarioRepository.existsById(anyInt())).thenReturn(true);
+
+        when(ramoRepository.existsById(anyInt())).thenReturn(true);
+
+        when(mercadoRepository.existsByNomeIgnoreCase(anyString())).thenReturn(false);
+
+        when(mercadoRepository.findByEndereco(anyString(), anyInt(), anyString(), 
+                                              anyString(), anyString(), anyString(), 
+                                              anyString())
+        ).thenReturn(mercado);
+
+        try {
+
+            mercadoController.atualizar(1, mercados.get(1));
+
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(409, e.getRawStatusCode());
+            assertEquals("mercado_existente", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void atualizarComExcecaoDataViolaton() throws Exception {
+
+        when(mercadoRepository.existsById(anyInt())).thenReturn(true);
+
+        when(usuarioRepository.existsById(anyInt())).thenReturn(true);
+
+        when(ramoRepository.existsById(anyInt())).thenReturn(true);
+
+        when(mercadoRepository.existsByNomeIgnoreCase(anyString())).thenReturn(false);
+
+        when(mercadoRepository.findByEndereco(anyString(), anyInt(), anyString(), 
+                                              anyString(), anyString(), anyString(), 
+                                              anyString())
+        ).thenReturn(null);
+        
+        when(mercadoRepository.findById(anyInt())).thenReturn(optionalMercado);
+        when(optionalMercado.get()).thenReturn(mercado);
+
+        when(mercadoRepository.save(any())).thenThrow(new DataIntegrityViolationException("erro_insercao"));
+
+        try {
+
+            mercadoController.atualizar(1, mercados.get(1));
+
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_insercao", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void atualizarComExcecaoIllegalArgument() throws Exception {
+
+        when(mercadoRepository.existsById(anyInt())).thenReturn(true);
+
+        when(usuarioRepository.existsById(anyInt())).thenReturn(true);
+
+        when(ramoRepository.existsById(anyInt())).thenReturn(true);
+
+        when(mercadoRepository.existsByNomeIgnoreCase(anyString())).thenReturn(false);
+
+        when(mercadoRepository.findByEndereco(anyString(), anyInt(), anyString(), 
+                                              anyString(), anyString(), anyString(), 
+                                              anyString())
+        ).thenReturn(null);
+        
+        when(mercadoRepository.findById(anyInt())).thenReturn(optionalMercado);
+        when(optionalMercado.get()).thenReturn(mercado);
+
+        when(mercadoRepository.save(any())).thenThrow(new IllegalArgumentException("erro_inesperado"));
+
+        try {
+
+            mercadoController.atualizar(1, mercados.get(1));
+
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_inesperado", e.getReason());
+            assertTrue(e.getCause().toString().contains("java.lang.IllegalArgumentException"));
+        }
+
+    }
+
+    @Test
+    public void atualizarComExcecao() throws Exception {
+        
+        when(mercadoRepository.existsById(anyInt())).thenReturn(true);
+
+        when(usuarioRepository.existsById(anyInt())).thenReturn(true);
+
+        when(ramoRepository.existsById(anyInt())).thenReturn(true);
+
+        when(mercadoRepository.existsByNomeIgnoreCase(anyString())).thenReturn(false);
+
+        when(mercadoRepository.findByEndereco(anyString(), anyInt(), anyString(), 
+                                              anyString(), anyString(), anyString(), 
+                                              anyString())
+        ).thenReturn(null);
+        
+        when(mercadoRepository.findById(anyInt())).thenReturn(optionalMercado);
+        when(optionalMercado.get()).thenReturn(mercado);
+
+        when(mercadoRepository.save(any())).thenThrow(new RuntimeException("erro_inesperado"));
+
+        try {
+
+            mercadoController.atualizar(1, mercados.get(1));
+
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_inesperado", e.getReason());
+            assertTrue(e.getCause().toString().contains("java.lang.RuntimeException"));
+        }
+
+    }
+
+    /* -------------------------------------------------------------------------- */
+
 }

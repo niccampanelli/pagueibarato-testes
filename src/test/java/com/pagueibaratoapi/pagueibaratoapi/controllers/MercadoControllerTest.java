@@ -7,10 +7,13 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.junit.Before;
@@ -534,6 +537,227 @@ public class MercadoControllerTest {
             assertEquals(500, e.getRawStatusCode());
             assertEquals("erro_inesperado", e.getReason());
         }
+    }
+
+    /* -------------------------------------------------------------------------- */
+
+
+
+
+
+    /* --------------------------  EDIÇÃO DE MERCADOS  -------------------------- */
+
+    @Test
+    public void editarComSucesso() {
+
+        when(mercadoRepository.findByEndereco(anyString(), anyInt(), anyString(), 
+                                              anyString(), anyString(), anyString(), 
+                                              anyString())
+        ).thenReturn(null);
+
+        when(mercadoRepository.findById(anyInt())).thenReturn(optionalMercado);
+        when(optionalMercado.get()).thenReturn(mercado);
+
+        when(ramoRepository.existsById(anyInt())).thenReturn(true);
+
+        when(mercadoRepository.existsByNomeIgnoreCase(anyString())).thenReturn(false);
+
+        when(mercadoRepository.save(any())).thenReturn(mercados.get(1));
+
+        ResponseMercado responseMercado = mercadoController.editar(1, mercados.get(1));
+
+        assertEquals("Mercado Teste 2", responseMercado.getNome());
+    }
+
+    @Test
+    public void editarComEnderecoExistente() {
+
+        when(mercadoRepository.findByEndereco(anyString(), anyInt(), anyString(), 
+                                              anyString(), anyString(), anyString(), 
+                                              anyString())
+        ).thenReturn(mercado);
+
+        try {
+
+            mercadoController.editar(1, mercados.get(1));
+
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(409, e.getRawStatusCode());
+            assertEquals(e.getCause().getMessage(), "mercado_existente");
+        }
+    }
+
+    @Test
+    public void editarComRamoInexistente() throws Exception {
+
+        when(mercadoRepository.findByEndereco(anyString(), anyInt(), anyString(), 
+                                              anyString(), anyString(), anyString(), 
+                                              anyString())
+        ).thenReturn(null);
+
+        when(mercadoRepository.findById(anyInt())).thenReturn(optionalMercado);
+        when(optionalMercado.get()).thenReturn(mercado);
+
+        when(ramoRepository.existsById(anyInt())).thenReturn(false);
+
+        try {
+
+            mercadoController.editar(1, mercados.get(1));
+
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals(e.getCause().getMessage(), "ramo_nao_encontrado");
+        }
+
+    }
+
+    @Test
+    public void editarComMercadoJaExistente() throws Exception {
+
+        when(mercadoRepository.findByEndereco(anyString(), anyInt(), anyString(), 
+                                              anyString(), anyString(), anyString(), 
+                                              anyString())
+        ).thenReturn(null);
+
+        when(mercadoRepository.findById(anyInt())).thenReturn(optionalMercado);
+        when(optionalMercado.get()).thenReturn(mercado);
+
+        when(ramoRepository.existsById(anyInt())).thenReturn(true);
+
+        when(mercadoRepository.existsByNomeIgnoreCase(anyString())).thenReturn(true);
+
+        try {
+
+            mercadoController.editar(1, mercados.get(1));
+
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(409, e.getRawStatusCode());
+            assertEquals(e.getCause().getMessage(), "mercado_existente");
+        }
+
+    }
+
+    @Test
+    public void editarMercadoComExcecaoDataIntegrity() throws Exception {
+
+        when(mercadoRepository.findByEndereco(anyString(), anyInt(), anyString(), 
+                                              anyString(), anyString(), anyString(), 
+                                              anyString())
+        ).thenReturn(null);
+
+        when(mercadoRepository.findById(anyInt())).thenReturn(optionalMercado);
+        when(optionalMercado.get()).thenReturn(mercado);
+
+        when(ramoRepository.existsById(anyInt())).thenReturn(true);
+
+        when(mercadoRepository.existsByNomeIgnoreCase(anyString())).thenReturn(false);
+
+        when(mercadoRepository.save(any())).thenThrow(new DataIntegrityViolationException("erro_insercao"));
+
+        try {
+
+            mercadoController.editar(1, mercados.get(1));
+
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_insercao", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void editarMercadoComExcecaoIllegalArgument() throws Exception {
+
+        when(mercadoRepository.findByEndereco(anyString(), anyInt(), anyString(), 
+                                              anyString(), anyString(), anyString(), 
+                                              anyString())
+        ).thenReturn(null);
+
+        when(mercadoRepository.findById(anyInt())).thenReturn(optionalMercado);
+        when(optionalMercado.get()).thenReturn(mercado);
+
+        when(ramoRepository.existsById(anyInt())).thenReturn(true);
+
+        when(mercadoRepository.existsByNomeIgnoreCase(anyString())).thenReturn(false);
+
+        when(mercadoRepository.save(any())).thenThrow(new IllegalArgumentException("erro_inesperado"));
+
+        try {
+
+            mercadoController.editar(1, mercados.get(1));
+
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_inesperado", e.getReason());
+            assertTrue(e.getCause().toString().contains("java.lang.IllegalArgumentException"));
+        }
+
+    }
+
+    @Test
+    public void editarMercadoComExcecaoNoSuchElement() throws Exception {
+
+        when(mercadoRepository.findByEndereco(anyString(), anyInt(), anyString(), 
+                                              anyString(), anyString(), anyString(), 
+                                              anyString())
+        ).thenReturn(null);
+
+        when(mercadoRepository.findById(anyInt())).thenReturn(optionalMercado);
+        when(optionalMercado.get()).thenReturn(mercado);
+
+        when(ramoRepository.existsById(anyInt())).thenReturn(true);
+
+        when(mercadoRepository.existsByNomeIgnoreCase(anyString())).thenReturn(false);
+
+        when(mercadoRepository.save(any())).thenThrow(new NoSuchElementException("nao_encontrado"));
+
+        try {
+
+            mercadoController.editar(1, mercados.get(1));
+
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(404, e.getRawStatusCode());
+            assertEquals("nao_encontrado", e.getReason());
+            assertTrue(e.getCause().toString().contains("java.util.NoSuchElementException"));
+        }
+
+    }
+
+    @Test
+    public void editarMercadoComExcecao() throws Exception {
+
+        when(mercadoRepository.findByEndereco(anyString(), anyInt(), anyString(), 
+                                              anyString(), anyString(), anyString(), 
+                                              anyString())
+        ).thenReturn(null);
+
+        when(mercadoRepository.findById(anyInt())).thenReturn(optionalMercado);
+        when(optionalMercado.get()).thenReturn(mercado);
+
+        when(ramoRepository.existsById(anyInt())).thenReturn(true);
+
+        when(mercadoRepository.existsByNomeIgnoreCase(anyString())).thenReturn(false);
+
+        when(mercadoRepository.save(any())).thenThrow(new RuntimeException());
+
+        try {
+
+            mercadoController.editar(1, mercados.get(1));
+
+        } 
+        catch (ResponseStatusException e) {
+            System.out.println(e.getCause().toString());
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_inesperado", e.getReason());
+            assertTrue(e.getCause().toString().contains("java.lang.RuntimeException"));
+        }
+
     }
 
     /* -------------------------------------------------------------------------- */

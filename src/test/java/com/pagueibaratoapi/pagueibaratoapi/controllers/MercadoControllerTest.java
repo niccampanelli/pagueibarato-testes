@@ -7,6 +7,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -994,6 +995,97 @@ public class MercadoControllerTest {
         try {
 
             mercadoController.atualizar(1, mercados.get(1));
+
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_inesperado", e.getReason());
+            assertTrue(e.getCause().toString().contains("java.lang.RuntimeException"));
+        }
+
+    }
+
+    /* -------------------------------------------------------------------------- */
+
+
+
+
+
+    /* --------------------------  DELEÇÃO DE MERCADOS  ------------------------- */
+
+    @Test
+    public void removerComSucesso() throws Exception {
+
+        when(mercadoRepository.existsById(anyInt())).thenReturn(true);
+
+        mercadoController.remover(1);
+
+        verify(mercadoRepository).deleteById(anyInt());
+    }
+
+    @Test
+    public void removerComExcecaoNoSuchElement() throws Exception {
+
+        when(mercadoRepository.existsById(anyInt())).thenReturn(false);
+
+        try {
+
+            mercadoController.remover(1);
+
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(404, e.getRawStatusCode());
+            assertEquals("nao_encontrado", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void removerComExcecaoDataViolation() throws Exception {
+
+        when(mercadoRepository.existsById(anyInt())).thenReturn(true);
+        doThrow(new DataIntegrityViolationException("erro_remocao")).when(mercadoRepository).deleteById(anyInt());
+
+        try {
+
+            mercadoController.remover(1);
+
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_remocao", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void removerComExcecaoIllegalArgument() throws Exception {
+
+        when(mercadoRepository.existsById(anyInt())).thenReturn(true);
+        doThrow(new IllegalArgumentException("erro_inesperado")).when(mercadoRepository).deleteById(anyInt());
+
+        try {
+
+            mercadoController.remover(1);
+
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_inesperado", e.getReason());
+            assertTrue(e.getCause().toString().contains("java.lang.IllegalArgumentException"));
+        }
+
+    }
+
+    @Test
+    public void removerComExcecao() throws Exception {
+
+        when(mercadoRepository.existsById(anyInt())).thenReturn(true);
+        doThrow(new RuntimeException()).when(mercadoRepository).deleteById(anyInt());
+
+        try {
+
+            mercadoController.remover(1);
 
         } 
         catch (ResponseStatusException e) {

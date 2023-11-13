@@ -100,7 +100,7 @@ public class CategoriaControllerTest {
 
 
     
-    /* ------------------------  CRIAÇÃO DE CATEGORIA  ------------------------ */
+    /* -------------------------  CRIAÇÃO DE CATEGORIA  ------------------------- */
 
     @Test
     public void criarCategoriaComSucesso() throws Exception {

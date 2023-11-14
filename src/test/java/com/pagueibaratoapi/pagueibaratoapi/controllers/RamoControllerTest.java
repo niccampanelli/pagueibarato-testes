@@ -315,4 +315,165 @@ public class RamoControllerTest {
 
     /* -------------------------------------------------------------------------- */
 
+
+
+
+
+    /* ---------------------------  EDIÇÃO DE RAMOS  ---------------------------- */
+
+    @Test
+    public void editarRamoComSucesso() throws Exception {
+        
+        Ramo requestRamo = new Ramo();
+        requestRamo.setNome("Ramo Editado");
+        requestRamo.setDescricao("Descrição do ramo editado");
+
+        when(ramoRepository.existsByNomeIgnoreCase(anyString())).thenReturn(false);
+
+        when(ramoRepository.findById(anyInt())).thenReturn(optionalRamo);
+        when(optionalRamo.get()).thenReturn(ramo);
+
+        when(ramoRepository.save(any())).thenReturn(requestRamo);
+
+        ResponseRamo responseRamo = ramoController.editar(1, requestRamo);
+
+        assertNotNull(responseRamo);
+        assertEquals(requestRamo.getNome(), responseRamo.getNome());
+        assertEquals(requestRamo.getDescricao(), responseRamo.getDescricao());
+
+    }
+
+    @Test
+    public void editarRamoComNomeExistente() throws Exception {
+
+        Ramo requestRamo = new Ramo();
+        requestRamo.setNome("Ramo Editado");
+        requestRamo.setDescricao("Descrição do ramo editado");
+
+        when(ramoRepository.existsByNomeIgnoreCase(anyString())).thenReturn(true);
+
+        try {
+
+            ramoController.editar(1, requestRamo);
+
+        } catch (ResponseStatusException e) {
+            assertEquals(409, e.getRawStatusCode());
+            assertEquals(e.getCause().getMessage(), "ramo_existente");
+        }
+    }
+
+    @Test
+    public void editarRamoComExcecaoDadosInvalidos() throws Exception {
+
+        try {
+
+            ramoController.editar(1, null);
+
+        } catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals(e.getCause().getMessage(), "corpo_nulo");
+        }
+
+    }
+
+    @Test
+    public void editarRamoComExcecaoDataViolation() throws Exception {
+
+        Ramo requestRamo = new Ramo();
+        requestRamo.setNome("Ramo Teste Editado");
+        requestRamo.setDescricao("Descrição do ramo teste editado");
+
+        when(ramoRepository.existsByNomeIgnoreCase(anyString())).thenReturn(false);
+
+        when(ramoRepository.findById(anyInt())).thenReturn(optionalRamo);
+        when(optionalRamo.get()).thenReturn(ramo);
+
+        when(ramoRepository.save(any())).thenThrow(new DataIntegrityViolationException("erro_insercao"));
+
+        try {
+
+            ramoController.editar(1, requestRamo);
+
+        } catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals(e.getCause().getMessage(), "erro_insercao");
+        }
+
+    }
+
+    @Test
+    public void editarRamoComExcecaoIllegalArgument() throws Exception {
+
+        Ramo requestRamo = new Ramo();
+        requestRamo.setNome("Ramo Teste Editado");
+        requestRamo.setDescricao("Descrição do ramo teste editado");
+
+        when(ramoRepository.existsByNomeIgnoreCase(anyString())).thenReturn(false);
+
+        when(ramoRepository.findById(anyInt())).thenReturn(optionalRamo);
+        when(optionalRamo.get()).thenReturn(ramo);
+
+        when(ramoRepository.save(any())).thenThrow(new IllegalArgumentException("erro_inesperado"));
+
+        try {
+
+            ramoController.editar(1, requestRamo);
+
+        } catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals(e.getCause().getMessage(), "erro_inesperado");
+            assertTrue(e.getCause().toString().contains("java.lang.IllegalArgumentException"));
+        }
+        
+    }
+
+    @Test
+    public void editarRamoComExcecaoNoSuchElement() throws Exception {
+
+        Ramo requestRamo = new Ramo();
+        requestRamo.setNome("Ramo Teste Editado");
+        requestRamo.setDescricao("Descrição do ramo teste editado");
+
+        when(ramoRepository.existsByNomeIgnoreCase(anyString())).thenReturn(false);
+
+        when(ramoRepository.findById(anyInt())).thenReturn(optionalRamo);
+        when(optionalRamo.get()).thenThrow(new NoSuchElementException("nao_encontrado"));
+
+        try {
+
+            ramoController.editar(1986, requestRamo);
+
+        } catch (ResponseStatusException e) {
+            assertEquals(404, e.getRawStatusCode());
+            assertEquals(e.getCause().getMessage(), "nao_encontrado");
+        }
+
+    }
+
+    @Test
+    public void editarRamoComExcecao() throws Exception {
+
+        Ramo requestRamo = new Ramo();
+        requestRamo.setNome("Ramo Teste Editado");
+        requestRamo.setDescricao("Descrição do ramo teste editado");
+
+        when(ramoRepository.existsByNomeIgnoreCase(anyString())).thenReturn(false);
+
+        when(ramoRepository.findById(anyInt())).thenReturn(optionalRamo);
+
+        try {
+
+            ramoController.editar(1, requestRamo);
+
+        } catch (ResponseStatusException e) {
+            System.out.println(e.getCause().toString());
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_inesperado", e.getReason());
+            assertTrue(e.getCause().toString().contains("NullPointerException"));
+        }
+
+    }
+
+    /* -------------------------------------------------------------------------- */
+
 }

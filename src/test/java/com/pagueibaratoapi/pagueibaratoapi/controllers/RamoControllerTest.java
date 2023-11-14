@@ -8,6 +8,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -623,6 +625,95 @@ public class RamoControllerTest {
             assertTrue(e.getCause().toString().contains("java.lang.RuntimeException"));
         }
 
+    }
+
+    /* -------------------------------------------------------------------------- */
+
+
+
+
+
+    /* ---------------------------  DELEÇÃO DE RAMOS  --------------------------- */
+
+    @Test
+    public void removerRamoComSucesso() throws Exception {
+
+        when(ramoRepository.existsById(anyInt())).thenReturn(true);
+
+        ramoController.remover(1);
+
+        verify(ramoRepository).deleteById(1);
+
+    }
+
+    @Test
+    public void removerRamoInexistente() throws Exception {
+
+        when(ramoRepository.existsById(anyInt())).thenReturn(false);
+
+        try {
+
+            ramoController.remover(1986);
+
+        } catch (ResponseStatusException e) {
+            assertEquals(404, e.getRawStatusCode());
+            assertEquals(e.getCause().getMessage(), "nao_encontrado");
+        }
+
+    }
+
+    @Test
+    public void removerRamoComExcecaoDataViolation() throws Exception {
+
+        when(ramoRepository.existsById(anyInt())).thenReturn(true);
+
+        doThrow(new DataIntegrityViolationException("erro_remocao")).when(ramoRepository).deleteById(anyInt());
+
+        try {
+
+            ramoController.remover(1);
+
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(500, e.getStatus().value());
+            assertEquals("erro_remocao", e.getReason());
+        }
+    }
+
+    @Test
+    public void removerRamoComExcecaoIllegalArgument() throws Exception {
+
+        when(ramoRepository.existsById(anyInt())).thenReturn(true);
+
+        doThrow(new IllegalArgumentException("erro_inesperado")).when(ramoRepository).deleteById(anyInt());
+
+        try {
+
+            ramoController.remover(1);
+
+        } catch (ResponseStatusException e) {
+            assertEquals(500, e.getStatus().value());
+            assertEquals("erro_inesperado", e.getReason());
+            assertTrue(e.getCause().toString().contains("java.lang.IllegalArgumentException"));
+        }
+    }
+
+    @Test
+    public void removerRamoComExcecaoInesperada() throws Exception {
+
+        when(ramoRepository.existsById(anyInt())).thenReturn(true);
+
+        doThrow(new RuntimeException("erro_inesperado")).when(ramoRepository).deleteById(anyInt());
+
+        try {
+
+            ramoController.remover(1);
+
+        } catch (ResponseStatusException e) {
+            assertEquals(500, e.getStatus().value());
+            assertEquals("erro_inesperado", e.getReason());
+            assertTrue(e.getCause().toString().contains("java.lang.RuntimeException"));
+        }
     }
 
     /* -------------------------------------------------------------------------- */

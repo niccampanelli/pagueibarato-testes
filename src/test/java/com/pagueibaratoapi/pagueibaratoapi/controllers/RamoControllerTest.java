@@ -7,12 +7,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.checkerframework.checker.nullness.Opt;
+import org.hibernate.criterion.Example;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -41,6 +45,8 @@ public class RamoControllerTest {
 
     private Ramo ramo;
 
+    private List<Ramo> ramos;
+
 
 
     @Before
@@ -55,6 +61,13 @@ public class RamoControllerTest {
 
         this.ramo.setNome("Ramo Teste");
         this.ramo.setDescricao("Descrição do ramo teste");
+
+        Ramo ramo2 = new Ramo();
+
+        ramo2.setNome("Ramo Teste 2");
+        ramo2.setDescricao("Descrição do ramo teste 2");
+
+        this.ramos = List.of(this.ramo, ramo2);
     }
 
 
@@ -208,6 +221,89 @@ public class RamoControllerTest {
         try {
 
             ramoController.ler(1);
+
+        } catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals(e.getCause().getMessage(), "erro_inesperado");
+            assertTrue(e.getCause().toString().contains("java.lang.RuntimeException"));
+        }
+
+    }
+
+    /* -------------------------------------------------------------------------- */
+
+
+
+
+
+    /* ---------------------------  LISTAGEM DE RAMOS  -------------------------- */
+
+    @Test
+    public void listarRamosComSucesso() throws Exception {
+
+        when(ramoRepository.findAll(isA(org.springframework.data.domain.Example.class))).thenReturn(ramos);
+        
+        List<ResponseRamo> responseRamos = ramoController.listar(ramo);
+
+        assertNotNull(responseRamos);
+        assertEquals(2, responseRamos.size());
+    }
+
+    @Test
+    public void listarRamosComExcecaoDadosInvalidos() throws Exception {
+
+        try {
+
+            ramoController.listar(null);
+
+        } catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals(e.getCause().getMessage(), "corpo_nulo");
+        }
+
+    }
+
+    @Test
+    public void listarRamosComExcecaoNaoEncontrado() throws Exception {
+
+        when(ramoRepository.findAll(any(org.springframework.data.domain.Example.class))).thenReturn(new ArrayList<Ramo>());
+
+        try {
+
+            ramoController.listar(ramo);
+
+        } catch (ResponseStatusException e) {
+            assertEquals(404, e.getRawStatusCode());
+            assertEquals(e.getCause().getMessage(), "nao_encontrado");
+        }
+
+    }
+
+    @Test
+    public void listarRamosComExcecaoUnsupportedOperation() throws Exception {
+
+        when(ramoRepository.findAll(any(org.springframework.data.domain.Example.class))).thenThrow(new UnsupportedOperationException("erro_inesperado"));
+
+        try {
+
+            ramoController.listar(ramo);
+
+        } catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals(e.getCause().getMessage(), "erro_inesperado");
+            assertTrue(e.getCause().toString().contains("java.lang.UnsupportedOperationException"));
+        }
+
+    }
+
+    @Test
+    public void listarRamosComExcecao() throws Exception {
+
+        when(ramoRepository.findAll(any(org.springframework.data.domain.Example.class))).thenThrow(new RuntimeException("erro_inesperado"));
+
+        try {
+
+            ramoController.listar(ramo);
 
         } catch (ResponseStatusException e) {
             assertEquals(500, e.getRawStatusCode());

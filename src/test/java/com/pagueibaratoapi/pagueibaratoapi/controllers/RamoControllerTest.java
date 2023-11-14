@@ -476,4 +476,155 @@ public class RamoControllerTest {
 
     /* -------------------------------------------------------------------------- */
 
+
+
+
+
+    /* -------------------------  ATUALIZAÇÃO DE RAMOS  ------------------------- */
+
+    @Test
+    public void atualizarRamoComSucesso() throws Exception {
+
+        Ramo requestRamo = new Ramo();
+        requestRamo.setNome("Ramo Teste Atualizado");
+        requestRamo.setDescricao("Descrição do ramo teste atualizado");
+
+        when(ramoRepository.existsByNomeIgnoreCase(anyString())).thenReturn(false);
+
+        when(ramoRepository.save(any())).thenReturn(requestRamo);
+
+        ResponseRamo responseRamo = ramoController.atualizar(1, requestRamo);
+
+        assertNotNull(responseRamo);
+        assertTrue(1 == responseRamo.getId());
+        assertEquals(requestRamo.getNome(), responseRamo.getNome());
+        assertEquals(requestRamo.getDescricao(), responseRamo.getDescricao());
+    }
+
+    @Test
+    public void atualizarRamoComNomeExistente() throws Exception {
+
+        Ramo requestRamo = new Ramo();
+        requestRamo.setNome("Ramo Teste Atualizado");
+        requestRamo.setDescricao("Descrição do ramo teste atualizado");
+
+        when(ramoRepository.existsByNomeIgnoreCase(anyString())).thenReturn(true);
+
+        try {
+
+            ramoController.atualizar(1, requestRamo);
+
+        } catch (ResponseStatusException e) {
+            assertEquals(409, e.getRawStatusCode());
+            assertEquals(e.getCause().getMessage(), "ramo_existente");
+        }
+
+    }
+
+    @Test
+    public void atualizarRamoComExcecaoDadosInvalidos() throws Exception {
+
+        try {
+
+            ramoController.atualizar(1, null);
+
+        } catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals(e.getCause().getMessage(), "corpo_nulo");
+        }
+
+    }
+
+    @Test
+    public void atualizarRamoComExcecaoNoSuchElement() throws Exception {
+
+        Ramo requestRamo = new Ramo();
+        requestRamo.setNome("Ramo Teste Atualizado");
+        requestRamo.setDescricao("Descrição do ramo teste atualizado");
+
+        when(ramoRepository.existsByNomeIgnoreCase(anyString())).thenReturn(false);
+        
+        when(ramoRepository.save(any())).thenThrow(new NoSuchElementException("nao_encontrado"));
+
+        try {
+
+            ramoController.atualizar(1986, requestRamo);
+
+        } catch (ResponseStatusException e) {
+            assertEquals(404, e.getRawStatusCode());
+            assertEquals(e.getCause().getMessage(), "nao_encontrado");
+        }
+
+    }
+
+    @Test
+    public void atualizarRamoComExcecaoDataViolation() throws Exception {
+
+        Ramo requestRamo = new Ramo();
+        requestRamo.setNome("Ramo Teste Atualizado");
+        requestRamo.setDescricao("Descrição do ramo teste atualizado");
+
+        when(ramoRepository.existsByNomeIgnoreCase(anyString())).thenReturn(false);
+
+        when(ramoRepository.save(any())).thenThrow(new DataIntegrityViolationException("erro_insercao"));
+        
+        try {
+
+            ramoController.atualizar(1, requestRamo);
+
+        } catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals(e.getCause().getMessage(), "erro_insercao");
+        }
+
+    }
+
+    @Test
+    public void atualizarRamoComExcecaoIllegalArgument() throws Exception {
+
+        Ramo requestRamo = new Ramo();
+        requestRamo.setNome("Ramo Teste Atualizado");
+        requestRamo.setDescricao("Descrição do ramo teste atualizado");
+
+        when(ramoRepository.existsByNomeIgnoreCase(anyString())).thenReturn(false);
+
+        when(ramoRepository.save(any())).thenThrow(new IllegalArgumentException("erro_inesperado"));
+
+        try {
+
+            ramoController.atualizar(1, requestRamo);
+
+        } catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals(e.getCause().getMessage(), "erro_inesperado");
+            assertTrue(e.getCause().toString().contains("java.lang.IllegalArgumentException"));
+        }
+
+    }
+
+    @Test
+    public void atualizarRamoComExcecaoInesperada() throws Exception {
+
+        Ramo requestRamo = new Ramo();
+        requestRamo.setNome("Ramo Teste Atualizado");
+        requestRamo.setDescricao("Descrição do ramo teste atualizado");
+
+        when(ramoRepository.existsByNomeIgnoreCase(anyString())).thenReturn(false);
+
+        when(ramoRepository.save(any())).thenThrow(new RuntimeException("erro_inesperado"));
+
+        try {
+
+            ramoController.atualizar(2023, requestRamo);
+
+        } catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals(e.getCause().getMessage(), "erro_inesperado");
+            assertTrue(e.getCause().toString().contains("java.lang.RuntimeException"));
+        }
+
+    }
+
+    /* -------------------------------------------------------------------------- */
+
 }

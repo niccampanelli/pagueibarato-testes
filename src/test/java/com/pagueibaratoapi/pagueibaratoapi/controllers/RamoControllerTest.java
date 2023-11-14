@@ -2,11 +2,17 @@ package com.pagueibaratoapi.pagueibaratoapi.controllers;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
+import java.util.NoSuchElementException;
+import java.util.Optional;
+
+import org.checkerframework.checker.nullness.Opt;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -29,6 +35,9 @@ public class RamoControllerTest {
 
     @Mock
     private RamoRepository ramoRepository;
+
+    @Mock
+    private Optional<Ramo> optionalRamo;
 
     private Ramo ramo;
 
@@ -139,6 +148,66 @@ public class RamoControllerTest {
         try {
 
             ramoController.criar(ramo);
+
+        } catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals(e.getCause().getMessage(), "erro_inesperado");
+            assertTrue(e.getCause().toString().contains("java.lang.RuntimeException"));
+        }
+
+    }
+
+    /* -------------------------------------------------------------------------- */
+
+
+
+
+
+    /* ------------------------  LEITURA DE RAMO POR ID  ------------------------ */
+
+    @Test
+    public void lerRamoComSucesso() throws Exception {
+
+        ramo.setId(1);
+
+        when(ramoRepository.findById(anyInt())).thenReturn(optionalRamo);
+        when(optionalRamo.get()).thenReturn(ramo);
+
+        ResponseRamo responseRamo = ramoController.ler(1);
+
+        assertNotNull(responseRamo);
+        assertEquals(ramo.getId(), responseRamo.getId());
+        assertEquals(ramo.getNome(), responseRamo.getNome());
+        assertEquals(ramo.getDescricao(), responseRamo.getDescricao());
+
+    }
+
+    @Test
+    public void lerRamoInexistente() throws Exception {
+
+        ramo.setId(1);
+
+        when(ramoRepository.findById(anyInt())).thenThrow(new NoSuchElementException("nao_encontrado"));
+
+        try {
+
+            ramoController.ler(1986);
+
+        } catch (ResponseStatusException e) {
+            assertEquals(404, e.getRawStatusCode());
+            assertEquals(e.getCause().getMessage(), "nao_encontrado");
+        }
+
+    }
+
+    @Test
+    public void lerRamoComExcecao() throws Exception {
+
+        when(ramoRepository.findById(anyInt())).thenThrow(new RuntimeException("erro_inesperado"));
+
+        try {
+
+            ramoController.ler(1);
 
         } catch (ResponseStatusException e) {
             assertEquals(500, e.getRawStatusCode());

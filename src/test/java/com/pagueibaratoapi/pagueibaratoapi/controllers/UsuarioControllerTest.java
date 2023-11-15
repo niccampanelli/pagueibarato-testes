@@ -2,7 +2,6 @@ package com.pagueibaratoapi.pagueibaratoapi.controllers;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -11,7 +10,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.junit.Before;
@@ -23,8 +21,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.pagueibaratoapi.controllers.UsuarioController;
-import com.pagueibaratoapi.models.exceptions.DadosConflitantesException;
-import com.pagueibaratoapi.models.exceptions.DadosInvalidosException;
 import com.pagueibaratoapi.models.requests.Usuario;
 import com.pagueibaratoapi.models.responses.ResponseUsuario;
 import com.pagueibaratoapi.repository.UsuarioRepository;
@@ -80,7 +76,7 @@ public class UsuarioControllerTest {
         usuario2.setCidade("Cidade Teste 2");
         usuario2.setUf("SP");
         usuario2.setCep("12345-678");
-        usuario2.setSenha("123456UsuarioT3ST3!2");
+        usuario2.setSenha("123456UsuarioT3ST3!");
 
         this.usuarios = List.of(usuario, usuario2);
         
@@ -323,6 +319,157 @@ public class UsuarioControllerTest {
             assertEquals("erro_inesperado", e.getReason());
             assertTrue(e.getCause() instanceof RuntimeException);
         }
+    }
+
+    /* -------------------------------------------------------------------------- */
+
+
+
+
+
+    /* --------------------------  EDIÇÃO DE USUÁRIOS  -------------------------- */
+
+    @Test
+    public void editarUsuarioComSucesso() throws Exception {
+
+        when(usuarioRepository.findByEmail(anyString())).thenReturn(null);
+
+        when(usuarioRepository.findById(anyInt())).thenReturn(optionalUsuario);
+        when(optionalUsuario.get()).thenReturn(usuario);
+        
+        when(usuarioRepository.save(any())).thenReturn(usuarios.get(1));
+
+        usuarios.get(1).setSenha(null);
+
+        ResponseUsuario responseUsuario = usuarioController.editar(1, usuarios.get(1));
+
+        assertEquals(usuarios.get(1).getNome(), responseUsuario.getNome());
+        assertEquals(usuarios.get(1).getEmail(), responseUsuario.getEmail());
+
+    }
+
+    @Test
+    public void editarUsuarioComEmailExistente() throws Exception {
+
+        usuario.setSenha(null);
+
+        when(usuarioRepository.findByEmail(anyString())).thenReturn(usuario);
+
+        try {
+
+            usuarioController.editar(1, usuario);
+
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(409, e.getRawStatusCode());
+            assertEquals("email_em_uso", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void editarUsuarioComDadosInvalidos() throws Exception {
+        
+        usuario.setSenha("123");
+
+        try {
+
+            usuarioController.editar(1, usuario);
+
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("senha_invalido", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void editarUsuarioComExcecaoDataViolation() throws Exception {
+
+        this.usuario.setSenha(null);
+
+        when(usuarioRepository.findByEmail(anyString())).thenReturn(null);
+
+        when(usuarioRepository.findById(anyInt())).thenReturn(optionalUsuario);
+        when(optionalUsuario.get()).thenReturn(usuario);
+        
+        when(usuarioRepository.save(any())).thenThrow(new DataIntegrityViolationException(""));
+
+        try {
+
+            usuarioController.editar(1, usuario);
+
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_insercao", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void editarUsuarioComExcecaoIllegalArgument() throws Exception {
+        
+        usuario.setSenha(null);
+
+        when(usuarioRepository.findByEmail(anyString())).thenReturn(null);
+
+        when(usuarioRepository.findById(anyInt())).thenReturn(optionalUsuario);
+        when(optionalUsuario.get()).thenReturn(usuario);
+        
+        when(usuarioRepository.save(any())).thenThrow(new IllegalArgumentException());
+
+        try {
+
+            usuarioController.editar(1, usuario);
+
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_inesperado", e.getReason());
+            assertTrue(e.getCause().toString().contains("java.lang.IllegalArgumentException"));
+        }
+
+    }
+
+    @Test
+    public void editarUsuarioComExcecaoNoSuchElement() throws Exception {
+
+        usuario.setSenha(null);
+
+        when(usuarioRepository.findById(anyInt())).thenReturn(Optional.empty());
+
+        try {
+
+            usuarioController.editar(1, usuario);
+
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(404, e.getRawStatusCode());
+            assertEquals("nao_encontrado", e.getReason());
+        }
+        
+    }
+
+    @Test
+    public void editarUsuarioComExcecao() throws Exception {
+
+        this.usuario.setSenha(null);
+
+        when(usuarioRepository.findById(anyInt())).thenThrow(new RuntimeException());
+
+        try {
+
+            usuarioController.editar(1, usuario);
+
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_inesperado", e.getReason());
+            assertTrue(e.getCause().toString().contains("RuntimeException"));
+        }
+
     }
 
     /* -------------------------------------------------------------------------- */

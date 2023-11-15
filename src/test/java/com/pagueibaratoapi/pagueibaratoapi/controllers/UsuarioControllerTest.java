@@ -626,7 +626,7 @@ public class UsuarioControllerTest {
 
 
 
-    /* ------------------------  ATUALIZAÇÃO DE USUÁRIOS  ----------------------- */
+    /* --------------------------  DELEÇÃO DE USUÁRIOS  ------------------------- */
 
     @Test
     public void removerUsuarioComSucesso() throws Exception {

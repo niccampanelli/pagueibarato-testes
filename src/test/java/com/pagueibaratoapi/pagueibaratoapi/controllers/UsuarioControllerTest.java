@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -618,6 +620,104 @@ public class UsuarioControllerTest {
 
     }
 
+    /* -------------------------------------------------------------------------- */
+
+
+
+
+
+    /* ------------------------  ATUALIZAÇÃO DE USUÁRIOS  ----------------------- */
+
+    @Test
+    public void removerUsuarioComSucesso() throws Exception {
+
+        when(usuarioRepository.findById(anyInt())).thenReturn(optionalUsuario);
+        when(optionalUsuario.get()).thenReturn(usuario);
+
+        Object response = usuarioController.remover(1);
+
+        assertNotNull(response);
+
+        verify(usuarioRepository).save(any());
+    }
+
+    @Test
+    public void removerUsuarioInexistente() throws Exception {
+
+        usuario.setEmail("");
+
+        when(usuarioRepository.findById(anyInt())).thenReturn(optionalUsuario);
+        when(optionalUsuario.get()).thenReturn(usuario);
+
+        try {
+
+            usuarioController.remover(1);
+
+        } catch (ResponseStatusException e) {
+            assertEquals(404, e.getRawStatusCode());
+            assertEquals("usuario_nao_encontrado", e.getReason());
+        }
+    }
+
+    @Test
+    public void removerUsuarioComExcecaoDataViolation() throws Exception {
+
+        when(usuarioRepository.findById(anyInt())).thenReturn(optionalUsuario);
+        when(optionalUsuario.get()).thenReturn(usuario);
+
+        doThrow(new DataIntegrityViolationException("")).when(usuarioRepository).save(any());
+
+        try {
+
+            usuarioController.remover(1);
+
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_remocao", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void removerUsuarioComExcecaoIllegalArgument() throws Exception {
+
+        when(usuarioRepository.findById(anyInt())).thenReturn(optionalUsuario);
+        when(optionalUsuario.get()).thenReturn(usuario);
+
+        doThrow(new IllegalArgumentException("")).when(usuarioRepository).save(any());
+
+        try {
+
+            usuarioController.remover(1);
+
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_inesperado", e.getReason());
+            assertTrue(e.getCause().toString().contains("java.lang.IllegalArgumentException"));
+        }
+
+    }
+
+    @Test
+    public void removerUsuarioComExcecao() throws Exception {
+
+        when(usuarioRepository.findById(anyInt())).thenThrow(new RuntimeException());
+
+        try {
+
+            usuarioController.remover(1);
+
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_inesperado", e.getReason());
+            assertTrue(e.getCause().toString().contains("RuntimeException"));
+        }
+
+    }
+    
     /* -------------------------------------------------------------------------- */
 
 }

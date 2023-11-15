@@ -474,4 +474,150 @@ public class UsuarioControllerTest {
 
     /* -------------------------------------------------------------------------- */
 
+
+
+
+
+    /* ------------------------  ATUALIZAÇÃO DE USUÁRIOS  ----------------------- */
+
+    @Test
+    public void atualizarUsuarioComSucesso() throws Exception {
+
+        when(usuarioRepository.findByEmail(anyString())).thenReturn(null);
+
+        when(usuarioRepository.findById(anyInt())).thenReturn(optionalUsuario);
+        when(optionalUsuario.get()).thenReturn(usuario);
+
+        when(usuarioRepository.save(any())).thenReturn(usuario);
+
+        ResponseUsuario responseUsuario = usuarioController.atualizar(1, usuario);
+
+        assertEquals(usuario.getNome(), responseUsuario.getNome());
+        assertEquals(usuario.getEmail(), responseUsuario.getEmail());
+
+    }
+
+    @Test
+    public void atualizarUsuarioComEmailExistente() throws Exception {
+
+        when(usuarioRepository.findByEmail(anyString())).thenReturn(usuario);
+
+        try {
+
+            usuarioController.atualizar(1, usuario);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(409, e.getRawStatusCode());
+            assertEquals("email_em_uso", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void atualizarUsuarioComExcecaoNoSuchElement() throws Exception {
+
+        this.usuario.setEmail("");
+
+        when(usuarioRepository.findByEmail(anyString())).thenReturn(null);
+
+        when(usuarioRepository.findById(anyInt())).thenReturn(optionalUsuario);
+        when(optionalUsuario.get()).thenReturn(this.usuario);
+
+        try {
+
+            usuarioController.atualizar(1, this.usuarios.get(1));
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(404, e.getRawStatusCode());
+            assertEquals("usuario_nao_encontrado", e.getReason());
+        }
+    }
+
+    @Test
+    public void atualizarUsuarioComDadosInvalidos() throws Exception {
+
+        usuario.setSenha("123456");
+
+        try {
+
+            usuarioController.atualizar(1, usuario);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("senha_invalido", e.getReason());
+        }
+    }
+
+    @Test
+    public void atualizarUsuarioComExcecaoDataViolation() throws Exception {
+
+        when(usuarioRepository.findByEmail(anyString())).thenReturn(null);
+
+        when(usuarioRepository.findById(anyInt())).thenReturn(optionalUsuario);
+        when(optionalUsuario.get()).thenReturn(usuario);
+
+        when(usuarioRepository.save(any())).thenThrow(new DataIntegrityViolationException(""));
+
+        try {
+
+            usuarioController.atualizar(1, usuario);
+
+        } catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_insercao", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void atualizarUsuarioComExcecaoIllegalArgument() throws Exception {
+
+        when(usuarioRepository.findByEmail(anyString())).thenReturn(null);
+
+        when(usuarioRepository.findById(anyInt())).thenReturn(optionalUsuario);
+        when(optionalUsuario.get()).thenReturn(usuario);
+
+        when(usuarioRepository.save(any())).thenThrow(new IllegalArgumentException(""));
+
+        try {
+
+            usuarioController.atualizar(1, usuario);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_inesperado", e.getReason());
+            assertTrue(e.getCause().toString().contains("java.lang.IllegalArgumentException"));
+        }
+
+    }
+
+    @Test
+    public void atualizarUsuarioComExcecao() throws Exception {
+
+        when(usuarioRepository.findByEmail(anyString())).thenReturn(null);
+
+        when(usuarioRepository.findById(anyInt())).thenReturn(optionalUsuario);
+        when(optionalUsuario.get()).thenReturn(usuario);
+
+        when(usuarioRepository.save(any())).thenThrow(new RuntimeException());
+
+        try {
+
+            usuarioController.atualizar(1, usuario);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_inesperado", e.getReason());
+            assertTrue(e.getCause().toString().contains("RuntimeException"));
+        }
+
+    }
+
+    /* -------------------------------------------------------------------------- */
+
 }

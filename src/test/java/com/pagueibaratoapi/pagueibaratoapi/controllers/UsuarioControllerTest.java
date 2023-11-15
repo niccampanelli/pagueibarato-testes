@@ -1,6 +1,7 @@
 package com.pagueibaratoapi.pagueibaratoapi.controllers;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -8,6 +9,8 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -20,6 +23,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.pagueibaratoapi.controllers.UsuarioController;
+import com.pagueibaratoapi.models.exceptions.DadosConflitantesException;
+import com.pagueibaratoapi.models.exceptions.DadosInvalidosException;
 import com.pagueibaratoapi.models.requests.Usuario;
 import com.pagueibaratoapi.models.responses.ResponseUsuario;
 import com.pagueibaratoapi.repository.UsuarioRepository;
@@ -39,7 +44,7 @@ public class UsuarioControllerTest {
 
     private Usuario usuario;
 
-    // private List<Usuario> usuarios;
+    private List<Usuario> usuarios;
 
 
 
@@ -64,7 +69,21 @@ public class UsuarioControllerTest {
         usuario.setCep("12345-678");
         usuario.setSenha("123456UsuarioT3ST3!");
 
+        Usuario usuario2 = new Usuario();
 
+        usuario2.setNome("Usuário Teste 2");
+        usuario2.setEmail("ciclano@email.com");
+        usuario2.setLogradouro("Rua Teste 2");
+        usuario2.setNumero(456);
+        usuario2.setComplemento("Casa 2");
+        usuario2.setBairro("Bairro Teste 2");
+        usuario2.setCidade("Cidade Teste 2");
+        usuario2.setUf("SP");
+        usuario2.setCep("12345-678");
+        usuario2.setSenha("123456UsuarioT3ST3!2");
+
+        this.usuarios = List.of(usuario, usuario2);
+        
     }
 
 
@@ -229,6 +248,81 @@ public class UsuarioControllerTest {
             assertTrue(e.getCause().toString().contains("RuntimeException"));
         }
 
+    }
+
+    /* -------------------------------------------------------------------------- */
+
+
+
+
+
+    /* --------------------------  LISTAGEM DE USUÁRIOS ------------------------- */
+
+    @Test
+    public void listarComSucesso() {
+
+        when(usuarioRepository.findAll()).thenReturn(usuarios);
+        
+        List<ResponseUsuario> responseUsuarios = usuarioController.listar();
+
+        assertNotNull(responseUsuarios);
+        assertEquals(usuarios.get(0).getNome(), responseUsuarios.get(0).getNome());
+        assertEquals(usuarios.get(0).getEmail(), responseUsuarios.get(0).getEmail());
+        assertEquals(usuarios.get(1).getNome(), responseUsuarios.get(1).getNome());
+        assertEquals("ciclano@email.com", responseUsuarios.get(1).getEmail());
+
+    }
+
+    @Test
+    public void listarComExcecaoNullPointer() {
+
+        when(usuarioRepository.findAll()).thenReturn(new ArrayList<>());
+
+        try {
+
+            usuarioController.listar();
+
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(404, e.getRawStatusCode());
+            assertEquals("nao_encontrado", e.getReason());
+        }
+        
+    }
+
+    @Test
+    public void listarComExcecaoUnsupportedOperation() {
+
+        when(usuarioRepository.findAll()).thenThrow(new UnsupportedOperationException());
+
+        try {
+
+            usuarioController.listar();
+
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_inesperado", e.getReason());
+            assertTrue(e.getCause().toString().contains("UnsupportedOperationException"));
+        }
+
+    }
+
+    @Test
+    public void listarComExcecao() {
+
+        when(usuarioRepository.findAll()).thenThrow(new RuntimeException());
+
+        try {
+
+            usuarioController.listar();
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_inesperado", e.getReason());
+            assertTrue(e.getCause() instanceof RuntimeException);
+        }
     }
 
     /* -------------------------------------------------------------------------- */

@@ -109,6 +109,20 @@ public class ProdutoControllerTest {
     public void criarProdutoComExcecaoDadosInvalidos() {
 
         Produto requestProduto = new Produto();
+        requestProduto.setId(anyInt());
+
+        try {
+            produtoController.criar(requestProduto);
+        } catch (ResponseStatusException e) {
+            System.out.println(e.getStatus());
+            assertTrue(e.getStatus().toString().equals(HttpStatus.BAD_REQUEST.toString()));
+        }
+    }
+
+    @Test
+    public void criarProdutoComUsuarioInvalido() {
+
+        Produto requestProduto = new Produto();
         requestProduto.setNome("Produto Teste");
         requestProduto.setMarca("Marca Teste");
         requestProduto.setCor("Cor Teste");
@@ -117,6 +131,34 @@ public class ProdutoControllerTest {
         requestProduto.setCriadoPor(1);
 
         when(usuarioRepository.existsById(anyInt())).thenReturn(false);
+
+        try {
+            produtoController.criar(requestProduto);
+        } catch (ResponseStatusException e) {
+            System.out.println(e.getStatus());
+            assertTrue(e.getStatus().toString().equals(HttpStatus.BAD_REQUEST.toString()));
+        }
+    }
+
+    @Test
+    public void criarProdutoComCategoriaInvalida() {
+
+        Produto requestProduto = new Produto();
+        requestProduto.setNome("Produto Teste");
+        requestProduto.setMarca("Marca Teste");
+        requestProduto.setCor("Cor Teste");
+        requestProduto.setTamanho("Tamanho Teste");
+        requestProduto.setCategoriaId(1);
+        requestProduto.setCriadoPor(1);
+
+        Usuario usuario = new Usuario();
+        usuario.setId(1);
+        usuario.setNome("Usuario Teste");
+        usuario.setEmail("teste@email.com");
+
+        when(usuarioRepository.existsById(anyInt())).thenReturn(true);
+
+        when(categoriaRepository.existsById(anyInt())).thenReturn(false);
 
         try {
             produtoController.criar(requestProduto);
@@ -586,6 +628,45 @@ public class ProdutoControllerTest {
     }
 
     @Test
+    public void editarProdutoComCategoriaInvalida() {
+
+        Produto requestProduto = new Produto();
+        requestProduto.setNome("Produto Teste");
+        requestProduto.setMarca("Marca Teste");
+        requestProduto.setCor("Cor Teste");
+        requestProduto.setTamanho("Tamanho Teste");
+        requestProduto.setCategoriaId(1);
+        requestProduto.setCriadoPor(1);
+
+        when(produtoRepository.findByCaracteristicas(
+                requestProduto.getNome(),
+                requestProduto.getMarca(),
+                requestProduto.getTamanho(),
+                requestProduto.getCor()))
+                .thenReturn(null);
+
+        Produto produtoAtual = new Produto();
+        produtoAtual.setId(1);
+        produtoAtual.setNome("Produto Teste");
+        produtoAtual.setMarca("Marca Teste");
+        produtoAtual.setCor("Cor Teste");
+        produtoAtual.setTamanho("Tamanho Teste");
+        produtoAtual.setCategoriaId(1);
+
+        when(produtoRepository.findById(anyInt())).thenReturn(optionalProduto);
+        when(optionalProduto.get()).thenReturn(produtoAtual);
+
+        when(categoriaRepository.existsById(anyInt())).thenReturn(false);
+
+        try {
+            produtoController.editar(1, requestProduto);
+        } catch (ResponseStatusException e) {
+            System.out.println(e.getStatus());
+            assertTrue(e.getStatus().toString().equals(HttpStatus.BAD_REQUEST.toString()));
+        }
+    }
+
+    @Test
     public void editarProdutoComExcecaoDataIntegrityViolation() {
 
         Produto requestProduto = new Produto();
@@ -737,6 +818,50 @@ public class ProdutoControllerTest {
 
         try {
             produtoController.atualizar(1, new Produto());
+        } catch (ResponseStatusException e) {
+            System.out.println(e.getStatus());
+            assertTrue(e.getStatus().toString().equals(HttpStatus.BAD_REQUEST.toString()));
+        }
+    }
+
+    @Test
+    public void atualizarProdutoComUsuarioInvalido() {
+
+        Produto requestProduto = new Produto();
+        requestProduto.setNome("Produto Teste Atualizado");
+        requestProduto.setMarca("Marca Teste Atualizado");
+        requestProduto.setCor("Cor Teste Atualizado");
+        requestProduto.setTamanho("Tamanho");
+        requestProduto.setCategoriaId(1);
+        requestProduto.setCriadoPor(1);
+
+        when(usuarioRepository.existsById(anyInt())).thenReturn(false);
+
+        try {
+            produtoController.atualizar(1, requestProduto);
+        } catch (ResponseStatusException e) {
+            System.out.println(e.getStatus());
+            assertTrue(e.getStatus().toString().equals(HttpStatus.BAD_REQUEST.toString()));
+        }
+    }
+
+    @Test
+    public void atualizarProdutoComCategoriaInvalida() {
+
+        Produto requestProduto = new Produto();
+        requestProduto.setNome("Produto Teste Atualizado");
+        requestProduto.setMarca("Marca Teste Atualizado");
+        requestProduto.setCor("Cor Teste Atualizado");
+        requestProduto.setTamanho("Tamanho");
+        requestProduto.setCategoriaId(1);
+        requestProduto.setCriadoPor(1);
+
+        when(usuarioRepository.existsById(anyInt())).thenReturn(true);
+
+        when(categoriaRepository.existsById(anyInt())).thenReturn(false);
+
+        try {
+            produtoController.atualizar(1, requestProduto);
         } catch (ResponseStatusException e) {
             System.out.println(e.getStatus());
             assertTrue(e.getStatus().toString().equals(HttpStatus.BAD_REQUEST.toString()));

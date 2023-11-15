@@ -1,11 +1,14 @@
 package com.pagueibaratoapi.pagueibaratoapi.controllers;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.junit.Before;
@@ -156,6 +159,68 @@ public class UsuarioControllerTest {
         try {
 
             usuarioController.criar(usuario);
+
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_inesperado", e.getReason());
+            assertTrue(e.getCause().toString().contains("RuntimeException"));
+        }
+
+    }
+
+    /* -------------------------------------------------------------------------- */
+
+
+
+
+
+    /* -----------------------  LEITURA DE USUÁRIO POR ID ----------------------- */
+
+    @Test
+    public void lerUsuarioComSucesso() throws Exception {
+
+        usuario.setId(1);
+
+        when(usuarioRepository.findById(anyInt())).thenReturn(optionalUsuario);
+        when(optionalUsuario.get()).thenReturn(usuario);
+
+        ResponseUsuario responseUsuario = usuarioController.ler(1);
+
+        assertEquals(usuario.getId(), responseUsuario.getId());
+        assertEquals(usuario.getNome(), responseUsuario.getNome());
+        assertEquals(usuario.getEmail(), responseUsuario.getEmail());
+
+    }
+
+    @Test
+    public void lerUsuarioInexistente() throws Exception {
+
+        usuario.setEmail("");
+
+        when(usuarioRepository.findById(anyInt())).thenReturn(optionalUsuario);
+        when(optionalUsuario.get()).thenReturn(usuario);
+
+        try {
+
+            usuarioController.ler(1);
+
+        } 
+        catch (ResponseStatusException e) {
+            assertEquals(404, e.getRawStatusCode());
+            assertEquals("usuario_nao_encontrado", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void lerUsuarioComExcecao() throws Exception {
+
+        when(usuarioRepository.findById(anyInt())).thenThrow(new RuntimeException());
+
+        try {
+
+            usuarioController.ler(1);
 
         } 
         catch (ResponseStatusException e) {

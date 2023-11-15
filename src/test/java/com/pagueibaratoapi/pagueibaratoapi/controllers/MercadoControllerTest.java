@@ -518,6 +518,7 @@ public class MercadoControllerTest {
         catch (ResponseStatusException e) {
             assertEquals(500, e.getRawStatusCode());
             assertEquals("erro_inesperado", e.getReason());
+            assertTrue(e.getCause().toString().contains("UnsupportedOperationException"));
         }
 
     }
@@ -535,6 +536,7 @@ public class MercadoControllerTest {
         catch (ResponseStatusException e) {
             assertEquals(500, e.getRawStatusCode());
             assertEquals("erro_inesperado", e.getReason());
+            assertTrue(e.getCause().toString().contains("RuntimeException"));
         }
     }
 

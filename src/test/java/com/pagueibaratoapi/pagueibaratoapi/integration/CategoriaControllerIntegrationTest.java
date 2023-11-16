@@ -203,6 +203,56 @@ public class CategoriaControllerIntegrationTest extends PagueibaratoapiApplicati
 
     /* -------------------------------------------------------------------------- */
 
+
+
+
+
+    /* ----------------------  LEITURA DE CATEGORIA POR ID  --------------------- */
+
+    @Test
+    public void lerCategoriaPorIdComSucesso() throws Exception {
+
+        Categoria categoriaCriada = categoriaRepository.save(categoria);
+
+        ResponseCategoria responseCategoria = categoriaController.ler(categoriaCriada.getId());
+
+        categoriaRepository.delete(categoriaCriada);
+
+        assertTrue(categoria.getNome().equals(responseCategoria.getNome()));
+
+    }
+
+    @Test
+    public void lerCategoriaPorComExcecaoNoSuchElement() throws Exception {
+
+        try {
+
+            categoriaController.ler(1);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(404, e.getRawStatusCode());
+            assertEquals("nao_encontrado", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void lerCategoriaPorIdComExcecao() throws Exception {
+
+        try {
+
+            categoriaController.ler(null);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+        }
+
+    }
+
+    /* -------------------------------------------------------------------------- */
+
     // @Test
     // public void listarCategorias() throws Exception {
 

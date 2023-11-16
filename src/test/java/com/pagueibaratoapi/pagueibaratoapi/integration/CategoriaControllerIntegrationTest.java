@@ -253,18 +253,30 @@ public class CategoriaControllerIntegrationTest extends PagueibaratoapiApplicati
 
     /* -------------------------------------------------------------------------- */
 
-    // @Test
-    // public void listarCategorias() throws Exception {
 
-    //     List<ResponseCategoria> responseCategoria = categoriaController.listar();
 
-    //     System.out.println("TESTE:::::::::::: " + responseCategoria.get(0).getNome());
-    //     System.out.println("TESTE:::::::::::: " + responseCategoria.size());
 
-    //     // this.mockMvc.perform(MockMvcRequestBuilders.get("/categoria"))
-    //     //             .andDo(MockMvcResultHandlers.print())
-    //     //             .andExpect(MockMvcResultMatchers.status().isOk());
 
-    // }
+    /* ----------------------  LEITURA DE CATEGORIA POR ID  --------------------- */
+
+    @Test
+    public void listarCategoriasComSucesso() throws Exception {
+
+        Categoria categoriaCriada = categoriaRepository.save(categoria);
+
+        List<ResponseCategoria> responseCategoria = categoriaController.listar();
+
+        categoriaRepository.delete(categoriaCriada);
+
+        assertTrue(categoria.getNome().equals(responseCategoria.get(0).getNome()));
+        assertTrue(responseCategoria.size() == 1);
+
+        // this.mockMvc.perform(MockMvcRequestBuilders.get("/categoria"))
+        //             .andDo(MockMvcResultHandlers.print())
+        //             .andExpect(MockMvcResultMatchers.status().isOk());
+
+    }
+
+    /* -------------------------------------------------------------------------- */
 
 }

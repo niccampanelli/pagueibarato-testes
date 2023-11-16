@@ -16,27 +16,6 @@ import com.pagueibaratoapi.repository.UsuarioRepository;
 @SpringBootTest(classes = PagueiBaratoApiApplication.class)
 public class PagueibaratoapiApplicationTests {
 
-	@Autowired
-	protected CategoriaRepository categoriaRepository;
-
-	@Autowired
-	protected EstoqueRepository estoqueRepository;
-
-	@Autowired
-	protected MercadoRepository mercadoRepository;
-
-	@Autowired
-	protected ProdutoRepository produtoRepository;
-
-	@Autowired
-	protected RamoRepository ramoRepository;
-
-	@Autowired
-	protected SugestaoRepository sugestaoRepository;
-
-	@Autowired
-	protected UsuarioRepository usuarioRepository;
-
 	@Test
 	void contextLoads() {
 	}

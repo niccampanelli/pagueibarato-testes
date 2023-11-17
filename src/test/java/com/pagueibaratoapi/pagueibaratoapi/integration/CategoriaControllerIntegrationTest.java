@@ -2,17 +2,13 @@ package com.pagueibaratoapi.pagueibaratoapi.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -432,6 +428,154 @@ public class CategoriaControllerIntegrationTest extends PagueibaratoapiApplicati
         catch (ResponseStatusException e) {
             assertEquals(404, e.getRawStatusCode());
             assertEquals("nao_encontrado", e.getReason());
+        }
+
+    }
+
+    /* -------------------------------------------------------------------------- */
+
+
+
+
+
+    /* -----------------------  ATUALIZAÇÃO DE CATEGORIAS  ---------------------- */
+
+    @Test
+    public void atualizarCategoriaComSucesso() throws Exception {
+
+        Categoria categoriaCriada = categoriaRepository.save(categoria);
+
+        Categoria categoriaAtualizada = new Categoria();
+
+        categoriaAtualizada.setNome("Perfumaria e Higiene");
+        categoriaAtualizada.setDescricao("Perfumes, sabonetes, shampoos, beleza, etc.");
+
+        ResponseCategoria responseCategoria = categoriaController.atualizar(categoriaCriada.getId(), 
+                                                                            categoriaAtualizada);
+
+        categoriaRepository.delete(categoriaCriada);
+
+        assertTrue(categoriaCriada.getId().equals(responseCategoria.getId()));
+        assertTrue(categoriaAtualizada.getNome().equals(responseCategoria.getNome()));
+        assertTrue(categoriaAtualizada.getDescricao().equals(responseCategoria.getDescricao()));
+
+    }
+
+    @Test
+    public void atualizarCategoriaComNomeExistente() throws Exception {
+
+        Categoria categoriaCriada = categoriaRepository.save(categoria);
+        
+        Categoria categoriaExistenteCriada = categoriaRepository.save(categoriaExistente);
+
+        Categoria categoriaAtualizada = new Categoria();
+
+        categoriaAtualizada.setNome(categoriaExistenteCriada.getNome());
+        categoriaAtualizada.setDescricao("Perfumes, sabonetes, shampoos, beleza, etc.");
+
+        try {
+
+            categoriaController.atualizar(categoriaCriada.getId(), categoriaAtualizada);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(409, e.getRawStatusCode());
+            assertEquals("nome_existente", e.getReason());
+        }
+        finally {
+            categoriaRepository.delete(categoriaCriada);
+            categoriaRepository.delete(categoriaExistenteCriada);
+        }
+
+    }
+
+    @Test
+    public void atualizarCategoriaComIdFornecido() throws Exception {
+
+        Categoria categoriaAtualizada = new Categoria();
+
+        categoriaAtualizada.setId(1);
+        categoriaAtualizada.setNome("Perfumaria, Higiene e Beleza");
+        categoriaAtualizada.setDescricao("Perfumes, sabonetes, shampoos, beleza, etc.");
+
+        try {
+
+            categoriaController.atualizar(1, categoriaAtualizada);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("id_fornecido", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void atualizarCategoriaComNomeInvalido() throws Exception {
+
+        Categoria categoriaCriada = categoriaRepository.save(categoria);
+
+        Categoria categoriaAtualizada = new Categoria();
+
+        categoriaAtualizada.setNome("");
+        categoriaAtualizada.setDescricao("Perfumes, sabonetes, shampoos, beleza, etc.");
+
+        try {
+
+            categoriaController.atualizar(categoriaCriada.getId(), categoriaAtualizada);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("nome_invalido", e.getReason());
+        }
+        finally {
+            categoriaRepository.delete(categoriaCriada);
+        }
+
+    }
+
+    @Test
+    public void atualizarCategoriaComDescricaoInvalida() throws Exception {
+
+        Categoria categoriaCriada = categoriaRepository.save(categoria);
+
+        Categoria categoriaAtualizada = new Categoria();
+
+        categoriaAtualizada.setNome("Perfumaria, Higiene e Beleza");
+        categoriaAtualizada.setDescricao("");
+
+        try {
+
+            categoriaController.atualizar(categoriaCriada.getId(), categoriaAtualizada);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("descricao_invalido", e.getReason());
+        }
+        finally {
+            categoriaRepository.delete(categoriaCriada);
+        }
+
+    }
+
+    @Test
+    public void atualizarCategoriaComExcecao() throws Exception {
+
+        Categoria categoriaCriada = categoriaRepository.save(categoria);
+
+        try {
+
+            categoriaController.atualizar(categoriaCriada.getId(), null);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_inesperado", e.getReason());
+        }
+        finally {
+            categoriaRepository.delete(categoriaCriada);
         }
 
     }

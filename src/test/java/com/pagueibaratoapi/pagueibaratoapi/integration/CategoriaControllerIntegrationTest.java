@@ -257,7 +257,7 @@ public class CategoriaControllerIntegrationTest extends PagueibaratoapiApplicati
 
 
 
-    /* ----------------------  LEITURA DE CATEGORIA POR ID  --------------------- */
+    /* ------------------------  LISTAGEM DE CATEGORIAS  ------------------------ */
 
     @Test
     public void listarCategoriasComSucesso() throws Exception {
@@ -274,6 +274,165 @@ public class CategoriaControllerIntegrationTest extends PagueibaratoapiApplicati
         // this.mockMvc.perform(MockMvcRequestBuilders.get("/categoria"))
         //             .andDo(MockMvcResultHandlers.print())
         //             .andExpect(MockMvcResultMatchers.status().isOk());
+
+    }
+
+    /* -------------------------------------------------------------------------- */
+
+
+
+
+
+    /* -------------------------  EDIÇÃO DE CATEGORIAS  ------------------------- */
+
+    @Test
+    public void editarCategoriaComSucesso() throws Exception {
+
+        Categoria categoriaCriada = categoriaRepository.save(categoria);
+
+
+        Categoria categoriaEditada = new Categoria();
+
+        categoriaEditada.setNome("Perfumaria e Higiene");
+
+
+        ResponseCategoria responseCategoria = categoriaController.editar(categoriaCriada.getId(), categoriaEditada);
+
+        categoriaRepository.delete(categoriaCriada);
+
+
+        assertTrue(categoriaEditada.getNome().equals(responseCategoria.getNome()));
+        assertTrue(categoria.getDescricao().equals(responseCategoria.getDescricao()));
+
+    }
+
+    @Test
+    public void editarCategoriaComNomeExistente() throws Exception {
+
+        Categoria categoriaCriada = categoriaRepository.save(categoria);
+        
+        Categoria categoriaExistenteCriada = categoriaRepository.save(categoriaExistente);
+
+        Categoria categoriaEditada = new Categoria();
+
+        categoriaEditada.setNome(categoriaExistenteCriada.getNome());
+
+        try {
+
+            categoriaController.editar(categoriaCriada.getId(), categoriaEditada);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(409, e.getRawStatusCode());
+            assertEquals("nome_existente", e.getReason());
+        }
+        finally {
+            categoriaRepository.delete(categoriaCriada);
+            categoriaRepository.delete(categoriaExistenteCriada);
+        }
+
+    }
+
+    @Test
+    public void editarCategoriaComCorpoNulo() throws Exception {
+
+        Categoria categoriaCriada = categoriaRepository.save(categoria);
+
+        try {
+
+            categoriaController.editar(categoriaCriada.getId(), null);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("corpo_nulo", e.getReason());
+        }
+        finally {
+            categoriaRepository.delete(categoriaCriada);
+        }
+
+    }
+
+    @Test
+    public void editarCategoriaComIdFornecido() throws Exception {
+
+        Categoria categoriaCriada = categoriaRepository.save(categoria);
+
+        try {
+
+            categoriaController.editar(categoriaCriada.getId(), categoriaCriada);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("id_fornecido", e.getReason());
+        }
+        finally {
+            categoriaRepository.delete(categoriaCriada);
+        }
+
+    }
+
+    @Test
+    public void editarCategoriaComNomeInvalido() throws Exception {
+
+        Categoria categoriaCriada = categoriaRepository.save(categoria);
+
+        Categoria categoriaEditada = new Categoria();
+
+        categoriaEditada.setNome("");
+
+        try {
+
+            categoriaController.editar(categoriaCriada.getId(), categoriaEditada);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("nome_invalido", e.getReason());
+        }
+        finally {
+            categoriaRepository.delete(categoriaCriada);
+        }
+
+    }
+
+    @Test
+    public void editarCategoriaComDescricaoInvalida() throws Exception {
+
+        Categoria categoriaCriada = categoriaRepository.save(categoria);
+
+        Categoria categoriaEditada = new Categoria();
+
+        categoriaEditada.setDescricao("");
+
+        try {
+
+            categoriaController.editar(categoriaCriada.getId(), categoriaEditada);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("descricao_invalido", e.getReason());
+        }
+        finally {
+            categoriaRepository.delete(categoriaCriada);
+        }
+
+    }
+
+    @Test
+    public void editarCategoriaComExcecaoNoSuchElement() throws Exception {
+
+        try {
+
+            categoriaController.editar(2023, categoria);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(404, e.getRawStatusCode());
+            assertEquals("nao_encontrado", e.getReason());
+        }
 
     }
 

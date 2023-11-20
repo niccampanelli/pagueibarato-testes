@@ -2,17 +2,13 @@ package com.pagueibaratoapi.pagueibaratoapi.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -257,7 +253,7 @@ public class CategoriaControllerIntegrationTest extends PagueibaratoapiApplicati
 
 
 
-    /* ----------------------  LEITURA DE CATEGORIA POR ID  --------------------- */
+    /* ------------------------  LISTAGEM DE CATEGORIAS  ------------------------ */
 
     @Test
     public void listarCategoriasComSucesso() throws Exception {
@@ -274,6 +270,346 @@ public class CategoriaControllerIntegrationTest extends PagueibaratoapiApplicati
         // this.mockMvc.perform(MockMvcRequestBuilders.get("/categoria"))
         //             .andDo(MockMvcResultHandlers.print())
         //             .andExpect(MockMvcResultMatchers.status().isOk());
+
+    }
+
+    /* -------------------------------------------------------------------------- */
+
+
+
+
+
+    /* -------------------------  EDIÇÃO DE CATEGORIAS  ------------------------- */
+
+    @Test
+    public void editarCategoriaComSucesso() throws Exception {
+
+        Categoria categoriaCriada = categoriaRepository.save(categoria);
+
+
+        Categoria categoriaEditada = new Categoria();
+
+        categoriaEditada.setNome("Perfumaria e Higiene");
+
+
+        ResponseCategoria responseCategoria = categoriaController.editar(categoriaCriada.getId(), categoriaEditada);
+
+        categoriaRepository.delete(categoriaCriada);
+
+
+        assertTrue(categoriaEditada.getNome().equals(responseCategoria.getNome()));
+        assertTrue(categoria.getDescricao().equals(responseCategoria.getDescricao()));
+
+    }
+
+    @Test
+    public void editarCategoriaComNomeExistente() throws Exception {
+
+        Categoria categoriaCriada = categoriaRepository.save(categoria);
+        
+        Categoria categoriaExistenteCriada = categoriaRepository.save(categoriaExistente);
+
+        Categoria categoriaEditada = new Categoria();
+
+        categoriaEditada.setNome(categoriaExistenteCriada.getNome());
+
+        try {
+
+            categoriaController.editar(categoriaCriada.getId(), categoriaEditada);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(409, e.getRawStatusCode());
+            assertEquals("nome_existente", e.getReason());
+        }
+        finally {
+            categoriaRepository.delete(categoriaCriada);
+            categoriaRepository.delete(categoriaExistenteCriada);
+        }
+
+    }
+
+    @Test
+    public void editarCategoriaComCorpoNulo() throws Exception {
+
+        Categoria categoriaCriada = categoriaRepository.save(categoria);
+
+        try {
+
+            categoriaController.editar(categoriaCriada.getId(), null);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("corpo_nulo", e.getReason());
+        }
+        finally {
+            categoriaRepository.delete(categoriaCriada);
+        }
+
+    }
+
+    @Test
+    public void editarCategoriaComIdFornecido() throws Exception {
+
+        Categoria categoriaCriada = categoriaRepository.save(categoria);
+
+        try {
+
+            categoriaController.editar(categoriaCriada.getId(), categoriaCriada);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("id_fornecido", e.getReason());
+        }
+        finally {
+            categoriaRepository.delete(categoriaCriada);
+        }
+
+    }
+
+    @Test
+    public void editarCategoriaComNomeInvalido() throws Exception {
+
+        Categoria categoriaCriada = categoriaRepository.save(categoria);
+
+        Categoria categoriaEditada = new Categoria();
+
+        categoriaEditada.setNome("");
+
+        try {
+
+            categoriaController.editar(categoriaCriada.getId(), categoriaEditada);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("nome_invalido", e.getReason());
+        }
+        finally {
+            categoriaRepository.delete(categoriaCriada);
+        }
+
+    }
+
+    @Test
+    public void editarCategoriaComDescricaoInvalida() throws Exception {
+
+        Categoria categoriaCriada = categoriaRepository.save(categoria);
+
+        Categoria categoriaEditada = new Categoria();
+
+        categoriaEditada.setDescricao("");
+
+        try {
+
+            categoriaController.editar(categoriaCriada.getId(), categoriaEditada);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("descricao_invalido", e.getReason());
+        }
+        finally {
+            categoriaRepository.delete(categoriaCriada);
+        }
+
+    }
+
+    @Test
+    public void editarCategoriaComExcecaoNoSuchElement() throws Exception {
+
+        try {
+
+            categoriaController.editar(2023, categoria);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(404, e.getRawStatusCode());
+            assertEquals("nao_encontrado", e.getReason());
+        }
+
+    }
+
+    /* -------------------------------------------------------------------------- */
+
+
+
+
+
+    /* -----------------------  ATUALIZAÇÃO DE CATEGORIAS  ---------------------- */
+
+    @Test
+    public void atualizarCategoriaComSucesso() throws Exception {
+
+        Categoria categoriaCriada = categoriaRepository.save(categoria);
+
+        Categoria categoriaAtualizada = new Categoria();
+
+        categoriaAtualizada.setNome("Perfumaria e Higiene");
+        categoriaAtualizada.setDescricao("Perfumes, sabonetes, shampoos, beleza, etc.");
+
+        ResponseCategoria responseCategoria = categoriaController.atualizar(categoriaCriada.getId(), 
+                                                                            categoriaAtualizada);
+
+        categoriaRepository.delete(categoriaCriada);
+
+        assertTrue(categoriaCriada.getId().equals(responseCategoria.getId()));
+        assertTrue(categoriaAtualizada.getNome().equals(responseCategoria.getNome()));
+        assertTrue(categoriaAtualizada.getDescricao().equals(responseCategoria.getDescricao()));
+
+    }
+
+    @Test
+    public void atualizarCategoriaComNomeExistente() throws Exception {
+
+        Categoria categoriaCriada = categoriaRepository.save(categoria);
+        
+        Categoria categoriaExistenteCriada = categoriaRepository.save(categoriaExistente);
+
+        Categoria categoriaAtualizada = new Categoria();
+
+        categoriaAtualizada.setNome(categoriaExistenteCriada.getNome());
+        categoriaAtualizada.setDescricao("Perfumes, sabonetes, shampoos, beleza, etc.");
+
+        try {
+
+            categoriaController.atualizar(categoriaCriada.getId(), categoriaAtualizada);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(409, e.getRawStatusCode());
+            assertEquals("nome_existente", e.getReason());
+        }
+        finally {
+            categoriaRepository.delete(categoriaCriada);
+            categoriaRepository.delete(categoriaExistenteCriada);
+        }
+
+    }
+
+    @Test
+    public void atualizarCategoriaComIdFornecido() throws Exception {
+
+        Categoria categoriaAtualizada = new Categoria();
+
+        categoriaAtualizada.setId(1);
+        categoriaAtualizada.setNome("Perfumaria, Higiene e Beleza");
+        categoriaAtualizada.setDescricao("Perfumes, sabonetes, shampoos, beleza, etc.");
+
+        try {
+
+            categoriaController.atualizar(1, categoriaAtualizada);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("id_fornecido", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void atualizarCategoriaComNomeInvalido() throws Exception {
+
+        Categoria categoriaCriada = categoriaRepository.save(categoria);
+
+        Categoria categoriaAtualizada = new Categoria();
+
+        categoriaAtualizada.setNome("");
+        categoriaAtualizada.setDescricao("Perfumes, sabonetes, shampoos, beleza, etc.");
+
+        try {
+
+            categoriaController.atualizar(categoriaCriada.getId(), categoriaAtualizada);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("nome_invalido", e.getReason());
+        }
+        finally {
+            categoriaRepository.delete(categoriaCriada);
+        }
+
+    }
+
+    @Test
+    public void atualizarCategoriaComDescricaoInvalida() throws Exception {
+
+        Categoria categoriaCriada = categoriaRepository.save(categoria);
+
+        Categoria categoriaAtualizada = new Categoria();
+
+        categoriaAtualizada.setNome("Perfumaria, Higiene e Beleza");
+        categoriaAtualizada.setDescricao("");
+
+        try {
+
+            categoriaController.atualizar(categoriaCriada.getId(), categoriaAtualizada);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("descricao_invalido", e.getReason());
+        }
+        finally {
+            categoriaRepository.delete(categoriaCriada);
+        }
+
+    }
+
+    @Test
+    public void atualizarCategoriaComExcecao() throws Exception {
+
+        Categoria categoriaCriada = categoriaRepository.save(categoria);
+
+        try {
+
+            categoriaController.atualizar(categoriaCriada.getId(), null);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_inesperado", e.getReason());
+        }
+        finally {
+            categoriaRepository.delete(categoriaCriada);
+        }
+
+    }
+
+    /* -------------------------------------------------------------------------- */
+
+
+
+
+
+    /* -------------------------  DELEÇÃO DE CATEGORIAS  ------------------------- */
+
+    @Test
+    public void deletarCategoriaComSucesso() throws Exception {
+
+        Categoria categoriaCriada = categoriaRepository.save(categoria);
+
+        categoriaController.remover(categoriaCriada.getId());
+
+        assertTrue(categoriaRepository.findById(categoriaCriada.getId()).isEmpty());
+    }
+
+    @Test
+    public void deletarCategoriaComExcecaoNoSuchElement() throws Exception {
+
+        try {
+
+            categoriaController.remover(2023);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(404, e.getRawStatusCode());
+            assertEquals("nao_encontrado", e.getReason());
+        }
 
     }
 

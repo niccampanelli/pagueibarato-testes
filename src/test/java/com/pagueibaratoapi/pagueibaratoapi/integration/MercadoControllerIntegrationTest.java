@@ -787,7 +787,7 @@ public class MercadoControllerIntegrationTest extends PagueibaratoapiApplication
 
 
 
-    /* -------------------------  EDIÇÃO DE MERCADOS  ------------------------- */
+    /* --------------------------  EDIÇÃO DE MERCADOS  -------------------------- */
 
     @Test
     public void editarMercadoComSucesso() throws Exception {
@@ -1153,6 +1153,447 @@ public class MercadoControllerIntegrationTest extends PagueibaratoapiApplication
         catch (ResponseStatusException e) {
             assertEquals(404, e.getRawStatusCode());
             assertEquals(e.getReason(), "nao_encontrado");
+        }
+
+    }
+
+    /* -------------------------------------------------------------------------- */
+
+
+
+
+
+    /* -----------------------  ATUALIZAÇÃO DE MERCADOS  ------------------------ */
+
+    @Test
+    public void atualizarMercadoComSucesso() throws Exception {
+
+        Usuario novoUsuario = usuarioRepository.save(this.usuario);
+
+        Ramo novoRamo = ramoRepository.save(this.ramo);
+
+        this.mercado.setCriadoPor(novoUsuario.getId());
+        this.mercado.setRamoId(novoRamo.getId());
+
+        Mercado mercadoCriado = mercadoRepository.save(this.mercado);
+
+        Mercado mercadoAtualizado = new Mercado();
+
+        mercadoAtualizado.setNome("Mercado Atualizado");
+        mercadoAtualizado.setLogradouro("Rua Atualizada");
+        mercadoAtualizado.setNumero(13);
+        mercadoAtualizado.setBairro("Bairro Atualizado");
+        mercadoAtualizado.setCidade("Cidade Atualizada");
+        mercadoAtualizado.setUf("RJ");
+        mercadoAtualizado.setCep("98765-432");
+        mercadoAtualizado.setComplemento("Comp. Atualizado");
+        mercadoAtualizado.setCriadoPor(novoUsuario.getId());
+        mercadoAtualizado.setRamoId(novoRamo.getId());
+
+        ResponseMercado responseMercado = mercadoController.atualizar(mercadoCriado.getId(), mercadoAtualizado);
+
+        mercadoRepository.deleteById(mercadoCriado.getId());
+        usuarioRepository.deleteById(novoUsuario.getId());
+        ramoRepository.deleteById(novoRamo.getId());
+
+        assertEquals(responseMercado.getId(), mercadoCriado.getId());
+        assertEquals(responseMercado.getNome(), mercadoAtualizado.getNome());
+        assertEquals(responseMercado.getLogradouro(), mercadoAtualizado.getLogradouro());
+        assertEquals(responseMercado.getNumero(), mercadoAtualizado.getNumero());
+        assertEquals(responseMercado.getBairro(), mercadoAtualizado.getBairro());
+        assertEquals(responseMercado.getCidade(), mercadoAtualizado.getCidade());
+        assertEquals(responseMercado.getUf(), mercadoAtualizado.getUf());
+        assertEquals(responseMercado.getCep(), mercadoAtualizado.getCep());
+        assertEquals(responseMercado.getRamoId(), mercadoAtualizado.getRamoId());
+
+    }
+
+    @Test
+    public void atualizarMercadoComCorpoNulo() throws Exception {
+
+        try {
+
+            mercadoController.atualizar(1, null);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(e.getReason(), "corpo_nulo");
+        }
+
+    }
+
+    @Test
+    public void atualizarMercadoComIdFornecido() throws Exception {
+
+        this.mercado.setId(1);
+
+        try {
+
+            mercadoController.atualizar(1, this.mercado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(e.getReason(), "id_fornecido");
+        }
+
+    }
+
+    @Test
+    public void atualizarMercadoComComplementoInvalido() throws Exception {
+
+        this.mercado.setComplemento("Complemento Teste Complemento Teste Complemento Teste");
+
+        try {
+
+            mercadoController.atualizar(1, this.mercado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(e.getReason(), "complemento_invalido");
+        }
+
+    }
+
+    @Test
+    public void atualizarMercadoComNomeInvalido() throws Exception {
+
+        this.mercado.setNome("Mercado teste Mercado teste Mercado teste Mercado teste Mercado teste");
+
+        try {
+
+            mercadoController.atualizar(1, this.mercado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(e.getReason(), "nome_invalido");
+        }
+
+    }
+
+    @Test
+    public void atualizarMercadoComLogradouroInvalido() throws Exception {
+
+        this.mercado.setLogradouro("Rua");
+
+        try {
+
+            mercadoController.atualizar(1, this.mercado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(e.getReason(), "logradouro_invalido");
+        }
+
+    }
+
+    @Test
+    public void atualizarMercadoComNumeroInvalido() throws Exception {
+
+        this.mercado.setNumero(-1);
+
+        try {
+
+            mercadoController.atualizar(1, this.mercado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(e.getReason(), "numero_invalido");
+        }
+
+    }
+
+    @Test
+    public void atualizarMercadoComBairroInvalido() throws Exception {
+
+        this.mercado.setBairro("Test");
+
+        try {
+
+            mercadoController.atualizar(1, this.mercado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(e.getReason(), "bairro_invalido");
+        }
+
+    }
+
+    @Test
+    public void atualizarMercadoComCidadeInvalida() throws Exception {
+
+        this.mercado.setCidade("Sã");
+
+        try {
+
+            mercadoController.atualizar(1, this.mercado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(e.getReason(), "cidade_invalido");
+        }
+
+    }
+
+    @Test
+    public void atualizarMercadoComUfInvalida() throws Exception {
+
+        this.mercado.setUf("S");
+
+        try {
+
+            mercadoController.atualizar(1, this.mercado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(e.getReason(), "uf_invalido");
+        }
+
+    }
+
+    @Test
+    public void atualizarMercadoComCepInvalido() throws Exception {
+
+        this.mercado.setCep("123456789");
+
+        try {
+
+            mercadoController.atualizar(1, this.mercado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(e.getReason(), "cep_invalido");
+        }
+
+    }
+
+    @Test
+    public void atualizarMercadoComUsuarioInvalido() throws Exception {
+
+        this.mercado.setCriadoPor(0);
+
+        try {
+
+            mercadoController.atualizar(1, this.mercado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(e.getReason(), "usuario_invalido");
+        }
+
+    }
+
+    @Test
+    public void atualizarMercadoComRamoInvalido() throws Exception {
+
+        Usuario novoUsuario = usuarioRepository.save(this.usuario);
+
+        this.mercado.setCriadoPor(novoUsuario.getId());
+        this.mercado.setRamoId(0);
+
+        try {
+
+            mercadoController.atualizar(1, this.mercado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(e.getReason(), "ramo_invalido");
+        }
+        finally {
+            usuarioRepository.deleteById(novoUsuario.getId());
+        }
+
+    }
+
+    @Test
+    public void atualizarMercadoComExcecaoNoSuchElement() throws Exception {
+
+        Usuario novoUsuario = usuarioRepository.save(this.usuario);
+
+        Ramo novoRamo = ramoRepository.save(this.ramo);
+
+        this.mercado.setCriadoPor(novoUsuario.getId());
+        this.mercado.setRamoId(novoRamo.getId());
+
+        try {
+
+            mercadoController.atualizar(1986, this.mercado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(404, e.getRawStatusCode());
+            assertEquals(e.getReason(), "nao_encontrado");
+        }
+        finally {
+            ramoRepository.deleteById(novoRamo.getId());
+            usuarioRepository.deleteById(novoUsuario.getId());
+        }
+
+    }
+
+    @Test
+    public void atualizarMercadoComUsuarioInexistente() throws Exception {
+
+        Usuario novoUsuario = usuarioRepository.save(this.usuario);
+
+        Ramo novoRamo = ramoRepository.save(this.ramo);
+
+        this.mercado.setCriadoPor(novoUsuario.getId());
+        this.mercado.setRamoId(novoRamo.getId());
+
+        Mercado mercadoCriado = mercadoRepository.save(this.mercado);
+
+        Mercado mercadoAtualizado = new Mercado();
+
+        mercadoAtualizado.setNome("Mercado Atualizado");
+        mercadoAtualizado.setLogradouro("Rua Atualizada");
+        mercadoAtualizado.setNumero(12);
+        mercadoAtualizado.setBairro("Bairro Atualizado");
+        mercadoAtualizado.setCidade("Cidade Atualizada");
+        mercadoAtualizado.setUf("RJ");
+        mercadoAtualizado.setCep("98765-432");
+        mercadoAtualizado.setComplemento("Comp. Atualizado");
+        mercadoAtualizado.setCriadoPor(1986);
+        mercadoAtualizado.setRamoId(novoRamo.getId());
+
+        try {
+
+            mercadoController.atualizar(mercadoCriado.getId(), mercadoAtualizado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals(e.getReason(), "usuario_nao_encontrado");
+        }
+        finally {
+            mercadoRepository.deleteById(mercadoCriado.getId());
+            ramoRepository.deleteById(novoRamo.getId());
+            usuarioRepository.deleteById(novoUsuario.getId());
+        }
+
+    }
+
+    @Test
+    public void atualizarMercadoComRamoInexistente() throws Exception {
+
+        Usuario novoUsuario = usuarioRepository.save(this.usuario);
+
+        Ramo novoRamo = ramoRepository.save(this.ramo);
+
+        this.mercado.setCriadoPor(novoUsuario.getId());
+        this.mercado.setRamoId(novoRamo.getId());
+
+        Mercado mercadoCriado = mercadoRepository.save(this.mercado);
+
+        Mercado mercadoAtualizado = new Mercado();
+
+        mercadoAtualizado.setNome("Mercado Atualizado");
+        mercadoAtualizado.setLogradouro("Rua Atualizada");
+        mercadoAtualizado.setNumero(12);
+        mercadoAtualizado.setBairro("Bairro Atualizado");
+        mercadoAtualizado.setCidade("Cidade Atualizada");
+        mercadoAtualizado.setUf("RJ");
+        mercadoAtualizado.setCep("98765-432");
+        mercadoAtualizado.setComplemento("Comp. Atualizado");
+        mercadoAtualizado.setCriadoPor(novoUsuario.getId());
+        mercadoAtualizado.setRamoId(1986);
+
+        try {
+
+            mercadoController.atualizar(mercadoCriado.getId(), mercadoAtualizado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals(e.getReason(), "ramo_nao_encontrado");
+        }
+        finally {
+            mercadoRepository.deleteById(mercadoCriado.getId());
+            usuarioRepository.deleteById(novoUsuario.getId());
+            ramoRepository.deleteById(novoRamo.getId());
+        }
+
+    }
+
+    @Test
+    public void atualizarMercadoComNomeExistente() throws Exception {
+
+        Usuario novoUsuario = usuarioRepository.save(this.usuario);
+
+        Ramo novoRamo = ramoRepository.save(this.ramo);
+
+        this.mercado.setCriadoPor(novoUsuario.getId());
+        this.mercado.setRamoId(novoRamo.getId());
+
+        Mercado mercadoCriado = mercadoRepository.save(this.mercado);
+
+        Mercado mercadoAtualizado = new Mercado();
+
+        mercadoAtualizado.setNome("Mercado Teste");
+        mercadoAtualizado.setLogradouro("Rua Atualizada");
+        mercadoAtualizado.setNumero(12);
+        mercadoAtualizado.setBairro("Bairro Atualizado");
+        mercadoAtualizado.setCidade("Cidade Atualizada");
+        mercadoAtualizado.setUf("RJ");
+        mercadoAtualizado.setCep("98765-432");
+        mercadoAtualizado.setComplemento("Comp. Atualizado");
+        mercadoAtualizado.setCriadoPor(novoUsuario.getId());
+        mercadoAtualizado.setRamoId(novoRamo.getId());
+
+        try {
+
+            mercadoController.atualizar(mercadoCriado.getId(), mercadoAtualizado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(409, e.getRawStatusCode());
+            assertEquals(e.getReason(), "mercado_existente");
+        }
+        finally {
+            mercadoRepository.deleteById(mercadoCriado.getId());
+            ramoRepository.deleteById(novoRamo.getId());
+            usuarioRepository.deleteById(novoUsuario.getId());
+        }
+
+    }
+
+    @Test
+    public void atualizarMercadoComEnderecoExistente() throws Exception {
+
+        Usuario novoUsuario = usuarioRepository.save(this.usuario);
+
+        Ramo novoRamo = ramoRepository.save(this.ramo);
+
+        this.mercado.setCriadoPor(novoUsuario.getId());
+        this.mercado.setRamoId(novoRamo.getId());
+
+        Mercado mercadoCriado = mercadoRepository.save(this.mercado);
+
+        Mercado mercadoAtualizado = new Mercado();
+
+        mercadoAtualizado.setNome("Mercado Atualizado");
+        mercadoAtualizado.setLogradouro("Rua Teste");
+        mercadoAtualizado.setNumero(12);
+        mercadoAtualizado.setBairro("Bairro Teste");
+        mercadoAtualizado.setCidade("Cidade Teste");
+        mercadoAtualizado.setUf("SP");
+        mercadoAtualizado.setCep("12345-678");
+        mercadoAtualizado.setComplemento("Comp. Atualizado");
+        mercadoAtualizado.setCriadoPor(novoUsuario.getId());
+        mercadoAtualizado.setRamoId(novoRamo.getId());
+
+        try {
+
+            mercadoController.atualizar(mercadoCriado.getId(), mercadoAtualizado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(409, e.getRawStatusCode());
+            assertEquals(e.getReason(), "mercado_existente");
+        }
+        finally {
+            mercadoRepository.deleteById(mercadoCriado.getId());
+            ramoRepository.deleteById(novoRamo.getId());
+            usuarioRepository.deleteById(novoUsuario.getId());
         }
 
     }

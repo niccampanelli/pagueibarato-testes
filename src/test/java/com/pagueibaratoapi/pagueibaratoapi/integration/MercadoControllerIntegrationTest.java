@@ -472,6 +472,69 @@ public class MercadoControllerIntegrationTest extends PagueibaratoapiApplication
             mercadoRepository.deleteById(mercadoExistente.getId());
         }
 
+    }
+
+    /* -------------------------------------------------------------------------- */
+
+
+
+
+
+    /* ----------------------  LEITURA DE MERCADO POR ID  ----------------------- */
+
+    @Test
+    public void lerMercadoPorIdComSucesso() throws Exception {
+
+        Usuario novoUsuario = usuarioRepository.save(this.usuario);
+
+        Ramo novoRamo = ramoRepository.save(this.ramo);
+
+        this.mercado.setCriadoPor(novoUsuario.getId());
+        this.mercado.setRamoId(novoRamo.getId());
+
+        Mercado novoMercado = mercadoRepository.save(this.mercado);
+
+        ResponseMercado responseMercado = mercadoController.ler(novoMercado.getId());
+
+        mercadoRepository.deleteById(novoMercado.getId());
+
+        assertEquals(responseMercado.getNome(), this.mercado.getNome());
+        assertEquals(responseMercado.getLogradouro(), this.mercado.getLogradouro());
+        assertEquals(responseMercado.getNumero(), this.mercado.getNumero());
+        assertEquals(responseMercado.getBairro(), this.mercado.getBairro());
+        assertEquals(responseMercado.getCidade(), this.mercado.getCidade());
+        assertEquals(responseMercado.getUf(), this.mercado.getUf());
+        assertEquals(responseMercado.getCep(), this.mercado.getCep());
+        assertEquals(responseMercado.getRamoId(), this.mercado.getRamoId());
+
+    }
+
+    @Test
+    public void lerMercadoComExcecaoNoSuchElement() throws Exception {
+
+        try {
+
+            mercadoController.ler(1986);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(404, e.getRawStatusCode());
+            assertEquals(e.getReason(), "nao_encontrado");
+        }
+
+    }
+    
+    @Test
+    public void lerMercadoComExcecao() throws Exception {
+
+        try {
+
+            mercadoController.ler(null);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+        }
 
     }
 

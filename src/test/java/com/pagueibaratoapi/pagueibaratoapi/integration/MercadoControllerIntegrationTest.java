@@ -1,6 +1,7 @@
 package com.pagueibaratoapi.pagueibaratoapi.integration;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
@@ -1594,6 +1595,56 @@ public class MercadoControllerIntegrationTest extends PagueibaratoapiApplication
             mercadoRepository.deleteById(mercadoCriado.getId());
             ramoRepository.deleteById(novoRamo.getId());
             usuarioRepository.deleteById(novoUsuario.getId());
+        }
+
+    }
+
+    /* -------------------------------------------------------------------------- */
+
+
+
+
+
+    /* -------------------------  DELEÇÃO DE MERCADOS  -------------------------- */
+
+    @Test
+    public void deletarMercadoComSucesso() {
+
+        Usuario novoUsuario = usuarioRepository.save(this.usuario);
+
+        Ramo novoRamo = ramoRepository.save(this.ramo);
+
+        this.mercado.setCriadoPor(novoUsuario.getId());
+        this.mercado.setRamoId(novoRamo.getId());
+
+        Mercado mercadoCriado = mercadoRepository.save(this.mercado);
+
+        try {
+
+            mercadoController.remover(mercadoCriado.getId());
+
+            assertTrue(mercadoRepository.findById(mercadoCriado.getId()).isEmpty());
+
+        }
+        finally {
+            ramoRepository.deleteById(novoRamo.getId());
+            usuarioRepository.deleteById(novoUsuario.getId());
+        }
+
+    }
+
+
+    @Test
+    public void deletarMercadoComExcecaoNoSuchElement() throws Exception {
+
+        try {
+
+            mercadoController.remover(1986);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(404, e.getRawStatusCode());
+            assertEquals(e.getReason(), "nao_encontrado");
         }
 
     }

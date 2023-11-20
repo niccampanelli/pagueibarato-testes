@@ -582,4 +582,37 @@ public class CategoriaControllerIntegrationTest extends PagueibaratoapiApplicati
 
     /* -------------------------------------------------------------------------- */
 
+
+
+
+
+    /* -------------------------  DELEÇÃO DE CATEGORIAS  ------------------------- */
+
+    @Test
+    public void deletarCategoriaComSucesso() throws Exception {
+
+        Categoria categoriaCriada = categoriaRepository.save(categoria);
+
+        categoriaController.remover(categoriaCriada.getId());
+
+        assertTrue(categoriaRepository.findById(categoriaCriada.getId()).isEmpty());
+    }
+
+    @Test
+    public void deletarCategoriaComExcecaoNoSuchElement() throws Exception {
+
+        try {
+
+            categoriaController.remover(2023);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(404, e.getRawStatusCode());
+            assertEquals("nao_encontrado", e.getReason());
+        }
+
+    }
+
+    /* -------------------------------------------------------------------------- */
+
 }

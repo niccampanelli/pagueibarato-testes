@@ -2,6 +2,8 @@ package com.pagueibaratoapi.pagueibaratoapi.integration;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -534,6 +536,247 @@ public class MercadoControllerIntegrationTest extends PagueibaratoapiApplication
         }
         catch (ResponseStatusException e) {
             assertEquals(500, e.getRawStatusCode());
+        }
+
+    }
+
+    /* -------------------------------------------------------------------------- */
+
+
+
+
+
+    /* -------------------------  LISTAGEM DE MERCADOS  ------------------------- */
+
+    @Test
+    public void listarMercadosComSucesso() throws Exception {
+
+        Usuario novoUsuario = usuarioRepository.save(this.usuario);
+
+        Ramo novoRamo = ramoRepository.save(this.ramo);
+
+        this.mercado.setCriadoPor(novoUsuario.getId());
+        this.mercado.setRamoId(novoRamo.getId());
+
+        Mercado novoMercado = mercadoRepository.save(this.mercado);
+
+        Mercado mercado2 = new Mercado();
+
+        mercado2.setNome("Mercado Teste 2");
+        mercado2.setLogradouro("Rua Teste 2");
+        mercado2.setNumero(12);
+        mercado2.setBairro("Bairro Teste");
+        mercado2.setCidade("Cidade Teste");
+        mercado2.setUf("SP");
+        mercado2.setCep("12345-678");
+        mercado2.setComplemento("Complemento Teste");
+        mercado2.setCriadoPor(novoUsuario.getId());
+        mercado2.setRamoId(novoRamo.getId());
+
+        Mercado novoMercado2 = mercadoRepository.save(mercado2);
+
+        List<ResponseMercado> responseMercados = mercadoController.listar(new Mercado());
+
+        mercadoRepository.deleteById(novoMercado.getId());
+        mercadoRepository.deleteById(novoMercado2.getId());
+
+        assertEquals(responseMercados.size(), 2);
+        assertEquals(responseMercados.get(0).getLogradouro(), this.mercado.getLogradouro());
+
+    }
+
+    @Test
+    public void listarMercadosComCorpoNulo() throws Exception {
+
+        try {
+
+            mercadoController.listar(null);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(e.getReason(), "corpo_nulo");
+        }
+
+    }
+
+    @Test
+    public void listarMercadosComIdFornecido() throws Exception {
+
+        this.mercado.setId(1);
+
+        try {
+
+            mercadoController.listar(this.mercado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(e.getReason(), "id_fornecido");
+        }
+
+    }
+
+    @Test
+    public void listarMercadosComComplementoInvalido() throws Exception {
+
+        this.mercado.setComplemento("Complemento Teste Complemento Teste Complemento Teste");
+
+        try {
+
+            mercadoController.listar(this.mercado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(e.getReason(), "complemento_invalido");
+        }
+
+    }
+
+    @Test
+    public void listarMercadosComNomeInvalido() throws Exception {
+
+        this.mercado.setNome("Mercado teste Mercado teste Mercado teste Mercado teste Mercado teste");
+
+        try {
+
+            mercadoController.listar(this.mercado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(e.getReason(), "nome_invalido");
+        }
+
+    }
+
+    @Test
+    public void listarMercadosComLogradouroInvalido() throws Exception {
+
+        this.mercado.setLogradouro("Rua");
+
+        try {
+
+            mercadoController.listar(this.mercado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(e.getReason(), "logradouro_invalido");
+        }
+
+    }
+
+    @Test
+    public void listarMercadosComNumeroInvalido() throws Exception {
+
+        this.mercado.setNumero(-1);
+
+        try {
+
+            mercadoController.listar(this.mercado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(e.getReason(), "numero_invalido");
+        }
+
+    }
+
+    @Test
+    public void listarMercadosComBairroInvalido() throws Exception {
+
+        this.mercado.setBairro("Test");
+
+        try {
+
+            mercadoController.listar(this.mercado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(e.getReason(), "bairro_invalido");
+        }
+
+    }
+
+    @Test
+    public void listarMercadosComCidadeInvalida() throws Exception {
+
+        this.mercado.setCidade("Sã");
+
+        try {
+
+            mercadoController.listar(this.mercado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(e.getReason(), "cidade_invalido");
+        }
+
+    }
+
+    @Test
+    public void listarMercadosComUfInvalida() throws Exception {
+
+        this.mercado.setUf("S");
+
+        try {
+
+            mercadoController.listar(this.mercado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(e.getReason(), "uf_invalido");
+        }
+
+    }
+
+    @Test
+    public void listarMercadosComCepInvalido() throws Exception {
+
+        this.mercado.setCep("123456789");
+
+        try {
+
+            mercadoController.listar(this.mercado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(e.getReason(), "cep_invalido");
+        }
+
+    }
+
+    @Test
+    public void listarMercadosComUsuarioInvalido() throws Exception {
+
+        this.mercado.setCriadoPor(0);
+
+        try {
+
+            mercadoController.listar(this.mercado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(e.getReason(), "usuario_invalido");
+        }
+
+    }
+
+    @Test
+    public void listarMercadosComRamoInvalido() throws Exception {
+
+        Usuario novoUsuario = usuarioRepository.save(this.usuario);
+
+        this.mercado.setCriadoPor(novoUsuario.getId());
+        this.mercado.setRamoId(0);
+
+        try {
+
+            mercadoController.listar(this.mercado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(e.getReason(), "ramo_invalido");
+        }
+        finally {
+            usuarioRepository.deleteById(novoUsuario.getId());
         }
 
     }

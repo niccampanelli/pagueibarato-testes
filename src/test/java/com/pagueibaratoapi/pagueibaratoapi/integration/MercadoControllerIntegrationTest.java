@@ -783,4 +783,380 @@ public class MercadoControllerIntegrationTest extends PagueibaratoapiApplication
 
     /* -------------------------------------------------------------------------- */
 
+
+
+
+
+    /* -------------------------  EDIÇÃO DE MERCADOS  ------------------------- */
+
+    @Test
+    public void editarMercadoComSucesso() throws Exception {
+
+        Usuario novoUsuario = usuarioRepository.save(this.usuario);
+
+        Ramo novoRamo = ramoRepository.save(this.ramo);
+
+        this.mercado.setCriadoPor(novoUsuario.getId());
+        this.mercado.setRamoId(novoRamo.getId());
+
+        Mercado novoMercado = mercadoRepository.save(this.mercado);
+
+        Mercado mercadoEditado = new Mercado();
+
+        mercadoEditado.setNome("Mercado Editado");
+        mercadoEditado.setLogradouro("Rua Editada");
+        mercadoEditado.setNumero(13);
+        mercadoEditado.setBairro("Bairro Editado");
+        mercadoEditado.setCidade("Cidade Editada");
+        mercadoEditado.setUf("RJ");
+        mercadoEditado.setCep("98765-432");
+        mercadoEditado.setComplemento("Complemento Editado");
+        mercadoEditado.setCriadoPor(novoUsuario.getId());
+        mercadoEditado.setRamoId(novoRamo.getId());
+
+        ResponseMercado responseMercado = mercadoController.editar(novoMercado.getId(), mercadoEditado);
+
+        mercadoRepository.deleteById(novoMercado.getId());
+
+        assertEquals(responseMercado.getId(), novoMercado.getId());
+        assertEquals(responseMercado.getNome(), mercadoEditado.getNome());
+        assertEquals(responseMercado.getLogradouro(), mercadoEditado.getLogradouro());
+        assertEquals(responseMercado.getNumero(), mercadoEditado.getNumero());
+        assertEquals(responseMercado.getBairro(), mercadoEditado.getBairro());
+        assertEquals(responseMercado.getCidade(), mercadoEditado.getCidade());
+        assertEquals(responseMercado.getUf(), mercadoEditado.getUf());
+        assertEquals(responseMercado.getCep(), mercadoEditado.getCep());
+        assertEquals(responseMercado.getRamoId(), mercadoEditado.getRamoId());
+
+    }
+
+    @Test
+    public void editarMercadoComCorpoNulo() throws Exception {
+
+        try {
+
+            mercadoController.editar(1, null);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(e.getReason(), "corpo_nulo");
+        }
+
+    }
+
+    @Test
+    public void editarMercadoComIdFornecido() throws Exception {
+
+        this.mercado.setId(1);
+
+        try {
+
+            mercadoController.editar(1, this.mercado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(e.getReason(), "id_fornecido");
+        }
+
+    }
+
+    @Test
+    public void editarMercadoComComplementoInvalido() throws Exception {
+
+        this.mercado.setComplemento("Complemento Teste Complemento Teste Complemento Teste");
+
+        try {
+
+            mercadoController.editar(1, this.mercado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(e.getReason(), "complemento_invalido");
+        }
+
+    }
+
+    @Test
+    public void editarMercadoComNomeInvalido() throws Exception {
+
+        this.mercado.setNome("Mercado teste Mercado teste Mercado teste Mercado teste Mercado teste");
+
+        try {
+
+            mercadoController.editar(1, this.mercado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(e.getReason(), "nome_invalido");
+        }
+
+    }
+
+    @Test
+    public void editarMercadoComLogradouroInvalido() throws Exception {
+
+        this.mercado.setLogradouro("Rua");
+
+        try {
+
+            mercadoController.editar(1, this.mercado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(e.getReason(), "logradouro_invalido");
+        }
+
+    }
+
+    @Test
+    public void editarMercadoComNumeroInvalido() throws Exception {
+
+        this.mercado.setNumero(-1);
+
+        try {
+
+            mercadoController.editar(1, this.mercado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(e.getReason(), "numero_invalido");
+        }
+
+    }
+
+    @Test
+    public void editarMercadoComBairroInvalido() throws Exception {
+
+        this.mercado.setBairro("Test");
+
+        try {
+
+            mercadoController.editar(1, this.mercado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(e.getReason(), "bairro_invalido");
+        }
+
+    }
+
+    @Test
+    public void editarMercadoComCidadeInvalida() throws Exception {
+
+        this.mercado.setCidade("Sã");
+
+        try {
+
+            mercadoController.editar(1, this.mercado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(e.getReason(), "cidade_invalido");
+        }
+
+    }
+
+    @Test
+    public void editarMercadoComUfInvalida() throws Exception {
+
+        this.mercado.setUf("S");
+
+        try {
+
+            mercadoController.editar(1, this.mercado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(e.getReason(), "uf_invalido");
+        }
+
+    }
+
+    @Test
+    public void editarMercadoComCepInvalido() throws Exception {
+
+        this.mercado.setCep("123456789");
+
+        try {
+
+            mercadoController.editar(1, this.mercado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(e.getReason(), "cep_invalido");
+        }
+
+    }
+
+    @Test
+    public void editarMercadoComUsuarioInvalido() throws Exception {
+
+        this.mercado.setCriadoPor(0);
+
+        try {
+
+            mercadoController.editar(1, this.mercado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(e.getReason(), "usuario_invalido");
+        }
+
+    }
+
+    @Test
+    public void editarMercadoComRamoInvalido() throws Exception {
+
+        Usuario novoUsuario = usuarioRepository.save(this.usuario);
+
+        this.mercado.setCriadoPor(novoUsuario.getId());
+        this.mercado.setRamoId(0);
+
+        try {
+
+            mercadoController.editar(1, this.mercado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(e.getReason(), "ramo_invalido");
+        }
+        finally {
+            usuarioRepository.deleteById(novoUsuario.getId());
+        }
+
+    }
+
+    @Test
+    public void editarMercadoComEnderecoExistente() throws Exception {
+
+        Usuario novoUsuario = usuarioRepository.save(this.usuario);
+
+        Ramo novoRamo = ramoRepository.save(this.ramo);
+
+        this.mercado.setCriadoPor(novoUsuario.getId());
+        this.mercado.setRamoId(novoRamo.getId());
+
+        Mercado novoMercado = mercadoRepository.save(this.mercado);
+
+        Mercado mercadoEditado = new Mercado();
+
+        mercadoEditado.setNome("Mercado Editado");
+        mercadoEditado.setLogradouro("Rua Teste");
+        mercadoEditado.setNumero(12);
+        mercadoEditado.setBairro("Bairro Teste");
+        mercadoEditado.setCidade("Cidade Teste");
+        mercadoEditado.setUf("SP");
+        mercadoEditado.setCep("12345-678");
+        mercadoEditado.setComplemento("Complemento Teste");
+        mercadoEditado.setCriadoPor(novoUsuario.getId());
+        mercadoEditado.setRamoId(novoRamo.getId());
+
+        try {
+
+            mercadoController.editar(novoMercado.getId(), mercadoEditado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(409, e.getRawStatusCode());
+            assertEquals(e.getReason(), "mercado_existente");
+        }
+        finally {
+            mercadoRepository.deleteById(novoMercado.getId());
+        }
+
+    }
+
+    @Test
+    public void editarMercadoComRamoInexistente() throws Exception {
+
+        Usuario novoUsuario = usuarioRepository.save(this.usuario);
+
+        Ramo novoRamo = ramoRepository.save(this.ramo);
+
+        this.mercado.setCriadoPor(novoUsuario.getId());
+        this.mercado.setRamoId(novoRamo.getId());
+
+        Mercado novoMercado = mercadoRepository.save(this.mercado);
+
+        Mercado mercadoEditado = new Mercado();
+
+        mercadoEditado.setNome("Mercado Editado");
+        mercadoEditado.setRamoId(2023);
+
+        try {
+
+            mercadoController.editar(novoMercado.getId(), mercadoEditado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals(e.getReason(), "ramo_nao_encontrado");
+        }
+        finally {
+            mercadoRepository.deleteById(novoMercado.getId());
+            ramoRepository.deleteById(novoRamo.getId());
+            usuarioRepository.deleteById(novoUsuario.getId());
+        }
+
+    }
+
+    @Test
+    public void editarMercadoComNomeExistente() throws Exception {
+
+        Usuario novoUsuario = usuarioRepository.save(this.usuario);
+
+        Ramo novoRamo = ramoRepository.save(this.ramo);
+
+        this.mercado.setCriadoPor(novoUsuario.getId());
+        this.mercado.setRamoId(novoRamo.getId());
+
+        Mercado novoMercado = mercadoRepository.save(this.mercado);
+
+        Mercado mercadoEditado = new Mercado();
+
+        mercadoEditado.setNome("Mercado Editado");
+        mercadoEditado.setLogradouro("Rua Editada 2");
+        mercadoEditado.setNumero(13);
+        mercadoEditado.setBairro("Bairro Editado");
+        mercadoEditado.setCidade("Cidade Editada");
+        mercadoEditado.setUf("RJ");
+        mercadoEditado.setCep("98765-432");
+        mercadoEditado.setComplemento("Complemento Editado");
+        mercadoEditado.setCriadoPor(novoUsuario.getId());
+        mercadoEditado.setRamoId(novoRamo.getId());
+
+        try {
+
+            mercadoController.editar(novoMercado.getId(), mercadoEditado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(409, e.getRawStatusCode());
+            assertEquals(e.getReason(), "mercado_existente");
+        }
+        finally {
+            mercadoRepository.deleteById(novoMercado.getId());
+            ramoRepository.deleteById(novoRamo.getId());
+            usuarioRepository.deleteById(novoUsuario.getId());
+        }
+
+    }
+
+    @Test
+    public void editarMercadoComExcecaoNoSuchElement() throws Exception {
+
+        try {
+
+            mercadoController.editar(1986, this.mercado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(404, e.getRawStatusCode());
+            assertEquals(e.getReason(), "nao_encontrado");
+        }
+
+    }
+
+    /* -------------------------------------------------------------------------- */
+
 }

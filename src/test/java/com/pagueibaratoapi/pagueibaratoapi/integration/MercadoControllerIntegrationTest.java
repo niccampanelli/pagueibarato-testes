@@ -1633,7 +1633,6 @@ public class MercadoControllerIntegrationTest extends PagueibaratoapiApplication
 
     }
 
-
     @Test
     public void deletarMercadoComExcecaoNoSuchElement() throws Exception {
 

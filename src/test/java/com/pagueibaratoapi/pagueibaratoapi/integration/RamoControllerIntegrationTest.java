@@ -310,4 +310,142 @@ public class RamoControllerIntegrationTest extends PagueibaratoapiApplicationTes
 
     /* -------------------------------------------------------------------------- */
 
+
+
+
+
+    /* ----------------------------  EDIÇÃO DE RAMOS  --------------------------- */
+
+    @Test
+    public void editarRamoComSucesso() throws Exception {
+
+        Ramo ramoCriado = ramoRepository.save(this.ramo);
+
+        Ramo ramoEditado = new Ramo();
+
+        ramoEditado.setNome("Ramo Teste Editado");
+        ramoEditado.setDescricao("Descrição do ramo teste editado");
+
+        ResponseRamo responseRamo = ramoController.editar(ramoCriado.getId(), ramoEditado);
+
+        ramoRepository.deleteById(responseRamo.getId());
+
+        assertNotNull(responseRamo);
+        assertEquals(ramoCriado.getId(), responseRamo.getId());
+        assertEquals("Ramo Teste Editado", responseRamo.getNome());
+        assertEquals("Descrição do ramo teste editado", responseRamo.getDescricao());
+
+    }
+
+    @Test
+    public void editarRamoComCorpoNulo() throws Exception {
+
+        try {
+
+            ramoController.editar(1, null);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("corpo_nulo", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void editarRamoComIdFornecido() throws Exception {
+
+        this.ramo.setId(1);
+
+        try {
+
+            ramoController.editar(1, this.ramo);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("id_fornecido", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void editarRamoComNomeInvalido() throws Exception {
+
+        this.ramo.setNome("ma");
+
+        try {
+
+            ramoController.editar(1, this.ramo);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("nome_invalido", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void editarRamoComDescricaoInvalida() throws Exception {
+
+        this.ramo.setDescricao("teste");
+
+        try {
+
+            ramoController.editar(1, this.ramo);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("descricao_invalido", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void editarRamoComNomeExistente() throws Exception {
+
+        Ramo ramoCriado = ramoRepository.save(this.ramo);
+
+        Ramo ramoComNomeIgual = new Ramo();
+
+        ramoComNomeIgual.setNome("Ramo Teste 2");
+        ramoComNomeIgual.setDescricao("Descrição do ramo teste 2");
+
+        ramoRepository.save(ramoComNomeIgual);
+
+        Ramo ramoEditado = new Ramo();
+
+        ramoEditado.setNome(ramoComNomeIgual.getNome());
+
+        try {
+
+            ramoController.editar(ramoCriado.getId(), ramoEditado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(409, e.getRawStatusCode());
+            assertEquals("ramo_existente", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void editarRamoComExcecaoNoSuchElement() throws Exception {
+
+        try {
+
+            ramoController.editar(2023, this.ramo);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(404, e.getRawStatusCode());
+            assertEquals("nao_encontrado", e.getReason());
+        }
+
+    }
+
+    /* -------------------------------------------------------------------------- */
+
 }

@@ -222,4 +222,92 @@ public class RamoControllerIntegrationTest extends PagueibaratoapiApplicationTes
 
     /* -------------------------------------------------------------------------- */
 
+
+
+
+
+    /* ---------------------------  LISTAGEM DE RAMOS  -------------------------- */
+
+    @Test
+    public void listarRamosComSucesso() throws Exception {
+
+        ramoRepository.saveAll(this.ramos);
+
+        List<ResponseRamo> responseRamos = ramoController.listar(new Ramo());
+
+        ramoRepository.deleteAll();
+
+        assertNotNull(responseRamos);
+        assertEquals(2, responseRamos.size());
+
+    }
+
+    @Test
+    public void listarRamosComCorpoNulo() throws Exception {
+
+        try {
+
+            ramoController.listar(null);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("corpo_nulo", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void listarRamosComIdFornecido() throws Exception {
+
+        this.ramo.setId(1);
+
+        try {
+
+            ramoController.listar(this.ramo);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("id_fornecido", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void listarRamosComNomeInvalido() throws Exception {
+
+        this.ramo.setNome("ma");
+
+        try {
+
+            ramoController.listar(this.ramo);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("nome_invalido", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void listarRamosComDescricaoInvalida() throws Exception {
+
+        this.ramo.setDescricao("teste");
+
+        try {
+
+            ramoController.listar(this.ramo);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("descricao_invalido", e.getReason());
+        }
+
+    }
+
+    /* -------------------------------------------------------------------------- */
+
 }

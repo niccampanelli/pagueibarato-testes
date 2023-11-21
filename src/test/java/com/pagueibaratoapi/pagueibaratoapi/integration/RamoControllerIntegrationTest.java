@@ -169,4 +169,57 @@ public class RamoControllerIntegrationTest extends PagueibaratoapiApplicationTes
 
     /* -------------------------------------------------------------------------- */
 
+
+
+
+
+    /* ------------------------  LEITURA DE RAMO POR ID  ------------------------ */
+
+    @Test
+    public void lerRamoPorIdComSucesso() throws Exception {
+
+        Ramo ramoCriado = ramoRepository.save(this.ramo);
+
+        ResponseRamo responseRamo = ramoController.ler(ramoCriado.getId());
+
+        ramoRepository.deleteById(responseRamo.getId());
+
+        assertNotNull(responseRamo);
+        assertEquals(ramoCriado.getId(), responseRamo.getId());
+        assertEquals(ramoCriado.getNome(), responseRamo.getNome());
+
+    }
+
+    @Test
+    public void lerRamoPorIdComExcecaoNoSuchElement() throws Exception {
+
+        try {
+
+            ramoController.ler(2023);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(404, e.getRawStatusCode());
+            assertEquals("nao_encontrado", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void lerRamoPorIdComExcecao() throws Exception {
+
+        try {
+
+            ramoController.ler(null);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_inesperado", e.getReason());
+        }
+
+    }
+
+    /* -------------------------------------------------------------------------- */
+
 }

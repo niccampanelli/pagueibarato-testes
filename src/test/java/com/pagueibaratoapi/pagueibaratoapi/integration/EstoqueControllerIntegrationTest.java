@@ -158,7 +158,7 @@ public class EstoqueControllerIntegrationTest extends PagueibaratoapiApplication
     }
 
     @Test
-    public void criarEstoqueComUsuarioInexistent() {
+    public void criarEstoqueComUsuarioInexistente() {
 
         Usuario usuarioCriar = new Usuario();
         usuarioCriar.setNome("Teste");
@@ -317,12 +317,9 @@ public class EstoqueControllerIntegrationTest extends PagueibaratoapiApplication
         estoqueRepository.save(estoqueCriar);
 
         try {
-            Estoque estoqueCriar2 = new Estoque();
-            estoqueCriar2.setCriadoPor(idUsuario);
-            estoqueCriar2.setMercadoId(idMercado);
-            estoqueCriar2.setProdutoId(idProduto);
+            estoqueCriar.setId(null);
 
-            estoqueController.criar(estoqueCriar2);
+            estoqueController.criar(estoqueCriar);
         } catch (ResponseStatusException e) {
             System.out.println(e.getCause().getMessage());
             assertTrue(e.getCause().getMessage().equals("estoque_existente"));

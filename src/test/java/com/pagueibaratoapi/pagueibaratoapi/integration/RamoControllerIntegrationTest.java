@@ -2,20 +2,14 @@ package com.pagueibaratoapi.pagueibaratoapi.integration;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.util.List;
-import java.util.Optional;
 
-import org.checkerframework.checker.nullness.Opt;
-import org.hibernate.criterion.Example;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -576,6 +570,40 @@ public class RamoControllerIntegrationTest extends PagueibaratoapiApplicationTes
         try {
 
             ramoController.atualizar(2023, this.ramo);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(404, e.getRawStatusCode());
+            assertEquals("nao_encontrado", e.getReason());
+        }
+
+    }
+
+    /* -------------------------------------------------------------------------- */
+
+
+
+
+
+    /* ---------------------------  DELEÇÃO DE RAMOS  --------------------------- */
+
+    @Test
+    public void deletarRamoComSucesso() throws Exception {
+
+        Ramo ramoCriado = ramoRepository.save(this.ramo);
+
+        ramoController.remover(ramoCriado.getId());
+
+        assertNull(ramoRepository.findById(ramoCriado.getId()).orElse(null));
+
+    }
+
+    @Test
+    public void deletarRamoComExcecaoNoSuchElement() throws Exception {
+
+        try {
+
+            ramoController.remover(2023);
 
         }
         catch (ResponseStatusException e) {

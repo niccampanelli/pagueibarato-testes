@@ -448,4 +448,143 @@ public class RamoControllerIntegrationTest extends PagueibaratoapiApplicationTes
 
     /* -------------------------------------------------------------------------- */
 
+
+
+
+
+    /* -------------------------  ATUALIZAÇÃO DE RAMOS  ------------------------- */
+
+    @Test
+    public void atualizarRamoComSucesso() throws Exception {
+
+        Ramo ramoCriado = ramoRepository.save(this.ramo);
+
+        Ramo ramoAtualizado = new Ramo();
+
+        ramoAtualizado.setNome("Ramo Teste Atualizado");
+        ramoAtualizado.setDescricao("Descrição do ramo teste atualizado");
+
+        ResponseRamo responseRamo = ramoController.atualizar(ramoCriado.getId(), ramoAtualizado);
+
+        ramoRepository.deleteById(responseRamo.getId());
+
+        assertNotNull(responseRamo);
+        assertEquals(ramoCriado.getId(), responseRamo.getId());
+        assertEquals("Ramo Teste Atualizado", responseRamo.getNome());
+        assertEquals("Descrição do ramo teste atualizado", responseRamo.getDescricao());
+
+    }
+
+    @Test
+    public void atualizarRamoComCorpoNulo() throws Exception {
+
+        try {
+
+            ramoController.atualizar(1, null);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("corpo_nulo", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void atualizarRamoComIdFornecido() throws Exception {
+
+        this.ramo.setId(1);
+
+        try {
+
+            ramoController.atualizar(1, this.ramo);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("id_fornecido", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void atualizarRamoComNomeInvalido() throws Exception {
+
+        this.ramo.setNome("ma");
+
+        try {
+
+            ramoController.atualizar(1, this.ramo);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("nome_invalido", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void atualizarRamoComDescricaoInvalida() throws Exception {
+
+        this.ramo.setDescricao("teste");
+
+        try {
+
+            ramoController.atualizar(1, this.ramo);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("descricao_invalido", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void atualizarRamoComNomeExistente() throws Exception {
+
+        Ramo ramoCriado = ramoRepository.save(this.ramo);
+
+        Ramo ramoComNomeIgual = new Ramo();
+
+        ramoComNomeIgual.setNome("Ramo Teste 2");
+        ramoComNomeIgual.setDescricao("Descrição do ramo teste 2");
+
+        ramoRepository.save(ramoComNomeIgual);
+
+        Ramo ramoAtualizado = new Ramo();
+
+        ramoAtualizado.setNome(ramoComNomeIgual.getNome());
+        ramoAtualizado.setDescricao("Descrição do ramo teste atualizado");
+
+        try {
+
+            ramoController.atualizar(ramoCriado.getId(), ramoAtualizado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(409, e.getRawStatusCode());
+            assertEquals("ramo_existente", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void atualizarRamoComExcecaoNoSuchElement() throws Exception {
+
+        try {
+
+            ramoController.atualizar(2023, this.ramo);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(404, e.getRawStatusCode());
+            assertEquals("nao_encontrado", e.getReason());
+        }
+
+    }
+
+    /* -------------------------------------------------------------------------- */
+
 }

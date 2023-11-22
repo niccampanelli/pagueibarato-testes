@@ -244,10 +244,6 @@ public class CategoriaControllerIntegrationTest extends PagueibaratoapiApplicati
         assertTrue(categoria.getNome().equals(responseCategoria.get(0).getNome()));
         assertTrue(responseCategoria.size() == 1);
 
-        // this.mockMvc.perform(MockMvcRequestBuilders.get("/categoria"))
-        //             .andDo(MockMvcResultHandlers.print())
-        //             .andExpect(MockMvcResultMatchers.status().isOk());
-
     }
 
     /* -------------------------------------------------------------------------- */

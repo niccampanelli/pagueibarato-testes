@@ -371,4 +371,27 @@ public class UsuarioControllerIntegrationTest extends PagueibaratoapiApplication
 
     /* -------------------------------------------------------------------------- */
 
+
+
+
+
+    /* -------------------------  LISTAGEM DE USUÁRIOS  ------------------------- */
+
+    @Test
+    public void listarUsuariosComSucesso() throws Exception {
+
+        this.usuarioRepository.saveAll(usuarios);
+
+        List<ResponseUsuario> responseUsuarios = this.usuarioController.listar();
+
+        this.usuarioRepository.deleteAll();
+
+        assertNotNull(responseUsuarios);
+        assertEquals(2, responseUsuarios.size());
+        assertEquals("Usuário Teste", responseUsuarios.get(0).getNome());
+        assertEquals("Usuário Teste 2", responseUsuarios.get(1).getNome());
+    }
+
+    /* -------------------------------------------------------------------------- */
+
 }

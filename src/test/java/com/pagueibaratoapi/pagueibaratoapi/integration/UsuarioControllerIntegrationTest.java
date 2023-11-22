@@ -318,4 +318,57 @@ public class UsuarioControllerIntegrationTest extends PagueibaratoapiApplication
 
     /* -------------------------------------------------------------------------- */
 
+
+
+
+
+    /* ----------------------  LEITURA DE USUÁRIO POR ID  ----------------------- */
+
+    @Test
+    public void lerUsuarioPorIdComSucesso() throws Exception {
+
+        Usuario usuarioCriado = this.usuarioRepository.save(usuario);
+
+        ResponseUsuario responseUsuario = this.usuarioController.ler(usuarioCriado.getId());
+
+        this.usuarioRepository.deleteById(usuarioCriado.getId());
+
+        assertNotNull(responseUsuario);
+        assertNotNull(responseUsuario.getId());
+        assertEquals("Usuário Teste", responseUsuario.getNome());
+        assertEquals("fulano@email.com", responseUsuario.getEmail());
+        assertEquals("Rua Teste", responseUsuario.getLogradouro());
+    }
+
+    @Test
+    public void lerUsuarioPorIdInexistente() throws Exception {
+
+        try {
+
+            this.usuarioController.ler(1986);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(404, e.getRawStatusCode());
+            assertEquals("usuario_nao_encontrado", e.getReason());
+        }
+    }
+
+    @Test
+    public void lerUsuarioPorIdComExcecao() {
+
+        try {
+
+            this.usuarioController.ler(null);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_inesperado", e.getReason());
+        }
+
+    }
+
+    /* -------------------------------------------------------------------------- */
+
 }

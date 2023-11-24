@@ -57,7 +57,7 @@ public class CategoriaControllerTest {
 
 
     @Before
-    public void configurar() {
+    public void setUp() {
         // Inicializa os objetos mockados
         MockitoAnnotations.openMocks(this);
 

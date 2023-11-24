@@ -2,7 +2,6 @@ package com.pagueibaratoapi.pagueibaratoapi.controllers;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -17,8 +16,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import org.checkerframework.checker.nullness.Opt;
-import org.hibernate.criterion.Example;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;

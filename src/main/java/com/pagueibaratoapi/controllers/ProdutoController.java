@@ -12,9 +12,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -23,7 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -31,16 +27,11 @@ import com.pagueibaratoapi.models.exceptions.DadosConflitantesException;
 import com.pagueibaratoapi.models.exceptions.DadosInvalidosException;
 import com.pagueibaratoapi.models.requests.Produto;
 import com.pagueibaratoapi.models.requests.Usuario;
-import com.pagueibaratoapi.models.responses.ResponsePagina;
 import com.pagueibaratoapi.models.responses.ResponseProduto;
 import com.pagueibaratoapi.repository.CategoriaRepository;
-import com.pagueibaratoapi.repository.EstoqueRepository;
-import com.pagueibaratoapi.repository.MercadoRepository;
 import com.pagueibaratoapi.repository.ProdutoRepository;
-import com.pagueibaratoapi.repository.SugestaoRepository;
 import com.pagueibaratoapi.repository.UsuarioRepository;
 import com.pagueibaratoapi.utils.EditaRecurso;
-import com.pagueibaratoapi.utils.PaginaUtils;
 import com.pagueibaratoapi.utils.Tratamento;
 
 /**
@@ -52,26 +43,17 @@ public class ProdutoController {
 
     // Repositórios responsável pelos métodos JPA dp banco de dados.
     private final CategoriaRepository categoriaRepository;
-    private final EstoqueRepository estoqueRepository;
-    private final MercadoRepository mercadoRepository;
     private final ProdutoRepository produtoRepository;
-    private final SugestaoRepository sugestaoRepository;
     private final UsuarioRepository usuarioRepository;
 
     // Construtor
     public ProdutoController(
         CategoriaRepository categoriaRepository,
-        EstoqueRepository estoqueRepository,
-        MercadoRepository mercadoRepository,
         ProdutoRepository produtoRepository,
-        SugestaoRepository sugestaoRepository,
         UsuarioRepository usuarioRepository
     ) {
         this.categoriaRepository = categoriaRepository;
-        this.estoqueRepository = estoqueRepository;
-        this.mercadoRepository = mercadoRepository;
         this.produtoRepository = produtoRepository;
-        this.sugestaoRepository = sugestaoRepository;
         this.usuarioRepository = usuarioRepository;
     }
 

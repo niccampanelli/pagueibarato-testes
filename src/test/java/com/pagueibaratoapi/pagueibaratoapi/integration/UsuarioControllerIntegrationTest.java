@@ -394,4 +394,311 @@ public class UsuarioControllerIntegrationTest extends PagueibaratoapiApplication
 
     /* -------------------------------------------------------------------------- */
 
+
+
+
+
+    /* --------------------------  EDIÇÃO DE USUÁRIOS  -------------------------- */
+
+    @Test
+    public void editarUsuarioComSucesso() throws Exception {
+
+        Usuario usuarioCriado = this.usuarioRepository.save(usuario);
+
+        Usuario usuarioEditado = new Usuario();
+
+        usuarioEditado.setNome("Usuário Teste Editado");
+
+        ResponseUsuario responseUsuario = this.usuarioController.editar(usuarioCriado.getId(), usuarioEditado);
+
+        this.usuarioRepository.deleteById(usuarioCriado.getId());
+
+        assertNotNull(responseUsuario);
+        assertNotNull(responseUsuario.getId());
+        assertEquals("Usuário Teste Editado", responseUsuario.getNome());
+        assertEquals("fulano@email.com", responseUsuario.getEmail());
+        assertEquals("Rua Teste", responseUsuario.getLogradouro());
+
+    }
+
+    @Test
+    public void editarUsuarioComCorpoNulo() throws Exception {
+
+        try {
+
+            this.usuarioController.editar(1, null);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("corpo_nulo", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void editarUsuarioComIdFornecido() throws Exception {
+
+        usuario.setId(1);
+
+        try {
+
+            this.usuarioController.editar(1, usuario);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("id_fornecido", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void editarUsuarioComComplementoInvalido() throws Exception {
+
+        usuario.setComplemento("Complemento Inválido!");
+
+        try {
+
+            this.usuarioController.editar(1, usuario);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("complemento_invalido", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void editarUsuarioComNomeInvalido() throws Exception {
+
+        usuario.setNome("An");
+
+        try {
+
+            this.usuarioController.editar(1, usuario);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("nome_invalido", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void editarUsuarioComEmailInvalido() throws Exception {
+
+        usuario.setEmail("emailinvalido");
+
+        try {
+
+            this.usuarioController.editar(1, usuario);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("email_invalido", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void editarUsuarioComSenhaInvalida() throws Exception {
+
+        usuario.setSenha("senhainvalida");
+
+        try {
+
+            this.usuarioController.editar(1, usuario);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("senha_invalido", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void editarUsuarioComLogradouroInvalido() throws Exception {
+
+        usuario.setLogradouro("Rua");
+
+        try {
+
+            this.usuarioController.editar(1, usuario);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("logradouro_invalido", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void editarUsuarioComNumeroInvalido() throws Exception {
+
+        usuario.setNumero(0);
+
+        try {
+
+            this.usuarioController.editar(1, usuario);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("numero_invalido", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void editarUsuarioComBairroInvalido() throws Exception {
+
+        usuario.setBairro("Bair");
+
+        try {
+
+            this.usuarioController.editar(1, usuario);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("bairro_invalido", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void editarUsuarioComCidadeInvalida() throws Exception {
+
+        usuario.setCidade("São");
+
+        try {
+
+            this.usuarioController.editar(1, usuario);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("cidade_invalido", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void editarUsuarioComUfInvalida() throws Exception {
+
+        usuario.setUf("São Paulo");
+
+        try {
+
+            this.usuarioController.editar(1, usuario);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("uf_invalido", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void editarUsuarioComCepInvalido() throws Exception {
+
+        usuario.setCep("123456789");
+
+        try {
+
+            this.usuarioController.editar(1, usuario);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("cep_invalido", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void editarUsuarioComEmailExistente() throws Exception {
+
+        Usuario usuarioCriado = this.usuarioRepository.save(usuario);
+
+        Usuario usuarioEditado = new Usuario();
+
+        usuarioEditado.setNome("Usuário Teste 2");
+        usuarioEditado.setEmail(this.usuarios.get(1).getEmail());
+        usuarioEditado.setLogradouro("Rua Teste 2");
+        usuarioEditado.setNumero(123);
+        usuarioEditado.setComplemento("Casa");
+        usuarioEditado.setBairro("Bairro Teste");
+        usuarioEditado.setCidade("Cidade Teste");
+        usuarioEditado.setUf("SP");
+        usuarioEditado.setCep("12345-678");
+        usuarioEditado.setSenha("123456UsuarioT3ST3!");
+
+        try {
+
+            this.usuarioController.editar(usuarioCriado.getId(), usuarioEditado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(409, e.getRawStatusCode());
+            assertEquals("email_em_uso", e.getReason());
+        }
+        finally {
+            this.usuarioRepository.deleteById(usuarioCriado.getId());
+        }
+
+    }
+
+    @Test
+    public void editarUsuarioDeletado() throws Exception {
+
+        Usuario usuarioCriado = this.usuarioRepository.save(usuario);
+
+
+        Usuario usuarioEditado = new Usuario();
+
+        usuarioEditado.setNome("Usuário Teste Editado");
+
+
+        this.usuarioController.remover(usuarioCriado.getId());
+
+        try {
+
+            this.usuarioController.editar(usuarioCriado.getId(), usuarioEditado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(404, e.getRawStatusCode());
+            assertEquals("nao_encontrado", e.getReason());
+        }
+        finally {
+            this.usuarioRepository.deleteById(usuarioCriado.getId());
+        }
+
+    }
+
+    @Test
+    public void editarUsuarioComExcecaoNoSuchElement() throws Exception {
+
+        try {
+
+            this.usuarioController.editar(1986, usuario);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(404, e.getRawStatusCode());
+            assertEquals("nao_encontrado", e.getReason());
+        }
+
+    }
+
+    /* -------------------------------------------------------------------------- */
+
 }

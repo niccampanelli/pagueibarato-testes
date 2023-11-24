@@ -61,7 +61,7 @@ public class TratamentoUsuario {
             else if(usuario.getEmail() != null && (usuario.getEmail().isEmpty() || usuario.getEmail().length() > 255 || usuario.getEmail().length() < 7 || !usuario.getEmail().contains("@") || !usuario.getEmail().contains(".") || usuario.getEmail().contains(" "))) {
                 throw new DadosInvalidosException("email_invalido");
             }
-            else if(usuario.getSenha() != null && (usuario.getSenha().isEmpty() || usuario.getSenha().length() > 255 || usuario.getSenha().length() < 8 || !usuario.getSenha().matches("(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$)."))) {
+            else if(usuario.getSenha() != null && (usuario.getSenha().isEmpty() || usuario.getSenha().length() > 255 || usuario.getSenha().length() < 8 || !usuario.getSenha().matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&-+=()])(?=\\S+$).{8,20}$"))) {
                 throw new DadosInvalidosException("senha_invalido");
             }
             else if(usuario.getLogradouro() != null && (usuario.getLogradouro().isEmpty() || usuario.getLogradouro().length() > 120 || usuario.getLogradouro().length() < 5)) {

@@ -15,12 +15,12 @@ import org.springframework.web.server.ResponseStatusException;
 import com.pagueibaratoapi.controllers.CategoriaController;
 import com.pagueibaratoapi.models.requests.Categoria;
 import com.pagueibaratoapi.models.responses.ResponseCategoria;
-import com.pagueibaratoapi.pagueibaratoapi.PagueibaratoapiApplicationTests;
+import com.pagueibaratoapi.pagueibaratoapi.PagueiBaratoApiApplicationTests;
 import com.pagueibaratoapi.repository.CategoriaRepository;
 
 
 @RunWith(SpringRunner.class)
-public class CategoriaControllerIntegrationTest extends PagueibaratoapiApplicationTests {
+public class CategoriaControllerIntegrationTest extends PagueiBaratoApiApplicationTests {
 
     @Autowired
     private CategoriaController categoriaController;

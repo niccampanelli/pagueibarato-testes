@@ -15,13 +15,13 @@ import org.springframework.web.server.ResponseStatusException;
 import com.pagueibaratoapi.controllers.UsuarioController;
 import com.pagueibaratoapi.models.requests.Usuario;
 import com.pagueibaratoapi.models.responses.ResponseUsuario;
-import com.pagueibaratoapi.pagueibaratoapi.PagueibaratoapiApplicationTests;
+import com.pagueibaratoapi.pagueibaratoapi.PagueiBaratoApiApplicationTests;
 import com.pagueibaratoapi.repository.UsuarioRepository;
 
 
 
 @RunWith(SpringRunner.class)
-public class UsuarioControllerIntegrationTest extends PagueibaratoapiApplicationTests {
+public class UsuarioControllerIntegrationTest extends PagueiBaratoApiApplicationTests {
 
     @Autowired
     private UsuarioController usuarioController;

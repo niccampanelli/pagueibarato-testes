@@ -16,13 +16,13 @@ import org.springframework.web.server.ResponseStatusException;
 import com.pagueibaratoapi.controllers.RamoController;
 import com.pagueibaratoapi.models.requests.Ramo;
 import com.pagueibaratoapi.models.responses.ResponseRamo;
-import com.pagueibaratoapi.pagueibaratoapi.PagueibaratoapiApplicationTests;
+import com.pagueibaratoapi.pagueibaratoapi.PagueiBaratoApiApplicationTests;
 import com.pagueibaratoapi.repository.RamoRepository;
 
 
 
 @RunWith(SpringRunner.class)
-public class RamoControllerIntegrationTest extends PagueibaratoapiApplicationTests {
+public class RamoControllerIntegrationTest extends PagueiBaratoApiApplicationTests {
 
     @Autowired
     private RamoController ramoController;

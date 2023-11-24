@@ -1,0 +1,514 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > UsuarioController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.pagueibaratoapi.controllers</a>
+</div>
+
+<h1>Coverage Summary for Class: UsuarioController (com.pagueibaratoapi.controllers)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">UsuarioController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    87,5%
+  </span>
+  <span class="absValue">
+    (21/24)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    97,7%
+  </span>
+  <span class="absValue">
+    (130/133)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">UsuarioController$$EnhancerBySpringCGLIB$$320dcf9e</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    87,5%
+  </span>
+  <span class="absValue">
+    (21/24)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    97,7%
+  </span>
+  <span class="absValue">
+    (130/133)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.pagueibaratoapi.controllers;
+&nbsp;
+&nbsp;import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+&nbsp;import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;import java.util.NoSuchElementException;
+&nbsp;
+&nbsp;import org.springframework.dao.DataIntegrityViolationException;
+&nbsp;import org.springframework.web.bind.annotation.DeleteMapping;
+&nbsp;import org.springframework.web.bind.annotation.GetMapping;
+&nbsp;import org.springframework.web.bind.annotation.PatchMapping;
+&nbsp;import org.springframework.web.bind.annotation.PathVariable;
+&nbsp;import org.springframework.web.bind.annotation.PostMapping;
+&nbsp;import org.springframework.web.bind.annotation.PutMapping;
+&nbsp;import org.springframework.web.bind.annotation.RequestBody;
+&nbsp;import org.springframework.web.bind.annotation.RequestMapping;
+&nbsp;import org.springframework.web.bind.annotation.RestController;
+&nbsp;import org.springframework.web.server.ResponseStatusException;
+&nbsp;
+&nbsp;import com.pagueibaratoapi.models.exceptions.DadosConflitantesException;
+&nbsp;import com.pagueibaratoapi.models.exceptions.DadosInvalidosException;
+&nbsp;import com.pagueibaratoapi.models.requests.Usuario;
+&nbsp;import com.pagueibaratoapi.models.responses.ResponseUsuario;
+&nbsp;import com.pagueibaratoapi.repository.UsuarioRepository;
+&nbsp;import com.pagueibaratoapi.utils.EditaRecurso;
+&nbsp;import com.pagueibaratoapi.utils.Senha;
+&nbsp;import com.pagueibaratoapi.utils.Tratamento;
+&nbsp;
+&nbsp;/**
+&nbsp; * Classe responsável por controlar as requisições dos usuários
+&nbsp; */
+&nbsp;@RestController
+&nbsp;@RequestMapping(&quot;/usuario&quot;)
+&nbsp;public class UsuarioController {
+&nbsp;
+&nbsp;    // Iniciando a variável de instância do repositório
+&nbsp;    private final UsuarioRepository usuarioRepository;
+&nbsp;
+&nbsp;    // Construtor do controller do usuário, que realizará a injeção de dependência do repositório
+<b class="fc">&nbsp;    public UsuarioController(UsuarioRepository usuarioRepository) {</b>
+<b class="fc">&nbsp;        this.usuarioRepository = usuarioRepository;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Método responsável por criar um novo usuário
+&nbsp;     * @param requestUsuario - Objeto que contém os dados do novo usuário.
+&nbsp;     * @return ResponseUsuario - Objeto que contém o usuário que foi criado.
+&nbsp;     */
+&nbsp;    @PostMapping
+&nbsp;    public ResponseUsuario criar(@RequestBody Usuario requestUsuario) {
+&nbsp;        try {
+&nbsp;
+&nbsp;            // Validando os dados enviados pelo cliente por parâmetro.
+<b class="fc">&nbsp;            Tratamento.validarUsuario(requestUsuario, false);</b>
+&nbsp;
+&nbsp;            // Verifica se existe um usuário com o email informado pelo cliente.
+<b class="fc">&nbsp;            if(usuarioRepository.findByEmail(requestUsuario.getEmail()) != null)</b>
+<b class="fc">&nbsp;                throw new DadosConflitantesException(&quot;email_em_uso&quot;);</b>
+&nbsp;
+&nbsp;            // Setando a senha do usuário que será criado como a senha enviada pelo cliente criptografada.
+<b class="fc">&nbsp;            requestUsuario.setSenha(Senha.encriptar(requestUsuario.getSenha()));</b>
+&nbsp;
+&nbsp;            // Salvando o usuário no banco de dados e armazenando no objeto de resposta ResponseUsuario.
+<b class="fc">&nbsp;            ResponseUsuario responseUsuario = new ResponseUsuario(usuarioRepository.save(requestUsuario));</b>
+&nbsp;
+&nbsp;            // Adicionando à resposta o link para leitura usuário criado.
+<b class="fc">&nbsp;            responseUsuario.add(</b>
+<b class="fc">&nbsp;                linkTo(</b>
+<b class="fc">&nbsp;                    methodOn(UsuarioController.class).ler(responseUsuario.getId())</b>
+&nbsp;                )
+<b class="fc">&nbsp;                .withSelfRel()</b>
+&nbsp;            );
+&nbsp;
+&nbsp;            // Retornando o objeto de resposta.
+<b class="fc">&nbsp;            return responseUsuario;</b>
+&nbsp;
+<b class="fc">&nbsp;        } catch (DadosConflitantesException e) {</b>
+&nbsp;            // Lançando exceção informando que os dados enviados por parâmetro são conflitantes com os dados do banco de dados.
+<b class="fc">&nbsp;            throw new ResponseStatusException(409, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (DadosInvalidosException e) {</b>
+&nbsp;            // Lançando exceção informando que os dados enviados por parâmetro são inválidos.
+<b class="fc">&nbsp;            throw new ResponseStatusException(400, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (DataIntegrityViolationException e) {</b>
+&nbsp;            // Lançando exceção informando que há violação de integridade de dados.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_insercao&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (IllegalArgumentException e) {</b>
+&nbsp;            // Lançando exceção informando que os dados enviados por parâmetro são inválidos.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+&nbsp;            // Lançando exceção informando que há um erro inesperado.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Método responsável por ler um usuário com o id informado
+&nbsp;     * @param id - Id do usuário que será lido.
+&nbsp;     * @return ResponseUsuario - Objeto que contém o usuário que foi lido.
+&nbsp;     */
+&nbsp;    @GetMapping(&quot;/{id}&quot;)
+&nbsp;    public ResponseUsuario ler(@PathVariable(&quot;id&quot;) Integer id) {
+&nbsp;        try {
+&nbsp;
+&nbsp;            // Buscando o usuário com o id informado.
+<b class="fc">&nbsp;            Usuario usuarioEncontrado = usuarioRepository.findById(id).get();</b>
+&nbsp;
+&nbsp;            // Verificando se o usuário encontrado não foi removido.
+&nbsp;            // Quando um usuário é removido, ele tem seus atributos setados como vazio (aspas vazias).
+<b class="fc">&nbsp;            if(!Tratamento.usuarioExiste(usuarioEncontrado))</b>
+&nbsp;                // Se o usuário não existe, lançando exceção informando que o usuário não existe.
+<b class="fc">&nbsp;                throw new NoSuchElementException(&quot;usuario_nao_encontrado&quot;);</b>
+&nbsp;
+&nbsp;            // Armazenando o usuário encontrado no objeto de resposta ResponseUsuario.
+<b class="fc">&nbsp;            ResponseUsuario responseUsuario = new ResponseUsuario(usuarioEncontrado);</b>
+&nbsp;
+&nbsp;            // Adicionando à resposta o link para listagem usuário criado.
+<b class="pc">&nbsp;            if(responseUsuario != null) {</b>
+<b class="fc">&nbsp;                responseUsuario.add(</b>
+<b class="fc">&nbsp;                    linkTo(</b>
+<b class="fc">&nbsp;                        methodOn(UsuarioController.class).listar()</b>
+&nbsp;                    )
+<b class="fc">&nbsp;                    .withRel(&quot;collection&quot;)</b>
+&nbsp;                );
+&nbsp;            }
+&nbsp;
+&nbsp;            // Retornando o objeto de resposta do usuário encontrado.
+<b class="fc">&nbsp;            return responseUsuario;</b>
+&nbsp;
+<b class="fc">&nbsp;        } catch (NoSuchElementException e) {</b>
+&nbsp;            // Lançando exceção informando que o usuário não foi encontrado.
+<b class="fc">&nbsp;            throw new ResponseStatusException(404, &quot;usuario_nao_encontrado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+&nbsp;            // Lançando exceção informando que há um erro inesperado.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Método responsável por listar todos os usuários
+&nbsp;     * @return &lt;b&gt;List&lt;ResponseUsuario&gt;&lt;/b&gt; - Lista de objetos que contém todos os usuários encontrados.
+&nbsp;     */
+&nbsp;    @GetMapping
+&nbsp;    public List&lt;ResponseUsuario&gt; listar() {
+&nbsp;        try {
+&nbsp;            // Buscando todos os usuários e armazenando numa lista de usuários
+<b class="fc">&nbsp;            List&lt;Usuario&gt; usuarios = usuarioRepository.findAll();</b>
+&nbsp;
+&nbsp;            // Criando uma lista de resposta do tipo ResponseUsuario vazia.
+<b class="fc">&nbsp;            List&lt;ResponseUsuario&gt; responseUsuario = new ArrayList&lt;ResponseUsuario&gt;();</b>
+&nbsp;
+&nbsp;            // Para cada usuário da lista de usuarios
+<b class="fc">&nbsp;            for(Usuario usuario : usuarios) {</b>
+&nbsp;                // Se o usuário não foi removido
+<b class="pc">&nbsp;                if(Tratamento.usuarioExiste(usuario))</b>
+&nbsp;                    // Convertendo o usuário para um objeto de resposta ResponseUsuario e adicionando à lista de resposta.
+<b class="fc">&nbsp;                    responseUsuario.add(new ResponseUsuario(usuario));</b>
+<b class="fc">&nbsp;            }</b>
+&nbsp;
+&nbsp;            // Se a lista de resposta possuir algum usuário
+<b class="fc">&nbsp;            if(!responseUsuario.isEmpty()) {</b>
+&nbsp;                // Para cada usuário da lista de resposta
+<b class="fc">&nbsp;                for(ResponseUsuario usuario : responseUsuario) {</b>
+&nbsp;                    // Adiciona ao objeto um link para a leitura do usuário em questão
+<b class="fc">&nbsp;                    usuario.add(</b>
+<b class="fc">&nbsp;                        linkTo(</b>
+<b class="fc">&nbsp;                            methodOn(UsuarioController.class).ler(usuario.getId())</b>
+&nbsp;                        )
+<b class="fc">&nbsp;                        .withSelfRel()</b>
+&nbsp;                    );
+<b class="fc">&nbsp;                }</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            // Retornando a lista de resposta de usuários.
+<b class="fc">&nbsp;            return responseUsuario;</b>
+&nbsp;
+<b class="nc">&nbsp;        } catch (NullPointerException e) {</b>
+&nbsp;            // Lançando exceção informando que algum registro não foi encontrado.
+<b class="nc">&nbsp;            throw new ResponseStatusException(404, &quot;nao_encontrado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (UnsupportedOperationException e) {</b>
+&nbsp;            // Lançando exceção informando que há um erro inesperado.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+&nbsp;            // Lançando exceção informando que há um erro inesperado.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Método responsável por atualizar atributos específicos de um usuário com o id informado.
+&nbsp;     * @param id - Id do usuário que será atualizado.
+&nbsp;     * @param requestUsuario - Objeto que contém os dados do usuário que será atualizado.
+&nbsp;     * @return ResponseUsuario - Mercado atualizado.
+&nbsp;     */
+&nbsp;    @PatchMapping(&quot;/{id}&quot;)
+&nbsp;    public ResponseUsuario editar(@PathVariable(&quot;id&quot;) Integer id, @RequestBody Usuario requestUsuario) {
+&nbsp;        try {
+&nbsp;
+&nbsp;            // Validando os parâmetros enviados pelo cliente
+<b class="fc">&nbsp;            Tratamento.validarUsuario(requestUsuario, true);</b>
+&nbsp;
+&nbsp;            // Verificando se já existe um usuário com o email informado
+<b class="fc">&nbsp;            if(usuarioRepository.findByEmail(requestUsuario.getEmail()) != null)</b>
+&nbsp;                // Lançando exceção de conflito informando que já existe um usuário com o email informado.
+<b class="fc">&nbsp;                throw new DadosConflitantesException(&quot;email_em_uso&quot;);</b>
+&nbsp;
+&nbsp;            // Buscando o estado atual usuário com o id informado e armazenando no objeto de resposta ResponseUsuario.
+<b class="fc">&nbsp;            Usuario usuarioAtual = usuarioRepository.findById(id).get();</b>
+&nbsp;
+&nbsp;            // Verificando se o usuário encontrado foi removido.
+<b class="pc">&nbsp;            if(!Tratamento.usuarioExiste(usuarioAtual))</b>
+&nbsp;                // Lançando exceção informando que o usuário não existe.
+<b class="nc">&nbsp;                throw new NoSuchElementException(&quot;usuario_nao_encontrado&quot;);</b>
+&nbsp;
+&nbsp;            // Atualizando o usuário e armazenando num objeto de resposta ResponseUsuario.
+<b class="fc">&nbsp;            ResponseUsuario responseUsuario = new ResponseUsuario(</b>
+<b class="fc">&nbsp;                usuarioRepository.save(</b>
+&nbsp;                    // Adicionando as alterações enviadas pelo cliente e mantendo as demais conforme o estado atual.
+<b class="fc">&nbsp;                    EditaRecurso.editarUsuario(</b>
+&nbsp;                        usuarioAtual, 
+&nbsp;                        requestUsuario
+&nbsp;                    )
+&nbsp;                )
+&nbsp;            );
+&nbsp;            
+&nbsp;            // Adicionando à resposta o link para leitura do usuário criado.
+<b class="fc">&nbsp;            responseUsuario.add(</b>
+<b class="fc">&nbsp;                linkTo(</b>
+<b class="fc">&nbsp;                    methodOn(UsuarioController.class).ler(responseUsuario.getId())</b>
+&nbsp;                )
+<b class="fc">&nbsp;                .withSelfRel()</b>
+&nbsp;            );
+&nbsp;
+&nbsp;            // Retornando o objeto de resposta do usuário atualizado.
+<b class="fc">&nbsp;            return responseUsuario;</b>
+&nbsp;
+<b class="fc">&nbsp;        } catch (DadosConflitantesException e) {</b>
+&nbsp;            // Lançando uma exceção informando que há um conflito dos dados enviados com os dados do banco de dados.
+<b class="fc">&nbsp;            throw new ResponseStatusException(409, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (DadosInvalidosException e) {</b>
+&nbsp;            // Lançando uma exceção informando que os dados enviados por parâmetro são inválidos.
+<b class="fc">&nbsp;            throw new ResponseStatusException(400, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (DataIntegrityViolationException e) {</b>
+&nbsp;            // Lançando uma exceção informando que há uma violação na integridade de dados.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_insercao&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (IllegalArgumentException e) {</b>
+&nbsp;            // Lançando uma exceção informando que os dados enviados são inválidos.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (NoSuchElementException e) {</b>
+&nbsp;            // Lançando uma exceção informando que o registro não foi encontrado.
+<b class="fc">&nbsp;            throw new ResponseStatusException(404, &quot;nao_encontrado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+&nbsp;            // Lançando uma exceção informando que há um erro inesperado.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Método responsável por atualizar todos os atributos de um usuário com o id informado.
+&nbsp;     * @param id - Id do usuário que será atualizado.
+&nbsp;     * @param requestUsuario - Objeto que contém os dados do usuário que será atualizado.
+&nbsp;     * @return ResponseUsuario - Mercado atualizado.
+&nbsp;     */
+&nbsp;    @PutMapping(&quot;/{id}&quot;)
+&nbsp;    public ResponseUsuario atualizar(@PathVariable(&quot;id&quot;) Integer id, @RequestBody Usuario requestUsuario) {
+&nbsp;        try {
+&nbsp;
+&nbsp;            // Validando os parâmetros enviados pelo cliente.
+<b class="fc">&nbsp;            Tratamento.validarUsuario(requestUsuario, false);</b>
+&nbsp;
+&nbsp;            // Verificando se já existe um usuário com o email informado pelo cliente.
+<b class="fc">&nbsp;            if(usuarioRepository.findByEmail(requestUsuario.getEmail()) != null)</b>
+&nbsp;                // Lançando uma exceção informando que já existe um usuário com o email informado.
+<b class="fc">&nbsp;                throw new DadosConflitantesException(&quot;email_em_uso&quot;);</b>
+&nbsp;
+&nbsp;            // Adicionando ao corpo da requisição o id do recurso que será atualizado.
+<b class="fc">&nbsp;            requestUsuario.setId(id);</b>
+&nbsp;
+&nbsp;            // Verificando se o usuário com o id informado não foi removido.
+<b class="fc">&nbsp;            if(!Tratamento.usuarioExiste(usuarioRepository.findById(id).get()))</b>
+&nbsp;                // Lançando uma exceção informando que o usuário não existe.
+<b class="fc">&nbsp;                throw new NoSuchElementException(&quot;usuario_nao_encontrado&quot;);</b>
+&nbsp;
+&nbsp;            // Setando a senha que será atualizada como a senha enviada pelo cliente com a criptografia.
+<b class="fc">&nbsp;            requestUsuario.setSenha(Senha.encriptar(requestUsuario.getSenha()));</b>
+&nbsp;
+&nbsp;            // Atualizando o usuário e armazenando o estado atualizado na variável de resposta.
+<b class="fc">&nbsp;            ResponseUsuario responseUsuario = new ResponseUsuario(usuarioRepository.save(requestUsuario));</b>
+&nbsp;
+&nbsp;            // Adicionando à resposta o link para leitura do usuário atualizado.
+<b class="fc">&nbsp;            responseUsuario.add(</b>
+<b class="fc">&nbsp;                linkTo(</b>
+<b class="fc">&nbsp;                    methodOn(UsuarioController.class).ler(responseUsuario.getId())</b>
+&nbsp;                )
+<b class="fc">&nbsp;                .withSelfRel()</b>
+&nbsp;            );
+&nbsp;
+&nbsp;            // Retornando o objeto de resposta com o usuário atualizado.
+<b class="fc">&nbsp;            return responseUsuario;</b>
+&nbsp;
+<b class="fc">&nbsp;        } catch (DadosConflitantesException e) {</b>
+&nbsp;            // Lançando uma exceção informando que os dados do cliente são conflitantes com os dados do banco de dados.
+<b class="fc">&nbsp;            throw new ResponseStatusException(409, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (DadosInvalidosException e) {</b>
+&nbsp;            // Lançando uma exceção informando que os dados enviados pelo cliente são inválidos.
+<b class="fc">&nbsp;            throw new ResponseStatusException(400, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (NoSuchElementException e) {</b>
+&nbsp;            // Lançando uma exceção informando que o registro solicitado não existente.
+<b class="fc">&nbsp;            throw new ResponseStatusException(404, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (DataIntegrityViolationException e) {</b>
+&nbsp;            // Lançando uma exceção informando que há uma violação na integridade dos dados.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_insercao&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (IllegalArgumentException e) {</b>
+&nbsp;            // Lançando uma exceção informando que os dados informados pelo cliente são inválidos.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+&nbsp;            // Lançando uma exceção informando que ocorreu algum erro inesperado.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Método responsável por deletar um usuário com o id informado.
+&nbsp;     * @param id - Id do usuário que será removido.
+&nbsp;     * @return Object - Link para a listagem de usuários.
+&nbsp;     */
+&nbsp;    @DeleteMapping(&quot;/{id}&quot;)
+&nbsp;    public Object remover(@PathVariable int id) {
+&nbsp;        try {
+&nbsp;
+&nbsp;            // Buscando o usuário que será removido e armazenando numa instância de usuário.
+<b class="fc">&nbsp;            Usuario usuarioDeletado = usuarioRepository.findById(id).get();</b>
+&nbsp;
+&nbsp;            // Verificando se o usuário com o id informado não foi removido.
+<b class="fc">&nbsp;            if(!Tratamento.usuarioExiste(usuarioDeletado))</b>
+&nbsp;                // Lançando uma exceção informando que o usuário não existe.
+<b class="fc">&nbsp;                throw new NoSuchElementException(&quot;usuario_nao_encontrado&quot;);</b>
+&nbsp;
+&nbsp;            /* 
+&nbsp;            * Setando todos os atributos do usuário como vazio,
+&nbsp;            * haja vista que o usuário será mantido para manter integridade de outros recursos atrelados ao usuário,
+&nbsp;            * mesmo que este não exista mais.
+&nbsp;            */
+<b class="fc">&nbsp;            usuarioDeletado.setId(id);</b>
+<b class="fc">&nbsp;            usuarioDeletado.setNome(&quot;&quot;);</b>
+<b class="fc">&nbsp;            usuarioDeletado.setEmail(&quot;&quot;);</b>
+<b class="fc">&nbsp;            usuarioDeletado.setSenha(&quot;&quot;);</b>
+<b class="fc">&nbsp;            usuarioDeletado.setLogradouro(&quot;&quot;);</b>
+<b class="fc">&nbsp;            usuarioDeletado.setNumero(-1);</b>
+<b class="fc">&nbsp;            usuarioDeletado.setComplemento(null);</b>
+<b class="fc">&nbsp;            usuarioDeletado.setBairro(&quot;&quot;);</b>
+<b class="fc">&nbsp;            usuarioDeletado.setCidade(&quot;&quot;);</b>
+<b class="fc">&nbsp;            usuarioDeletado.setUf(&quot;--&quot;);</b>
+<b class="fc">&nbsp;            usuarioDeletado.setCep(&quot;00000-000&quot;);</b>
+&nbsp;
+&nbsp;            // Atualizando o usuário.
+<b class="fc">&nbsp;            usuarioRepository.save(usuarioDeletado);</b>
+&nbsp;
+&nbsp;            // Retornando um link para a listagem de todos os usuários.
+<b class="fc">&nbsp;            return linkTo(</b>
+<b class="fc">&nbsp;                        methodOn(UsuarioController.class).listar()</b>
+&nbsp;                    )
+<b class="fc">&nbsp;                    .withRel(&quot;collection&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        } catch (NoSuchElementException e) {</b>
+&nbsp;            // Lançando uma exceção informando que o registro informado não foi encontrado.
+<b class="fc">&nbsp;            throw new ResponseStatusException(404, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (DataIntegrityViolationException e) {</b>
+&nbsp;            // Lançando uma exceção informando que há uma violação na integridade dos dados.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_remocao&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (IllegalArgumentException e) {</b>
+&nbsp;            // Lançando uma exceção informado que os dados enviados pelo usuário são inválidos.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+&nbsp;            // Lançando uma exceção informando que ocorreu um erro inesperado.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-23 21:20</div>
+</div>
+</body>
+</html>

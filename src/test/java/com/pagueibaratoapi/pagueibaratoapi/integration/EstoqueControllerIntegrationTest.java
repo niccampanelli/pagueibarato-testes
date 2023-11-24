@@ -25,7 +25,7 @@ import com.pagueibaratoapi.models.requests.Produto;
 import com.pagueibaratoapi.models.requests.Ramo;
 import com.pagueibaratoapi.models.requests.Usuario;
 import com.pagueibaratoapi.models.responses.ResponseEstoque;
-import com.pagueibaratoapi.pagueibaratoapi.PagueibaratoapiApplicationTests;
+import com.pagueibaratoapi.pagueibaratoapi.PagueiBaratoApiApplicationTests;
 import com.pagueibaratoapi.repository.CategoriaRepository;
 import com.pagueibaratoapi.repository.EstoqueRepository;
 import com.pagueibaratoapi.repository.MercadoRepository;
@@ -35,7 +35,7 @@ import com.pagueibaratoapi.repository.UsuarioRepository;
 
 @AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
-public class EstoqueControllerIntegrationTest extends PagueibaratoapiApplicationTests {
+public class EstoqueControllerIntegrationTest extends PagueiBaratoApiApplicationTests {
 
     @Autowired
     private EstoqueController estoqueController;

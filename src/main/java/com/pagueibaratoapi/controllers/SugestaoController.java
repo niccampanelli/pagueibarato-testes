@@ -12,8 +12,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -22,20 +20,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.pagueibaratoapi.models.responses.ResponsePagina;
-import com.pagueibaratoapi.models.responses.ResponseSugestao;
 import com.pagueibaratoapi.models.exceptions.DadosInvalidosException;
 import com.pagueibaratoapi.models.requests.Sugestao;
 import com.pagueibaratoapi.models.requests.Usuario;
+import com.pagueibaratoapi.models.responses.ResponseSugestao;
 import com.pagueibaratoapi.repository.EstoqueRepository;
 import com.pagueibaratoapi.repository.SugestaoRepository;
 import com.pagueibaratoapi.repository.UsuarioRepository;
 import com.pagueibaratoapi.utils.EditaRecurso;
-import com.pagueibaratoapi.utils.PaginaUtils;
 import com.pagueibaratoapi.utils.Tratamento;
 
 /**
@@ -216,119 +211,6 @@ public class SugestaoController {
             throw new ResponseStatusException(404, "nao_encontrado", e);
         } catch (UnsupportedOperationException e) {
             throw new ResponseStatusException(500, "erro_inesperado", e);
-        } catch (Exception e) {
-            throw new ResponseStatusException(500, "erro_inesperado", e);
-        }
-    }
-
-    /**
-     * Rota responsável por listar sugestões.
-     * @param requestSugestao - Dados de pesquisa para filtragem.
-     * @param pagina - Numero da página a ser mostrada.
-     * @param limite - Limite de registros por página.
-     * @return Lista de sugestões com dados da página.
-     */
-    @GetMapping(params = { "pagina", "limite" })
-    @Cacheable("sugestoes")
-    public ResponsePagina listar(
-        Sugestao requestSugestao,
-        @RequestParam(required = false, defaultValue = "0") Integer pagina,
-        @RequestParam(required = false, defaultValue = "10") Integer limite
-    ) {
-        try {
-
-            // Valida os dados fornecidos.
-            Tratamento.validarSugestao(requestSugestao, true);
-
-            // Busca as sugestões no banco semelhantes aos dados de pesquisa.
-            // Se não houver dados de pesquisa, busca todas as sugestões.
-            // Informa os dados de paginação.
-            // Se não houver paginação, busca todas as sugestões.
-            Page<Sugestao> paginaSugestao = sugestaoRepository.findAll(
-                Example.of(
-                    requestSugestao, 
-                    ExampleMatcher
-                        .matching()
-                        .withIgnoreCase()
-                        .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING)
-                ),
-                PageRequest.of(pagina, limite)
-            );
-
-            // Lista de sugestões que será retornada.
-            List<ResponseSugestao> sugestoes = new ArrayList<ResponseSugestao>();
-
-            // Formata a resposta com os dados obtidos.
-            ResponsePagina responsePagina = PaginaUtils.criarResposta(pagina, limite, paginaSugestao, sugestoes);
-
-            // Adiciona as sugestões a lista.
-            for(Sugestao sugestao : paginaSugestao.getContent()) {
-                sugestoes.add(new ResponseSugestao(sugestao));
-            }
-
-            // Adiciona o link para a primeira página de sugestões.
-            responsePagina.add(
-                linkTo(
-                    methodOn(SugestaoController.class).listar(requestSugestao, 0, limite)
-                )
-                .withRel("first")
-            );
-
-            // Se houver sugestões,
-            if(!paginaSugestao.isEmpty()) {
-                // Se a página atual não for a primeira,
-                if(pagina > 0) {
-                    // Adiciona o link para a página anterior.
-                    responsePagina.add(
-                        linkTo(
-                            methodOn(SugestaoController.class).listar(requestSugestao, pagina - 1, limite)
-                        )
-                        .withRel("previous")
-                    );
-                }
-
-                // Se a página atual não for a última,
-                if(pagina < paginaSugestao.getTotalPages() - 1) {
-                    // Adiciona o link para a página seguinte.
-                    responsePagina.add(
-                        linkTo(
-                            methodOn(SugestaoController.class).listar(requestSugestao, pagina + 1, limite)
-                        )
-                        .withRel("next")
-                    );
-                }
-
-                // Adiciona o link para a última página de sugestões.
-                responsePagina.add(
-                    linkTo(
-                        methodOn(SugestaoController.class).listar(requestSugestao, paginaSugestao.getTotalPages() - 1, limite)
-                    )
-                    .withRel("last")
-                );
-
-                // Percorre as sugestões,
-                for(ResponseSugestao sugestao : sugestoes) {
-                    // Divide o preço da sugestão atual por 100 para obter os centavos.
-                    sugestao.setPreco(sugestao.getPreco() / 100);
-                    // Adiciona o link para detalhamento da sugestão.
-                    sugestao.add(
-                        linkTo(
-                            methodOn(SugestaoController.class).ler(sugestao.getId())
-                        )
-                        .withSelfRel()
-                    );
-                }
-            }
-
-            // Retorna as sugestões.
-            return responsePagina;
-
-        } catch (DadosInvalidosException e) {
-            throw new ResponseStatusException(400, e.getMessage(), e);
-        } catch (IllegalArgumentException e) {
-            throw new ResponseStatusException(500, "erro_inesperado", e);
-        } catch (NullPointerException e) {
-            throw new ResponseStatusException(404, "nao_encontrado", e);
         } catch (Exception e) {
             throw new ResponseStatusException(500, "erro_inesperado", e);
         }

@@ -1,0 +1,441 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > EstoqueController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.pagueibaratoapi.controllers</a>
+</div>
+
+<h1>Coverage Summary for Class: EstoqueController (com.pagueibaratoapi.controllers)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">EstoqueController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    90%
+  </span>
+  <span class="absValue">
+    (18/20)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    94,6%
+  </span>
+  <span class="absValue">
+    (87/92)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">EstoqueController$$EnhancerBySpringCGLIB$$1994e180</td>
+  </tr>
+  <tr>
+    <td class="name">EstoqueController$$EnhancerBySpringCGLIB$$1994e180$$FastClassBySpringCGLIB$$36fb1e10</td>
+  </tr>
+  <tr>
+    <td class="name">EstoqueController$$EnhancerBySpringCGLIB$$406a2f58</td>
+  </tr>
+  <tr>
+    <td class="name">EstoqueController$$FastClassBySpringCGLIB$$baee50</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    90%
+  </span>
+  <span class="absValue">
+    (18/20)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    94,6%
+  </span>
+  <span class="absValue">
+    (87/92)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.pagueibaratoapi.controllers;
+&nbsp;
+&nbsp;import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+&nbsp;import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;import java.util.NoSuchElementException;
+&nbsp;
+&nbsp;import org.springframework.cache.annotation.CacheEvict;
+&nbsp;import org.springframework.cache.annotation.Cacheable;
+&nbsp;import org.springframework.dao.DataIntegrityViolationException;
+&nbsp;import org.springframework.data.domain.Example;
+&nbsp;import org.springframework.data.domain.ExampleMatcher;
+&nbsp;import org.springframework.data.domain.Page;
+&nbsp;import org.springframework.data.domain.PageRequest;
+&nbsp;import org.springframework.web.bind.annotation.DeleteMapping;
+&nbsp;import org.springframework.web.bind.annotation.GetMapping;
+&nbsp;import org.springframework.web.bind.annotation.PathVariable;
+&nbsp;import org.springframework.web.bind.annotation.PostMapping;
+&nbsp;import org.springframework.web.bind.annotation.RequestBody;
+&nbsp;import org.springframework.web.bind.annotation.RequestMapping;
+&nbsp;import org.springframework.web.bind.annotation.RequestParam;
+&nbsp;import org.springframework.web.bind.annotation.RestController;
+&nbsp;import org.springframework.web.server.ResponseStatusException;
+&nbsp;
+&nbsp;import com.pagueibaratoapi.models.exceptions.DadosConflitantesException;
+&nbsp;import com.pagueibaratoapi.models.exceptions.DadosInvalidosException;
+&nbsp;import com.pagueibaratoapi.models.requests.Estoque;
+&nbsp;import com.pagueibaratoapi.models.requests.Usuario;
+&nbsp;import com.pagueibaratoapi.models.responses.ResponseEstoque;
+&nbsp;import com.pagueibaratoapi.models.responses.ResponsePagina;
+&nbsp;import com.pagueibaratoapi.repository.EstoqueRepository;
+&nbsp;import com.pagueibaratoapi.repository.MercadoRepository;
+&nbsp;import com.pagueibaratoapi.repository.ProdutoRepository;
+&nbsp;import com.pagueibaratoapi.repository.UsuarioRepository;
+&nbsp;import com.pagueibaratoapi.utils.PaginaUtils;
+&nbsp;import com.pagueibaratoapi.utils.Tratamento;
+&nbsp;import com.pagueibaratoapi.utils.tratamentos.TratamentoEstoque;
+&nbsp;
+&nbsp;/**
+&nbsp; * Classe responsável por controlar as requisições de estoque.
+&nbsp; */
+&nbsp;@RestController
+&nbsp;@RequestMapping(&quot;/estoque&quot;)
+&nbsp;public class EstoqueController {
+&nbsp;
+&nbsp;    // Iniciando as variáveis de instância dos repositórios.
+&nbsp;    private final EstoqueRepository estoqueRepository;
+&nbsp;    private final UsuarioRepository usuarioRepository;
+&nbsp;    private final ProdutoRepository produtoRepository;
+&nbsp;    private final MercadoRepository mercadoRepository;
+&nbsp;
+&nbsp;    // Construtor do controller do estoque que realiza a injeção de dependência dos repositórios.
+&nbsp;    public EstoqueController(
+&nbsp;        EstoqueRepository estoqueRepository,
+&nbsp;        UsuarioRepository usuarioRepository,
+&nbsp;        ProdutoRepository produtoRepository,
+&nbsp;        MercadoRepository mercadoRepository
+<b class="fc">&nbsp;    ) {</b>
+<b class="fc">&nbsp;        this.estoqueRepository = estoqueRepository;</b>
+<b class="fc">&nbsp;        this.usuarioRepository = usuarioRepository;</b>
+<b class="fc">&nbsp;        this.produtoRepository = produtoRepository;</b>
+<b class="fc">&nbsp;        this.mercadoRepository = mercadoRepository;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Método responsável por criar um novo item no estoque.
+&nbsp;     * @param estoque Objeto do tipo estoque que será criado.
+&nbsp;     * @return Objeto do tipo estoque que foi criado.
+&nbsp;     * @throws DadosInvalidosException Lança exceção caso os dados do estoque sejam inválidos.
+&nbsp;     * @throws DadosConflitantesException Lança exceção caso os dados do estoque sejam conflitantes.
+&nbsp;     */
+&nbsp;    @PostMapping
+&nbsp;    @CacheEvict(value = &quot;estoques&quot;, allEntries = true)
+&nbsp;    public ResponseEstoque criar(@RequestBody Estoque requestEstoque) {
+&nbsp;        try {
+&nbsp;
+&nbsp;            // Validando os dados enviados pelo usuário.
+<b class="fc">&nbsp;            TratamentoEstoque.validar(requestEstoque, false);</b>
+&nbsp;
+&nbsp;            // Verifica se o usuário informado existe. Caso não exista, lança exceção.
+<b class="pc">&nbsp;            if(!usuarioRepository.existsById(requestEstoque.getCriadoPor()))</b>
+<b class="nc">&nbsp;                throw new DadosInvalidosException(&quot;usuario_invalido&quot;);</b>
+&nbsp;
+&nbsp;            // Obtendo o usuário informado.
+<b class="fc">&nbsp;            Usuario usuario = usuarioRepository.findById(requestEstoque.getCriadoPor()).get();</b>
+&nbsp;
+&nbsp;            // Verifica se o usuário informado não foi deletado. Caso tenha sido, lança exceção.
+<b class="fc">&nbsp;            if(!Tratamento.usuarioExiste(usuario))</b>
+<b class="fc">&nbsp;                throw new DadosInvalidosException(&quot;usuario_invalido&quot;);</b>
+&nbsp;
+&nbsp;            // Verifica se o produto informado existe. Caso não exista, lança exceção.
+<b class="fc">&nbsp;            if(!produtoRepository.existsById(requestEstoque.getProdutoId()))</b>
+<b class="fc">&nbsp;                throw new DadosInvalidosException(&quot;produto_invalido&quot;);</b>
+&nbsp;
+&nbsp;            // Verifica se o mercado informado existe. Caso não exista, lança exceção.
+<b class="fc">&nbsp;            if(!mercadoRepository.existsById(requestEstoque.getMercadoId()))</b>
+<b class="fc">&nbsp;                throw new DadosInvalidosException(&quot;mercado_invalido&quot;);</b>
+&nbsp;
+&nbsp;            // Instanciando um objeto do estoque que será utilizado para verificar se o estoque já existe.
+<b class="fc">&nbsp;            Estoque estoqueComparar = new Estoque();</b>
+&nbsp;            // Definindo o id do produto informado pelo usuário.
+<b class="fc">&nbsp;            estoqueComparar.setProdutoId(requestEstoque.getProdutoId());</b>
+&nbsp;            // Definindo o id do mercado informado pelo usuário.
+<b class="fc">&nbsp;            estoqueComparar.setMercadoId(requestEstoque.getMercadoId());</b>
+&nbsp;
+&nbsp;            // Buscando o estoque pelo produto e mercado informados.
+<b class="fc">&nbsp;            List&lt;Estoque&gt; estoquesSemelhantes = estoqueRepository.findAll(</b>
+<b class="fc">&nbsp;                Example.of(</b>
+&nbsp;                    estoqueComparar, 
+&nbsp;                    ExampleMatcher
+<b class="fc">&nbsp;                        .matching()</b>
+<b class="fc">&nbsp;                        .withIgnoreCase()</b>
+<b class="fc">&nbsp;                        .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING)</b>
+&nbsp;                )
+&nbsp;            );
+&nbsp;
+&nbsp;            // Se o estoque já existir, lança exceção.
+<b class="fc">&nbsp;            if(estoquesSemelhantes.size() != 0)</b>
+<b class="fc">&nbsp;                throw new DadosConflitantesException(&quot;estoque_existente&quot;);</b>
+&nbsp;
+&nbsp;            // Criando um novo estoque.
+<b class="fc">&nbsp;            ResponseEstoque responseEstoque = new ResponseEstoque(estoqueRepository.save(requestEstoque));</b>
+&nbsp;
+&nbsp;            // Adicionando um link para ler o estoque criado.
+<b class="fc">&nbsp;            responseEstoque.add(</b>
+<b class="fc">&nbsp;                linkTo(</b>
+<b class="fc">&nbsp;                    methodOn(EstoqueController.class).ler(responseEstoque.getId())</b>
+&nbsp;                )
+<b class="fc">&nbsp;                .withSelfRel()</b>
+&nbsp;            );
+&nbsp;
+&nbsp;            // Retornando o estoque criado.
+<b class="fc">&nbsp;            return responseEstoque;</b>
+&nbsp;
+<b class="fc">&nbsp;        } catch (DadosConflitantesException e) {</b>
+&nbsp;            // Lançando exceção caso os dados do estoque sejam conflitantes.
+&nbsp;            // Retorna um status 409 com a mensagem de erro do conflito.
+<b class="fc">&nbsp;            throw new ResponseStatusException(409, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (DadosInvalidosException e) {</b>
+&nbsp;            // Lançando exceção caso os dados do estoque sejam inválidos.
+&nbsp;            // Retorna um status 400 com a mensagem de erro da requisição inválida.
+<b class="fc">&nbsp;            throw new ResponseStatusException(400, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (DataIntegrityViolationException e) {</b>
+&nbsp;            // Lançando exceção caso os dados do estoque sejam inválidos.
+&nbsp;            // Retorna um status 500 com a mensagem de erro da integridade de dados.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_insercao&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (IllegalArgumentException e) {</b>
+&nbsp;            // Lançando exceção caso os dados do estoque enviado sejam inválidos.
+&nbsp;            // Retorna um status 500 com a mensagem de erro.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+&nbsp;            // Lançando exceção caso ocorra algum erro inesperado.
+&nbsp;            // Retorna um status 500 com a mensagem de erro.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Método responsável por ler um item do estoque.
+&nbsp;     * @param id - Id do item do estoque que será lido.
+&nbsp;     * @return ResponseEstoque - Objeto do estoque que foi lido.
+&nbsp;     */
+&nbsp;    @GetMapping(&quot;/{id}&quot;)
+&nbsp;    public ResponseEstoque ler(@PathVariable(&quot;id&quot;) Integer id) {
+&nbsp;        try {
+&nbsp;            // Buscando o estoque pelo id informado e armazenando numa instância do tipo ResponseEstoque.
+<b class="fc">&nbsp;            ResponseEstoque responseEstoque = new ResponseEstoque(estoqueRepository.findById(id).get());</b>
+&nbsp;
+&nbsp;            // Se houver um estoque com o id informado, adiciona um link para listar todos os estoques.
+<b class="pc">&nbsp;            if(responseEstoque != null) {</b>
+<b class="fc">&nbsp;                responseEstoque.add(</b>
+<b class="fc">&nbsp;                    linkTo(</b>
+<b class="fc">&nbsp;                        methodOn(EstoqueController.class).listar(new Estoque())</b>
+&nbsp;                    )
+<b class="fc">&nbsp;                    .withRel(&quot;collection&quot;)</b>
+&nbsp;                );
+&nbsp;            }
+&nbsp;
+&nbsp;            // Retornando o estoque lido.
+<b class="fc">&nbsp;            return responseEstoque;</b>
+&nbsp;
+<b class="fc">&nbsp;        } catch (NoSuchElementException e) {</b>
+&nbsp;            // Lançando exceção caso o estoque não exista.
+<b class="fc">&nbsp;            throw new ResponseStatusException(404, &quot;nao_encontrado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+&nbsp;            // Lançando exceção caso ocorra algum erro inesperado.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Método responsável por listar todos os itens do estoque.
+&nbsp;     * @param requestEstoque - Objeto do tipo Estoque que será utilizado para filtrar os itens do estoque.
+&nbsp;     * @return List&lt; ResponseEstoque &gt; - Lista de objetos do tipo ResponseEstoque que representam os itens do estoque.
+&nbsp;     */
+&nbsp;    @GetMapping
+&nbsp;    @Cacheable(&quot;estoques&quot;)
+&nbsp;    public List&lt;ResponseEstoque&gt; listar(Estoque requestEstoque) {
+&nbsp;        try {
+&nbsp;            // Validando o estoque enviado como parâmetro
+<b class="fc">&nbsp;            Tratamento.validarEstoque(requestEstoque, true);</b>
+&nbsp;
+&nbsp;            // Buscando todos os estoques que atendam aos filtros informados e armazenando numa lista de estoques.
+<b class="fc">&nbsp;            List&lt;Estoque&gt; estoques = estoqueRepository.findAll(</b>
+<b class="fc">&nbsp;                Example.of(</b>
+&nbsp;                    requestEstoque, 
+&nbsp;                    ExampleMatcher
+<b class="fc">&nbsp;                        .matching()</b>
+<b class="fc">&nbsp;                        .withIgnoreCase()</b>
+<b class="fc">&nbsp;                        .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING)</b>
+&nbsp;                )
+&nbsp;            );
+&nbsp;
+&nbsp;            // Criando uma lista de objetos do tipo ResponseEstoque.
+<b class="fc">&nbsp;            List&lt;ResponseEstoque&gt; responseEstoque = new ArrayList&lt;ResponseEstoque&gt;();</b>
+&nbsp;
+&nbsp;            // Para cada estoque encontrado, cria um objeto do tipo ResponseEstoque e adiciona na lista de resposta.
+&nbsp;            // Etapa realizada para que o Estoque seja convertido em um objeto do tipo ResponseEstoque.
+<b class="fc">&nbsp;            for(Estoque estoque : estoques) {</b>
+<b class="fc">&nbsp;                responseEstoque.add(new ResponseEstoque(estoque));</b>
+<b class="fc">&nbsp;            }</b>
+&nbsp;
+&nbsp;            // Se houver estoques
+<b class="fc">&nbsp;            if(!responseEstoque.isEmpty()) {</b>
+&nbsp;
+&nbsp;                // Para cada estoque da lista de retorno
+<b class="fc">&nbsp;                for(ResponseEstoque estoque : responseEstoque) {</b>
+&nbsp;
+&nbsp;                    // Adiciona um link para ler o estoque em questão
+<b class="fc">&nbsp;                    estoque.add(</b>
+<b class="fc">&nbsp;                        linkTo(</b>
+<b class="fc">&nbsp;                            methodOn(EstoqueController.class).ler(estoque.getId())</b>
+&nbsp;                        )
+<b class="fc">&nbsp;                        .withSelfRel()</b>
+&nbsp;                    );
+&nbsp;
+<b class="fc">&nbsp;                }</b>
+&nbsp;
+&nbsp;            }
+&nbsp;
+<b class="fc">&nbsp;            return responseEstoque;</b>
+&nbsp;
+<b class="fc">&nbsp;        } catch (DadosInvalidosException e) {</b>
+&nbsp;            // Lançando exceção caso os dados do estoque sejam inválidos.
+<b class="fc">&nbsp;            throw new ResponseStatusException(400, e.getMessage(), e);</b>
+<b class="nc">&nbsp;        } catch (NullPointerException e) {</b>
+&nbsp;            // Lançando exceção caso o estoque do parâmetro não exista.
+<b class="nc">&nbsp;            throw new ResponseStatusException(404, &quot;nao_encontrado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (UnsupportedOperationException e) {</b>
+&nbsp;            // Lançando exceção caso aconteça algum erro inesperado.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+<b class="nc">&nbsp;        } catch (Exception e) {</b>
+&nbsp;            // Lançando exceção caso aconteça algum erro inesperado.
+<b class="nc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;    
+&nbsp;    /**
+&nbsp;     * Método responsável por deletar um estoque com o id informado.
+&nbsp;     * @param id Id do estoque que será deletado.
+&nbsp;     * @return Object - Link para listar os estoques.
+&nbsp;     */
+&nbsp;    @DeleteMapping(&quot;/{id}&quot;)
+&nbsp;    @CacheEvict(value = &quot;estoques&quot;, allEntries = true)
+&nbsp;    public Object remover(@PathVariable int id) {
+&nbsp;        try {
+&nbsp;
+&nbsp;            // Se o estoque com o id informado não existir.
+<b class="fc">&nbsp;            if(!estoqueRepository.existsById(id))</b>
+&nbsp;                // Lança uma exceção indicando que o estoque não existe.
+<b class="fc">&nbsp;                throw new NoSuchElementException(&quot;nao_encontrado&quot;);</b>
+&nbsp;
+&nbsp;            // Deleta o estoque com o id informado.
+<b class="fc">&nbsp;            estoqueRepository.deleteById(id);</b>
+&nbsp;
+&nbsp;            // Retorna um link para listar todos os estoques.
+<b class="fc">&nbsp;            return linkTo(</b>
+<b class="fc">&nbsp;                        methodOn(EstoqueController.class).listar(new Estoque())</b>
+&nbsp;                    )
+<b class="fc">&nbsp;                    .withRel(&quot;collection&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        } catch (NoSuchElementException e) {</b>
+&nbsp;            // Lança uma exceção indicando que o estoque não existe.
+<b class="fc">&nbsp;            throw new ResponseStatusException(404, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (DataIntegrityViolationException e) {</b>
+&nbsp;            // Lança uma exceção indicando que o estoque não pode ser deletado.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_remocao&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (IllegalArgumentException e) {</b>
+&nbsp;            // Lança uma exceção indicando que o parâmetro enviado é inválido
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+&nbsp;            // Lança uma exceção indicando que aconteceu algum erro inesperado.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-23 21:20</div>
+</div>
+</body>
+</html>

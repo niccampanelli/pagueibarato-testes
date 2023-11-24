@@ -2,22 +2,17 @@ package com.pagueibaratoapi.pagueibaratoapi.integration;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.pagueibaratoapi.controllers.UsuarioController;
-import com.pagueibaratoapi.models.exceptions.DadosConflitantesException;
 import com.pagueibaratoapi.models.requests.Usuario;
 import com.pagueibaratoapi.models.responses.ResponseUsuario;
 import com.pagueibaratoapi.pagueibaratoapi.PagueibaratoapiApplicationTests;
@@ -1006,6 +1001,44 @@ public class UsuarioControllerIntegrationTest extends PagueibaratoapiApplication
         }
         finally {
             this.usuarioRepository.deleteById(usuarioCriado.getId());
+        }
+
+    }
+
+    /* -------------------------------------------------------------------------- */
+
+
+
+
+
+    /* -------------------------  DELEÇÃO DE USUÁRIOS  -------------------------- */
+
+    @Test
+    public void removerUsuarioComSucesso() throws Exception {
+
+        Usuario usuarioCriado = this.usuarioRepository.save(usuario);
+
+        this.usuarioController.remover(usuarioCriado.getId());
+
+        assertEquals("", this.usuarioRepository.findById(usuarioCriado.getId()).get().getEmail());
+
+    }
+
+    @Test
+    public void removerUsuarioDeletado() throws Exception {
+
+        Usuario usuarioCriado = this.usuarioRepository.save(usuario);
+
+        this.usuarioController.remover(usuarioCriado.getId());
+
+        try {
+
+            this.usuarioController.remover(usuarioCriado.getId());
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(404, e.getRawStatusCode());
+            assertEquals("usuario_nao_encontrado", e.getReason());
         }
 
     }

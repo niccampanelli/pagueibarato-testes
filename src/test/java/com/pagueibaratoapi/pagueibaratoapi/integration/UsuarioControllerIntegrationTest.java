@@ -701,4 +701,315 @@ public class UsuarioControllerIntegrationTest extends PagueibaratoapiApplication
 
     /* -------------------------------------------------------------------------- */
 
+
+
+
+
+    /* -----------------------  ATUALIZAÇÃO DE USUÁRIOS  ------------------------ */
+
+    @Test
+    public void atualizarUsuarioComSucesso() throws Exception {
+
+        Usuario usuarioCriado = this.usuarioRepository.save(usuario);
+
+        Usuario usuarioAtualizado = new Usuario();
+
+        usuarioAtualizado.setNome("Usuário Atualizado");
+        usuarioAtualizado.setEmail("fulanoatualizado@email.com");
+        usuarioAtualizado.setLogradouro("Rua Teste Atualizado");
+        usuarioAtualizado.setNumero(22);
+        usuarioAtualizado.setComplemento("Casa Atualizado");
+        usuarioAtualizado.setBairro("Bairro Teste Atualizado");
+        usuarioAtualizado.setCidade("Cidade Teste Atualizado");
+        usuarioAtualizado.setUf("SP");
+        usuarioAtualizado.setCep("12345-678");
+        usuarioAtualizado.setSenha("123456UsuarioT3ST3!");
+
+        ResponseUsuario responseUsuario = this.usuarioController.atualizar(usuarioCriado.getId(), usuarioAtualizado);
+
+        this.usuarioRepository.deleteById(usuarioCriado.getId());
+
+        assertNotNull(responseUsuario);
+        assertNotNull(responseUsuario.getId());
+        assertEquals("Usuário Atualizado", responseUsuario.getNome());
+        assertEquals("fulanoatualizado@email.com", responseUsuario.getEmail());
+        assertEquals("Rua Teste Atualizado", responseUsuario.getLogradouro());
+
+    }
+
+    @Test
+    public void atualizarUsuarioComCorpoNulo() throws Exception {
+
+        try {
+
+            this.usuarioController.atualizar(1, null);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("corpo_nulo", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void atualizarUsuarioComIdFornecido() throws Exception {
+
+        usuario.setId(1);
+
+        try {
+
+            this.usuarioController.atualizar(1, usuario);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("id_fornecido", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void atualizarUsuarioComComplementoInvalido() throws Exception {
+
+        usuario.setComplemento("Complemento Inválido!");
+
+        try {
+
+            this.usuarioController.atualizar(1, usuario);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("complemento_invalido", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void atualizarUsuarioComNomeInvalido() throws Exception {
+
+        usuario.setNome(null);
+
+        try {
+
+            this.usuarioController.atualizar(1, usuario);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("nome_invalido", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void atualizarUsuarioComEmailInvalido() throws Exception {
+
+        usuario.setEmail(null);
+
+        try {
+
+            this.usuarioController.atualizar(1, usuario);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("email_invalido", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void atualizarUsuarioComSenhaInvalida() throws Exception {
+
+        usuario.setSenha(null);
+
+        try {
+
+            this.usuarioController.atualizar(1, usuario);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("senha_invalido", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void atualizarUsuarioComLogradouroInvalido() throws Exception {
+
+        usuario.setLogradouro(null);
+
+        try {
+
+            this.usuarioController.atualizar(1, usuario);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("logradouro_invalido", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void atualizarUsuarioComNumeroInvalido() throws Exception {
+
+        usuario.setNumero(0);
+
+        try {
+
+            this.usuarioController.atualizar(1, usuario);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("numero_invalido", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void atualizarUsuarioComBairroInvalido() throws Exception {
+
+        usuario.setBairro(null);
+
+        try {
+
+            this.usuarioController.atualizar(1, usuario);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("bairro_invalido", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void atualizarUsuarioComCidadeInvalida() throws Exception {
+
+        usuario.setCidade(null);
+
+        try {
+
+            this.usuarioController.atualizar(1, usuario);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("cidade_invalido", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void atualizarUsuarioComUfInvalida() throws Exception {
+
+        usuario.setUf(null);
+
+        try {
+
+            this.usuarioController.atualizar(1, usuario);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("uf_invalido", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void atualizarUsuarioComCepInvalido() throws Exception {
+
+        usuario.setCep(null);
+
+        try {
+
+            this.usuarioController.atualizar(1, usuario);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(400, e.getRawStatusCode());
+            assertEquals("cep_invalido", e.getReason());
+        }
+
+    }
+
+    @Test
+    public void atualizarUsuarioComEmailExistente() throws Exception {
+
+        Usuario usuarioCriado = this.usuarioRepository.save(usuario);
+
+        Usuario usuarioComEmailIgual = this.usuarioRepository.save(this.usuarios.get(1));
+
+        Usuario usuarioAtualizado = new Usuario();
+
+        usuarioAtualizado.setNome("Usuário Teste 2");
+        usuarioAtualizado.setEmail(usuarioComEmailIgual.getEmail());
+        usuarioAtualizado.setLogradouro("Rua Teste 2");
+        usuarioAtualizado.setNumero(123);
+        usuarioAtualizado.setComplemento("Casa");
+        usuarioAtualizado.setBairro("Bairro Teste");
+        usuarioAtualizado.setCidade("Cidade Teste");
+        usuarioAtualizado.setUf("SP");
+        usuarioAtualizado.setCep("12345-678");
+        usuarioAtualizado.setSenha("123456UsuarioT3ST3!");
+
+        try {
+
+            this.usuarioController.atualizar(usuarioCriado.getId(), usuarioAtualizado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(409, e.getRawStatusCode());
+            assertEquals("email_em_uso", e.getReason());
+        }
+        finally {
+            this.usuarioRepository.deleteById(usuarioCriado.getId());
+            this.usuarioRepository.deleteById(usuarioComEmailIgual.getId());
+        }
+
+    }
+
+    @Test
+    public void atualizarUsuarioDeletado() throws Exception {
+
+        Usuario usuarioCriado = this.usuarioRepository.save(usuario);
+
+        usuarioController.remover(usuarioCriado.getId());
+
+        Usuario usuarioAtualizado = new Usuario();
+
+        usuarioAtualizado.setNome("Usuário Atualizado");
+        usuarioAtualizado.setEmail("usuario.atualizado@email.com");
+        usuarioAtualizado.setLogradouro("Rua Teste 2");
+        usuarioAtualizado.setNumero(123);
+        usuarioAtualizado.setComplemento("Casa");
+        usuarioAtualizado.setBairro("Bairro Teste");
+        usuarioAtualizado.setCidade("Cidade Teste");
+        usuarioAtualizado.setUf("SP");
+        usuarioAtualizado.setCep("12345-678");
+        usuarioAtualizado.setSenha("123456UsuarioT3ST3!");
+
+        try {
+
+            this.usuarioController.atualizar(usuarioCriado.getId(), usuarioAtualizado);
+
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(404, e.getRawStatusCode());
+            assertEquals("usuario_nao_encontrado", e.getReason());
+        }
+        finally {
+            this.usuarioRepository.deleteById(usuarioCriado.getId());
+        }
+
+    }
+
+    /* -------------------------------------------------------------------------- */
+
 }

@@ -17,7 +17,7 @@ import com.pagueibaratoapi.models.requests.Mercado;
 import com.pagueibaratoapi.models.requests.Ramo;
 import com.pagueibaratoapi.models.requests.Usuario;
 import com.pagueibaratoapi.models.responses.ResponseMercado;
-import com.pagueibaratoapi.pagueibaratoapi.PagueibaratoapiApplicationTests;
+import com.pagueibaratoapi.pagueibaratoapi.PagueiBaratoApiApplicationTests;
 import com.pagueibaratoapi.repository.MercadoRepository;
 import com.pagueibaratoapi.repository.RamoRepository;
 import com.pagueibaratoapi.repository.UsuarioRepository;
@@ -25,7 +25,7 @@ import com.pagueibaratoapi.repository.UsuarioRepository;
 
 
 @RunWith(SpringRunner.class)
-public class MercadoControllerIntegrationTest extends PagueibaratoapiApplicationTests {
+public class MercadoControllerIntegrationTest extends PagueiBaratoApiApplicationTests {
 
     @Autowired
     private MercadoController mercadoController;

@@ -18,14 +18,14 @@ import com.pagueibaratoapi.models.requests.Categoria;
 import com.pagueibaratoapi.models.requests.Produto;
 import com.pagueibaratoapi.models.requests.Usuario;
 import com.pagueibaratoapi.models.responses.ResponseProduto;
-import com.pagueibaratoapi.pagueibaratoapi.PagueibaratoapiApplicationTests;
+import com.pagueibaratoapi.pagueibaratoapi.PagueiBaratoApiApplicationTests;
 import com.pagueibaratoapi.repository.CategoriaRepository;
 import com.pagueibaratoapi.repository.ProdutoRepository;
 import com.pagueibaratoapi.repository.UsuarioRepository;
 
 @AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
-public class ProdutoControllerIntegrationTest extends PagueibaratoapiApplicationTests {
+public class ProdutoControllerIntegrationTest extends PagueiBaratoApiApplicationTests {
 
     @Autowired
     private ProdutoController produtoController;

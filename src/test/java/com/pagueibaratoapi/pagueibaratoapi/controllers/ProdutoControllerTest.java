@@ -107,7 +107,7 @@ public class ProdutoControllerTest {
     public void criarProdutoComExcecaoDadosInvalidos() {
 
         Produto requestProduto = new Produto();
-        requestProduto.setId(anyInt());
+        requestProduto.setId(1);
 
         try {
             produtoController.criar(requestProduto);

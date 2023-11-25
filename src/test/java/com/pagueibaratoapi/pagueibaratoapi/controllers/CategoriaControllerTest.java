@@ -176,24 +176,23 @@ public class CategoriaControllerTest {
 
     }
 
-    // @Test
-    // public void criarCategoriaComExcecao() throws Exception {
+    @Test
+    public void criarCategoriaComExcecao() throws Exception {
 
-    //     when(categoriaRepository.save(any())).thenThrow(new RuntimeException("erro_inesperado"));
+        when(categoriaRepository.save(any())).thenThrow(new RuntimeException("erro_inesperado"));
 
-    //     try {
+        try {
 
-    //         categoriaController.criar(categoria);
+            categoriaController.criar(categoria);
 
-    //     }
-    //     catch (ResponseStatusException e) {
-    //         System.out.println(e);
-    //         assertEquals(500, e.getRawStatusCode());
-    //         assertEquals("erro_inesperado", e.getReason());
-    //         assertTrue(e.getCause().toString().contains("java.lang.IllegalArgumentException"));
-    //     }
+        }
+        catch (ResponseStatusException e) {
+            assertEquals(500, e.getRawStatusCode());
+            assertEquals("erro_inesperado", e.getReason());
+            assertTrue(e.getCause().toString().contains("RuntimeException"));
+        }
 
-    // }
+    }
 
     /* -------------------------------------------------------------------------- */
 

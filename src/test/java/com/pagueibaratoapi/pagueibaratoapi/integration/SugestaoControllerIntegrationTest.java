@@ -887,8 +887,153 @@ public class SugestaoControllerIntegrationTest extends PagueiBaratoApiApplicatio
     @Test
     public void atualizarSugestaoComExcecaoNoSuchElement() {
 
+        Usuario usuarioCriar = new Usuario();
+        usuarioCriar.setNome("Teste");
+        usuarioCriar.setEmail("teste@teste.com");
+        usuarioCriar.setSenha("Senha!123456");
+        usuarioCriar.setLogradouro("Rua Teste");
+        usuarioCriar.setNumero(123);
+        usuarioCriar.setBairro("Bairro Teste");
+        usuarioCriar.setCidade("Cidade Teste");
+        usuarioCriar.setUf("SP");
+        usuarioCriar.setCep("00000-000");
+
+        int idUsuario = usuarioRepository.save(usuarioCriar).getId();
+
+        Ramo ramoCriar = new Ramo();
+        ramoCriar.setNome("Ramo Teste");
+        ramoCriar.setDescricao("Descrição Teste");
+
+        int idRamo = ramoRepository.save(ramoCriar).getId();
+
+        Mercado mercadoCriar = new Mercado();
+        mercadoCriar.setNome("Mercado Teste");
+        mercadoCriar.setRamoId(idRamo);
+        mercadoCriar.setLogradouro("Rua Teste");
+        mercadoCriar.setNumero(123);
+        mercadoCriar.setBairro("Bairro Teste");
+        mercadoCriar.setCidade("Cidade Teste");
+        mercadoCriar.setUf("SP");
+        mercadoCriar.setCep("00000-000");
+        mercadoCriar.setCriadoPor(idUsuario);
+
+        int idMercado = mercadoRepository.save(mercadoCriar).getId();
+
+        Categoria categoriaCriar = new Categoria();
+        categoriaCriar.setNome("Categoria Teste");
+        categoriaCriar.setDescricao("Descrição Teste");
+
+        int idCategoria = categoriaRepository.save(categoriaCriar).getId();
+
+        Produto produtoCriar = new Produto();
+        produtoCriar.setNome("Produto Teste");
+        produtoCriar.setMarca("Marca Teste");
+        produtoCriar.setCategoriaId(idCategoria);
+        produtoCriar.setTamanho("Tamanho Teste");
+        produtoCriar.setCor("Cor Teste");
+        produtoCriar.setCriadoPor(idUsuario);
+
+        int idProduto = produtoRepository.save(produtoCriar).getId();
+
+        Estoque estoqueCriar = new Estoque();
+        estoqueCriar.setCriadoPor(idUsuario);
+        estoqueCriar.setMercadoId(idMercado);
+        estoqueCriar.setProdutoId(idProduto);
+
+        int idEstoque = estoqueRepository.save(estoqueCriar).getId();
+
+        Sugestao sugestao = new Sugestao();
+        sugestao.setCriadoPor(idUsuario);
+        sugestao.setEstoqueId(idEstoque);
+        sugestao.setPreco(10.0f);
+
         try {
-            sugestaoController.atualizar(1, new Sugestao());
+            sugestaoController.atualizar(1, sugestao);
+        } catch (ResponseStatusException e) {
+            System.out.println(e.getCause().toString());
+            assertTrue(e.getCause().toString().contains("NoSuchElementException"));
+        }
+    }
+
+    @Test
+    public void removerSugestaoComSucesso() {
+
+        Usuario usuarioCriar = new Usuario();
+        usuarioCriar.setNome("Teste");
+        usuarioCriar.setEmail("teste@teste.com");
+        usuarioCriar.setSenha("Senha!123456");
+        usuarioCriar.setLogradouro("Rua Teste");
+        usuarioCriar.setNumero(123);
+        usuarioCriar.setBairro("Bairro Teste");
+        usuarioCriar.setCidade("Cidade Teste");
+        usuarioCriar.setUf("SP");
+        usuarioCriar.setCep("00000-000");
+
+        int idUsuario = usuarioRepository.save(usuarioCriar).getId();
+
+        Ramo ramoCriar = new Ramo();
+        ramoCriar.setNome("Ramo Teste");
+        ramoCriar.setDescricao("Descrição Teste");
+
+        int idRamo = ramoRepository.save(ramoCriar).getId();
+
+        Mercado mercadoCriar = new Mercado();
+        mercadoCriar.setNome("Mercado Teste");
+        mercadoCriar.setRamoId(idRamo);
+        mercadoCriar.setLogradouro("Rua Teste");
+        mercadoCriar.setNumero(123);
+        mercadoCriar.setBairro("Bairro Teste");
+        mercadoCriar.setCidade("Cidade Teste");
+        mercadoCriar.setUf("SP");
+        mercadoCriar.setCep("00000-000");
+        mercadoCriar.setCriadoPor(idUsuario);
+
+        int idMercado = mercadoRepository.save(mercadoCriar).getId();
+
+        Categoria categoriaCriar = new Categoria();
+        categoriaCriar.setNome("Categoria Teste");
+        categoriaCriar.setDescricao("Descrição Teste");
+
+        int idCategoria = categoriaRepository.save(categoriaCriar).getId();
+
+        Produto produtoCriar = new Produto();
+        produtoCriar.setNome("Produto Teste");
+        produtoCriar.setMarca("Marca Teste");
+        produtoCriar.setCategoriaId(idCategoria);
+        produtoCriar.setTamanho("Tamanho Teste");
+        produtoCriar.setCor("Cor Teste");
+        produtoCriar.setCriadoPor(idUsuario);
+
+        int idProduto = produtoRepository.save(produtoCriar).getId();
+
+        Estoque estoqueCriar = new Estoque();
+        estoqueCriar.setCriadoPor(idUsuario);
+        estoqueCriar.setMercadoId(idMercado);
+        estoqueCriar.setProdutoId(idProduto);
+
+        int idEstoque = estoqueRepository.save(estoqueCriar).getId();
+
+        Sugestao sugestao = new Sugestao();
+        sugestao.setCriadoPor(idUsuario);
+        sugestao.setEstoqueId(idEstoque);
+        sugestao.setPreco(10.0f);
+
+        int idSugestao = sugestaoRepository.save(sugestao).getId();
+
+        int quantidadeSugestoesAntes = sugestaoRepository.findAll().size();
+
+        sugestaoController.remover(idSugestao);
+
+        int quantidadeSugestoesDepois = sugestaoRepository.findAll().size();
+
+        assertTrue(quantidadeSugestoesAntes == quantidadeSugestoesDepois + 1);
+    }
+
+    @Test
+    public void removerSugestaoComExcecaoNoSuchElement() {
+
+        try {
+            sugestaoController.remover(1);
         } catch (ResponseStatusException e) {
             System.out.println(e.getCause().toString());
             assertTrue(e.getCause().toString().contains("NoSuchElementException"));

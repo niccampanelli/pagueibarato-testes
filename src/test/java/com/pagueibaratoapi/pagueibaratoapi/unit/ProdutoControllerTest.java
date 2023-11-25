@@ -24,6 +24,7 @@ import com.pagueibaratoapi.controllers.ProdutoController;
 import com.pagueibaratoapi.models.requests.Produto;
 import com.pagueibaratoapi.models.requests.Usuario;
 import com.pagueibaratoapi.models.responses.ResponseProduto;
+import com.pagueibaratoapi.pagueibaratoapi.PagueiBaratoApiApplicationTests;
 import com.pagueibaratoapi.repository.CategoriaRepository;
 import com.pagueibaratoapi.repository.EstoqueRepository;
 import com.pagueibaratoapi.repository.ProdutoRepository;
@@ -31,7 +32,7 @@ import com.pagueibaratoapi.repository.UsuarioRepository;
 
 
 
-public class ProdutoControllerTest {
+public class ProdutoControllerTest extends PagueiBaratoApiApplicationTests {
 
     @InjectMocks
     private ProdutoController produtoController;

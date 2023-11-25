@@ -25,11 +25,12 @@ import org.springframework.web.server.ResponseStatusException;
 import com.pagueibaratoapi.controllers.UsuarioController;
 import com.pagueibaratoapi.models.requests.Usuario;
 import com.pagueibaratoapi.models.responses.ResponseUsuario;
+import com.pagueibaratoapi.pagueibaratoapi.PagueiBaratoApiApplicationTests;
 import com.pagueibaratoapi.repository.UsuarioRepository;
 
 
 
-public class UsuarioControllerTest {
+public class UsuarioControllerTest extends PagueiBaratoApiApplicationTests {
 
     @InjectMocks
     private UsuarioController usuarioController;

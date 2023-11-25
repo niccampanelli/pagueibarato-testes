@@ -10,10 +10,11 @@ import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 
 import com.pagueibaratoapi.controllers.IndiceController;
+import com.pagueibaratoapi.pagueibaratoapi.PagueiBaratoApiApplicationTests;
 
 
 
-public class IndiceControllerTest {
+public class IndiceControllerTest extends PagueiBaratoApiApplicationTests {
 
     @InjectMocks
     private IndiceController indiceController;

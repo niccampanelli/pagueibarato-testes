@@ -31,6 +31,7 @@ import com.pagueibaratoapi.models.requests.Produto;
 import com.pagueibaratoapi.models.requests.Sugestao;
 import com.pagueibaratoapi.models.requests.Usuario;
 import com.pagueibaratoapi.models.responses.ResponseMercado;
+import com.pagueibaratoapi.pagueibaratoapi.PagueiBaratoApiApplicationTests;
 import com.pagueibaratoapi.repository.CategoriaRepository;
 import com.pagueibaratoapi.repository.EstoqueRepository;
 import com.pagueibaratoapi.repository.MercadoRepository;
@@ -41,7 +42,7 @@ import com.pagueibaratoapi.repository.UsuarioRepository;
 
 
 
-public class MercadoControllerTest {
+public class MercadoControllerTest extends PagueiBaratoApiApplicationTests {
 
     @InjectMocks
     private MercadoController mercadoController;

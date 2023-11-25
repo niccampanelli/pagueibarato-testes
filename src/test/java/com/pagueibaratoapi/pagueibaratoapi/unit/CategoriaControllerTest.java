@@ -25,11 +25,12 @@ import org.springframework.web.server.ResponseStatusException;
 import com.pagueibaratoapi.controllers.CategoriaController;
 import com.pagueibaratoapi.models.requests.Categoria;
 import com.pagueibaratoapi.models.responses.ResponseCategoria;
+import com.pagueibaratoapi.pagueibaratoapi.PagueiBaratoApiApplicationTests;
 import com.pagueibaratoapi.repository.CategoriaRepository;
 
 
 
-public class CategoriaControllerTest {
+public class CategoriaControllerTest extends PagueiBaratoApiApplicationTests {
 
     @InjectMocks
     private CategoriaController categoriaController;

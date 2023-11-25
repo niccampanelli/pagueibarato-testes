@@ -27,11 +27,12 @@ import org.springframework.web.server.ResponseStatusException;
 import com.pagueibaratoapi.controllers.RamoController;
 import com.pagueibaratoapi.models.requests.Ramo;
 import com.pagueibaratoapi.models.responses.ResponseRamo;
+import com.pagueibaratoapi.pagueibaratoapi.PagueiBaratoApiApplicationTests;
 import com.pagueibaratoapi.repository.RamoRepository;
 
 
 
-public class RamoControllerTest {
+public class RamoControllerTest extends PagueiBaratoApiApplicationTests {
 
     @InjectMocks
     private RamoController ramoController;

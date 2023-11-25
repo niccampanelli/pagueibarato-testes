@@ -25,13 +25,14 @@ import com.pagueibaratoapi.controllers.SugestaoController;
 import com.pagueibaratoapi.models.requests.Sugestao;
 import com.pagueibaratoapi.models.requests.Usuario;
 import com.pagueibaratoapi.models.responses.ResponseSugestao;
+import com.pagueibaratoapi.pagueibaratoapi.PagueiBaratoApiApplicationTests;
 import com.pagueibaratoapi.repository.EstoqueRepository;
 import com.pagueibaratoapi.repository.SugestaoRepository;
 import com.pagueibaratoapi.repository.UsuarioRepository;
 
 
 
-public class SugestaoControllerTest {
+public class SugestaoControllerTest extends PagueiBaratoApiApplicationTests {
 
     @InjectMocks
     private SugestaoController sugestaoController;

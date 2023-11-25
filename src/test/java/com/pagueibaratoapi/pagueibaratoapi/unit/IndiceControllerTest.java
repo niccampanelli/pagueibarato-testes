@@ -6,21 +6,13 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.pagueibaratoapi.controllers.CategoriaController;
 import com.pagueibaratoapi.controllers.IndiceController;
 
 
 
-@WebMvcTest(CategoriaController.class)
-@ExtendWith(MockitoExtension.class)
-@ExtendWith(SpringExtension.class)
 public class IndiceControllerTest {
 
     @InjectMocks

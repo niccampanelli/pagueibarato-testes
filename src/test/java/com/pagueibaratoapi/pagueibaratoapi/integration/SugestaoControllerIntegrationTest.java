@@ -30,6 +30,8 @@ import com.pagueibaratoapi.repository.RamoRepository;
 import com.pagueibaratoapi.repository.SugestaoRepository;
 import com.pagueibaratoapi.repository.UsuarioRepository;
 
+
+
 @RunWith(SpringRunner.class)
 public class SugestaoControllerIntegrationTest extends PagueiBaratoApiApplicationTests {
 

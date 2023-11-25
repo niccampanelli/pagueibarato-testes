@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.server.ResponseStatusException;
@@ -23,7 +22,8 @@ import com.pagueibaratoapi.repository.CategoriaRepository;
 import com.pagueibaratoapi.repository.ProdutoRepository;
 import com.pagueibaratoapi.repository.UsuarioRepository;
 
-@AutoConfigureMockMvc
+
+
 @RunWith(SpringRunner.class)
 public class ProdutoControllerIntegrationTest extends PagueiBaratoApiApplicationTests {
 

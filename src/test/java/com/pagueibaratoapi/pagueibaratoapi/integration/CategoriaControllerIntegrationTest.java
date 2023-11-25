@@ -19,6 +19,7 @@ import com.pagueibaratoapi.pagueibaratoapi.PagueiBaratoApiApplicationTests;
 import com.pagueibaratoapi.repository.CategoriaRepository;
 
 
+
 @RunWith(SpringRunner.class)
 public class CategoriaControllerIntegrationTest extends PagueiBaratoApiApplicationTests {
 

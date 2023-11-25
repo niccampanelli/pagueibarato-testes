@@ -29,6 +29,8 @@ import com.pagueibaratoapi.repository.EstoqueRepository;
 import com.pagueibaratoapi.repository.SugestaoRepository;
 import com.pagueibaratoapi.repository.UsuarioRepository;
 
+
+
 public class SugestaoControllerTest {
 
     @InjectMocks

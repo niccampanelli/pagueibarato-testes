@@ -16,14 +16,10 @@ import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.pagueibaratoapi.controllers.CategoriaController;
@@ -31,9 +27,8 @@ import com.pagueibaratoapi.models.requests.Categoria;
 import com.pagueibaratoapi.models.responses.ResponseCategoria;
 import com.pagueibaratoapi.repository.CategoriaRepository;
 
-@WebMvcTest(CategoriaController.class)
-@ExtendWith(MockitoExtension.class)
-@ExtendWith(SpringExtension.class)
+
+
 public class CategoriaControllerTest {
 
     @InjectMocks

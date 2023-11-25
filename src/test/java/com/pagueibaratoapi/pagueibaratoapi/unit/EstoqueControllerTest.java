@@ -32,6 +32,8 @@ import com.pagueibaratoapi.repository.MercadoRepository;
 import com.pagueibaratoapi.repository.ProdutoRepository;
 import com.pagueibaratoapi.repository.UsuarioRepository;
 
+
+
 public class EstoqueControllerTest {
 
     @InjectMocks

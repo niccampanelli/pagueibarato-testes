@@ -28,7 +28,8 @@ import com.pagueibaratoapi.repository.ProdutoRepository;
 import com.pagueibaratoapi.repository.RamoRepository;
 import com.pagueibaratoapi.repository.UsuarioRepository;
 
-@AutoConfigureMockMvc
+
+
 @RunWith(SpringRunner.class)
 public class EstoqueControllerIntegrationTest extends PagueiBaratoApiApplicationTests {
 

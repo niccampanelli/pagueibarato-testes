@@ -39,6 +39,8 @@ import com.pagueibaratoapi.repository.RamoRepository;
 import com.pagueibaratoapi.repository.SugestaoRepository;
 import com.pagueibaratoapi.repository.UsuarioRepository;
 
+
+
 public class MercadoControllerTest {
 
     @InjectMocks

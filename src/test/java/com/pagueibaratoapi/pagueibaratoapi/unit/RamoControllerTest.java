@@ -1,4 +1,4 @@
-package com.pagueibaratoapi.pagueibaratoapi.controllers;
+package com.pagueibaratoapi.pagueibaratoapi.unit;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

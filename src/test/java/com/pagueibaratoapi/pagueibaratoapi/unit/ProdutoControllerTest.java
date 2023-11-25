@@ -1,4 +1,4 @@
-package com.pagueibaratoapi.pagueibaratoapi.controllers;
+package com.pagueibaratoapi.pagueibaratoapi.unit;
 
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;

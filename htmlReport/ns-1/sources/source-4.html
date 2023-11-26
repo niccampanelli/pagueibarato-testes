@@ -64,18 +64,18 @@ Current scope:     <a href="../../index.html">all classes</a>
     97,6%
   </span>
   <span class="absValue">
-    (162/166)
+    (163/167)
   </span>
 </td>
 </tr>
   <tr>
-    <td class="name">MercadoController$$EnhancerBySpringCGLIB$$dfa7da81</td>
+    <td class="name">MercadoController$$EnhancerBySpringCGLIB$$2be7fff2</td>
   </tr>
   <tr>
-    <td class="name">MercadoController$$EnhancerBySpringCGLIB$$dfa7da81$$FastClassBySpringCGLIB$$d949e76c</td>
+    <td class="name">MercadoController$$EnhancerBySpringCGLIB$$cd49a19c</td>
   </tr>
   <tr>
-    <td class="name">MercadoController$$EnhancerBySpringCGLIB$$fbc01d6b</td>
+    <td class="name">MercadoController$$EnhancerBySpringCGLIB$$cd49a19c$$FastClassBySpringCGLIB$$baec4e1e</td>
   </tr>
   <tr>
     <td class="name">MercadoController$$FastClassBySpringCGLIB$$4be60c5b</td>
@@ -103,7 +103,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     97,6%
   </span>
   <span class="absValue">
-    (162/166)
+    (163/167)
   </span>
 </td>
 </tr>
@@ -167,7 +167,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    private final UsuarioRepository usuarioRepository;
 &nbsp;
 &nbsp;    // Construtor do controller do estoque, que realiza a injeção de dependência dos repositórios.
-&nbsp;    public MercadoController(
+<b class="fc">&nbsp;    public MercadoController(</b>
 &nbsp;        CategoriaRepository categoriaRepository,
 &nbsp;        EstoqueRepository estoqueRepository,
 &nbsp;        MercadoRepository mercadoRepository,
@@ -175,7 +175,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;        RamoRepository ramoRepository,
 &nbsp;        SugestaoRepository sugestaoRepository,
 &nbsp;        UsuarioRepository usuarioRepository
-<b class="fc">&nbsp;    ) {</b>
+&nbsp;    ) {
 <b class="fc">&nbsp;        this.mercadoRepository = mercadoRepository;</b>
 <b class="fc">&nbsp;        this.ramoRepository = ramoRepository;</b>
 <b class="fc">&nbsp;        this.usuarioRepository = usuarioRepository;</b>
@@ -316,7 +316,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;            // Buscando todos os mercados de acordo com o filtro enviado por parâmetro e salvando na lista de mercados
 <b class="fc">&nbsp;            List&lt;Mercado&gt; mercados = mercadoRepository.findAll(</b>
 <b class="fc">&nbsp;                Example.of(</b>
-&nbsp;                    requestMercado, 
+<b class="fc">&nbsp;                    requestMercado, </b>
 &nbsp;                    ExampleMatcher
 <b class="fc">&nbsp;                        .matching()</b>
 <b class="fc">&nbsp;                        .withIgnoreCase()</b>
@@ -331,7 +331,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;            for(Mercado mercado : mercados) {</b>
 &nbsp;                // Cria um objeto do tipo ResponseMercado, convertendo o objeto Mercado para o objeto ResponseMercado
 <b class="fc">&nbsp;                responseMercado.add(new ResponseMercado(mercado));</b>
-<b class="fc">&nbsp;            }</b>
+&nbsp;            }
 &nbsp;
 &nbsp;            // Se a lista de marcados a serem retornados não for vazia
 <b class="fc">&nbsp;            if(!responseMercado.isEmpty()) {</b>
@@ -344,7 +344,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;                        )
 <b class="fc">&nbsp;                        .withSelfRel()</b>
 &nbsp;                    );
-<b class="fc">&nbsp;                }</b>
+&nbsp;                }
 &nbsp;            }
 &nbsp;
 &nbsp;            // Retorna a lista de marcados encontrados.
@@ -409,8 +409,8 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;                mercadoRepository.save(</b>
 &nbsp;                    // Chamando método que retornará o mercado com os dados atualizados de acordo com os parâmetros recebidos.
 <b class="fc">&nbsp;                    EditaRecurso.editarMercado(</b>
-&nbsp;                        mercadoAtual, 
-&nbsp;                        requestMercado
+<b class="fc">&nbsp;                        mercadoAtual, </b>
+<b class="fc">&nbsp;                        requestMercado</b>
 &nbsp;                    )
 &nbsp;                )
 &nbsp;            );
@@ -598,7 +598,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-11-23 21:20</div>
+    <div style="float:right;">generated on 2023-11-25 03:21</div>
 </div>
 </body>
 </html>

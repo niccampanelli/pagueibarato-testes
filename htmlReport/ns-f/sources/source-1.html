@@ -1,0 +1,103 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > CategoriaRepository</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.pagueibaratoapi.repository</a>
+</div>
+
+<h1>Coverage Summary for Class: CategoriaRepository (com.pagueibaratoapi.repository)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">CategoriaRepository$MockitoMock$wk1pKKiO</td>
+  </tr>
+  <tr>
+    <td class="name">CategoriaRepository$MockitoMock$wk1pKKiO$auxiliary$Obsxycum</td>
+  </tr>
+  <tr>
+    <td class="name">CategoriaRepository$MockitoMock$wk1pKKiO$auxiliary$ZB0qUI9e</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.pagueibaratoapi.repository;
+&nbsp;
+&nbsp;import org.springframework.data.jpa.repository.JpaRepository;
+&nbsp;
+&nbsp;import com.pagueibaratoapi.models.requests.Categoria;
+&nbsp;
+&nbsp;/**
+&nbsp; * Repositório de categorias.
+&nbsp; */
+&nbsp;public interface CategoriaRepository extends JpaRepository&lt;Categoria, Integer&gt; {
+&nbsp;    
+&nbsp;    /**
+&nbsp;     * Verifica se a categoria existe com base no id.
+&nbsp;     * @param id - Id para verificar.
+&nbsp;     * @return &lt;b&gt;true&lt;/b&gt; se o id estiver cadastrado e &lt;b&gt;false&lt;/b&gt; se não estiver.
+&nbsp;     */
+&nbsp;    public boolean existsById(Integer id);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Verifica se a categoria existe com base no nome ignorando maiúsculas e minúsculas.
+&nbsp;     * @param nome - Nome da categoria para verificar.
+&nbsp;     * @return &lt;b&gt;true&lt;/b&gt; se o nome estiver cadastrado e &lt;b&gt;false&lt;/b&gt; se não estiver.
+&nbsp;     */
+&nbsp;    public boolean existsByNomeIgnoreCase(String nome);
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-25 03:05</div>
+</div>
+</body>
+</html>

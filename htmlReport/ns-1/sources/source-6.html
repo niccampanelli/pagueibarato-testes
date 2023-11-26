@@ -64,18 +64,18 @@ Current scope:     <a href="../../index.html">all classes</a>
     98,3%
   </span>
   <span class="absValue">
-    (115/117)
+    (116/118)
   </span>
 </td>
 </tr>
   <tr>
-    <td class="name">RamoController$$EnhancerBySpringCGLIB$$64ae5311</td>
+    <td class="name">RamoController$$EnhancerBySpringCGLIB$$94d63598</td>
   </tr>
   <tr>
-    <td class="name">RamoController$$EnhancerBySpringCGLIB$$7ebbd03</td>
+    <td class="name">RamoController$$EnhancerBySpringCGLIB$$f58d841e</td>
   </tr>
   <tr>
-    <td class="name">RamoController$$EnhancerBySpringCGLIB$$7ebbd03$$FastClassBySpringCGLIB$$290c5971</td>
+    <td class="name">RamoController$$EnhancerBySpringCGLIB$$f58d841e$$FastClassBySpringCGLIB$$d807a933</td>
   </tr>
   <tr>
     <td class="name">RamoController$$FastClassBySpringCGLIB$$4e8b1df1</td>
@@ -103,7 +103,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     98,3%
   </span>
   <span class="absValue">
-    (115/117)
+    (116/118)
   </span>
 </td>
 </tr>
@@ -260,7 +260,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;            // Buscando todos os ramos que satisfaçam os dados enviados pelo cliente e salvando na lista de ramos.
 <b class="fc">&nbsp;            List&lt;Ramo&gt; ramos = ramoRepository.findAll(</b>
 <b class="fc">&nbsp;                Example.of(</b>
-&nbsp;                    requestRamo, 
+<b class="fc">&nbsp;                    requestRamo, </b>
 &nbsp;                    ExampleMatcher
 <b class="fc">&nbsp;                        .matching()</b>
 <b class="fc">&nbsp;                        .withIgnoreCase()</b>
@@ -275,7 +275,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;            for(Ramo ramo : ramos) {</b>
 &nbsp;                // Criando um novo objeto do tipo ResponseRamo com os dados do ramo atual e adicionando à lista de resposta.
 <b class="fc">&nbsp;                responseRamo.add(new ResponseRamo(ramo));</b>
-<b class="fc">&nbsp;            }</b>
+&nbsp;            }
 &nbsp;
 &nbsp;            // Se a lista de resposta não estiver vazia.
 <b class="fc">&nbsp;            if(!responseRamo.isEmpty()) {</b>
@@ -288,7 +288,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;                        )
 <b class="fc">&nbsp;                        .withSelfRel()</b>
 &nbsp;                    );
-<b class="fc">&nbsp;                }</b>
+&nbsp;                }
 &nbsp;            }
 &nbsp;
 &nbsp;            // Retornando a lista de resposta.
@@ -335,8 +335,8 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;                ramoRepository.save(</b>
 &nbsp;                    // Atualizando os dados do ramo com os dados enviados pelo cliente.
 <b class="fc">&nbsp;                    EditaRecurso.editarRamo(</b>
-&nbsp;                        ramoAtual, 
-&nbsp;                        requestRamo
+<b class="fc">&nbsp;                        ramoAtual, </b>
+<b class="fc">&nbsp;                        requestRamo</b>
 &nbsp;                    )
 &nbsp;                )
 &nbsp;            );
@@ -491,7 +491,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-11-23 21:20</div>
+    <div style="float:right;">generated on 2023-11-25 03:21</div>
 </div>
 </body>
 </html>

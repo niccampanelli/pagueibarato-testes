@@ -1,0 +1,564 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ProdutoController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.pagueibaratoapi.controllers</a>
+</div>
+
+<h1>Coverage Summary for Class: ProdutoController (com.pagueibaratoapi.controllers)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ProdutoController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    93,8%
+  </span>
+  <span class="absValue">
+    (30/32)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    98,7%
+  </span>
+  <span class="absValue">
+    (156/158)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">ProdutoController$$EnhancerBySpringCGLIB$$3c10b8dd</td>
+  </tr>
+  <tr>
+    <td class="name">ProdutoController$$EnhancerBySpringCGLIB$$3c10b8dd$$FastClassBySpringCGLIB$$c4a81d0d</td>
+  </tr>
+  <tr>
+    <td class="name">ProdutoController$$EnhancerBySpringCGLIB$$720b1cbe</td>
+  </tr>
+  <tr>
+    <td class="name">ProdutoController$$FastClassBySpringCGLIB$$a3ee4d91</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    93,8%
+  </span>
+  <span class="absValue">
+    (30/32)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    98,7%
+  </span>
+  <span class="absValue">
+    (156/158)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.pagueibaratoapi.controllers;
+&nbsp;
+&nbsp;import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+&nbsp;import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;import java.util.NoSuchElementException;
+&nbsp;
+&nbsp;import org.springframework.cache.annotation.CacheEvict;
+&nbsp;import org.springframework.cache.annotation.Cacheable;
+&nbsp;import org.springframework.dao.DataIntegrityViolationException;
+&nbsp;import org.springframework.data.domain.Example;
+&nbsp;import org.springframework.data.domain.ExampleMatcher;
+&nbsp;import org.springframework.web.bind.annotation.DeleteMapping;
+&nbsp;import org.springframework.web.bind.annotation.GetMapping;
+&nbsp;import org.springframework.web.bind.annotation.PatchMapping;
+&nbsp;import org.springframework.web.bind.annotation.PathVariable;
+&nbsp;import org.springframework.web.bind.annotation.PostMapping;
+&nbsp;import org.springframework.web.bind.annotation.PutMapping;
+&nbsp;import org.springframework.web.bind.annotation.RequestBody;
+&nbsp;import org.springframework.web.bind.annotation.RequestMapping;
+&nbsp;import org.springframework.web.bind.annotation.RestController;
+&nbsp;import org.springframework.web.server.ResponseStatusException;
+&nbsp;
+&nbsp;import com.pagueibaratoapi.models.exceptions.DadosConflitantesException;
+&nbsp;import com.pagueibaratoapi.models.exceptions.DadosInvalidosException;
+&nbsp;import com.pagueibaratoapi.models.requests.Produto;
+&nbsp;import com.pagueibaratoapi.models.requests.Usuario;
+&nbsp;import com.pagueibaratoapi.models.responses.ResponseProduto;
+&nbsp;import com.pagueibaratoapi.repository.CategoriaRepository;
+&nbsp;import com.pagueibaratoapi.repository.ProdutoRepository;
+&nbsp;import com.pagueibaratoapi.repository.UsuarioRepository;
+&nbsp;import com.pagueibaratoapi.utils.EditaRecurso;
+&nbsp;import com.pagueibaratoapi.utils.Tratamento;
+&nbsp;
+&nbsp;/**
+&nbsp; * Classe responsável por controlar as requisições de produtos.
+&nbsp; */
+&nbsp;@RestController
+&nbsp;@RequestMapping(&quot;/produto&quot;)
+&nbsp;public class ProdutoController {
+&nbsp;
+&nbsp;    // Repositórios responsável pelos métodos JPA dp banco de dados.
+&nbsp;    private final CategoriaRepository categoriaRepository;
+&nbsp;    private final ProdutoRepository produtoRepository;
+&nbsp;    private final UsuarioRepository usuarioRepository;
+&nbsp;
+&nbsp;    // Construtor
+&nbsp;    public ProdutoController(
+&nbsp;        CategoriaRepository categoriaRepository,
+&nbsp;        ProdutoRepository produtoRepository,
+&nbsp;        UsuarioRepository usuarioRepository
+<b class="fc">&nbsp;    ) {</b>
+<b class="fc">&nbsp;        this.categoriaRepository = categoriaRepository;</b>
+<b class="fc">&nbsp;        this.produtoRepository = produtoRepository;</b>
+<b class="fc">&nbsp;        this.usuarioRepository = usuarioRepository;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Rota responsável por criar um produto.
+&nbsp;     * @param categoria - Dados do produto a ser criado.
+&nbsp;     * @return Dados e id do produto criado.
+&nbsp;     */
+&nbsp;    @PostMapping
+&nbsp;    @CacheEvict(value = &quot;produtos&quot;, allEntries = true)
+&nbsp;    public ResponseProduto criar(@RequestBody Produto requestProduto) {
+&nbsp;        try {
+&nbsp;
+&nbsp;            // Valida os dados fornecidos.
+<b class="fc">&nbsp;            Tratamento.validarProduto(requestProduto, false);</b>
+&nbsp;
+&nbsp;            // Se o usuário fornecido não existir,
+<b class="fc">&nbsp;            if(!usuarioRepository.existsById(requestProduto.getCriadoPor()))</b>
+&nbsp;                // Retorna um erro.
+<b class="fc">&nbsp;                throw new DadosInvalidosException(&quot;usuario_nao_encontrado&quot;);</b>
+&nbsp;            
+&nbsp;            // Se a categoria fornecida não existir,
+<b class="fc">&nbsp;            if(!categoriaRepository.existsById(requestProduto.getCategoriaId()))</b>
+&nbsp;                // Retorna um erro.
+<b class="fc">&nbsp;                throw new DadosInvalidosException(&quot;categoria_nao_encontrado&quot;);</b>
+&nbsp;
+&nbsp;            // Se as características fornecidas pertencer a um produto já existente,
+<b class="fc">&nbsp;            if(produtoRepository.findByCaracteristicas(</b>
+<b class="fc">&nbsp;                requestProduto.getNome(), </b>
+<b class="fc">&nbsp;                requestProduto.getMarca(),</b>
+<b class="fc">&nbsp;                requestProduto.getTamanho(), </b>
+<b class="fc">&nbsp;                requestProduto.getCor()) != null</b>
+&nbsp;            )
+&nbsp;                // Retorna um erro.
+<b class="fc">&nbsp;                throw new DadosConflitantesException(&quot;produto_existente&quot;);</b>
+&nbsp;
+&nbsp;            // Buscando o usuário informado como criador do produto.
+<b class="fc">&nbsp;            Usuario usuario = usuarioRepository.findById(requestProduto.getCriadoPor()).get();</b>
+&nbsp;
+&nbsp;            // Verifica se o usuário informado como criador não foi deletado anteriormente.
+<b class="fc">&nbsp;            if(!Tratamento.usuarioExiste(usuario))</b>
+&nbsp;                // Retorna um erro.
+<b class="fc">&nbsp;                throw new NoSuchElementException(&quot;usuario_nao_encontrado&quot;);</b>
+&nbsp;
+&nbsp;            // Criando uma nova instância do produto para tratar o nome dele e criá-lo no banco.
+<b class="fc">&nbsp;            Produto produtoTratado = requestProduto;</b>
+&nbsp;
+&nbsp;            // Pegando cada palavra do nome do produto em minúsculas separado por espaço.
+<b class="fc">&nbsp;            String[] nomeProduto = requestProduto.getNome().toLowerCase().split(&quot; &quot;);</b>
+&nbsp;
+&nbsp;            // Percorrendo cada palavra do nome do produto
+<b class="fc">&nbsp;            for(int i = 0; i &lt; nomeProduto.length; i++) {</b>
+&nbsp;                // Transformando a palavra atual em uma array
+<b class="fc">&nbsp;                char[] palavraArr = nomeProduto[i].toCharArray();</b>
+&nbsp;
+&nbsp;                // Transformando a primeira letra da palavra em maiúscula
+<b class="fc">&nbsp;                palavraArr[0] = nomeProduto[i].toUpperCase().charAt(0);</b>
+&nbsp;
+&nbsp;                // Reescreve a palavra atual com a primeira letra tratada
+<b class="fc">&nbsp;                nomeProduto[i] = String.valueOf(palavraArr);</b>
+&nbsp;
+&nbsp;                // Se for a primeira palavra sendo tratada,
+&nbsp;                // substitui o nome do produto pelo nome tratado
+<b class="fc">&nbsp;                if(i &lt; 1)</b>
+<b class="fc">&nbsp;                    produtoTratado.setNome(nomeProduto[i]);</b>
+&nbsp;                // Se não, concatena a palavra atual ao nome do produto
+&nbsp;                else
+<b class="fc">&nbsp;                    produtoTratado.setNome(produtoTratado.getNome() + &quot; &quot; + nomeProduto[i]);</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            // Insere o produto e transforma os dados obtidos em modelo de resposta.
+<b class="fc">&nbsp;            ResponseProduto responseProduto = new ResponseProduto(produtoRepository.save(produtoTratado));</b>
+&nbsp;
+&nbsp;            // Adiciona o link para o produto.
+<b class="fc">&nbsp;            responseProduto.add(</b>
+<b class="fc">&nbsp;                linkTo(</b>
+<b class="fc">&nbsp;                    methodOn(ProdutoController.class).ler(responseProduto.getId())</b>
+&nbsp;                )
+<b class="fc">&nbsp;                .withSelfRel()</b>
+&nbsp;            );
+&nbsp;
+&nbsp;            // Retorna os dados do produto criado.
+<b class="fc">&nbsp;            return responseProduto;</b>
+&nbsp;
+<b class="fc">&nbsp;        } catch (DadosConflitantesException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(409, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch(NoSuchElementException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(404, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (DadosInvalidosException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(400, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (DataIntegrityViolationException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_insercao&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (IllegalArgumentException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Rota responsável por ler um produto.
+&nbsp;     * @param id - Id do produto a ser lido.
+&nbsp;     * @return Dados do produto.
+&nbsp;     */
+&nbsp;    @GetMapping(&quot;/{id}&quot;)
+&nbsp;    public ResponseProduto ler(@PathVariable(&quot;id&quot;) Integer id) {
+&nbsp;        try {
+&nbsp;
+&nbsp;            // Busca o produto no banco e transforma os dados obtidos em modelo de resposta.
+<b class="fc">&nbsp;            ResponseProduto responseProduto = new ResponseProduto(produtoRepository.findById(id).get());</b>
+&nbsp;
+&nbsp;            // Adiciona o link para a rota de listagem de produtos.
+<b class="pc">&nbsp;            if(responseProduto != null) {</b>
+<b class="fc">&nbsp;                responseProduto.add(</b>
+<b class="fc">&nbsp;                    linkTo(</b>
+<b class="fc">&nbsp;                        methodOn(ProdutoController.class).listar(new Produto())</b>
+&nbsp;                    )
+<b class="fc">&nbsp;                    .withRel(&quot;collection&quot;)</b>
+&nbsp;                );
+&nbsp;            }
+&nbsp;
+&nbsp;            // Retorna os dados do produto.
+<b class="fc">&nbsp;            return responseProduto;</b>
+&nbsp;
+<b class="fc">&nbsp;        } catch (NoSuchElementException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(404, &quot;nao_encontrado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Rota responsável por listar todos os produtos.
+&nbsp;     * @param requestProduto - Dados de pesquisa para filtragem.
+&nbsp;     * @return Lista de produtos.
+&nbsp;     */
+&nbsp;    @GetMapping
+&nbsp;    @Cacheable(&quot;produtos&quot;)
+&nbsp;    public List&lt;ResponseProduto&gt; listar(Produto requestProduto) {
+&nbsp;        try {
+&nbsp;
+&nbsp;            // Valida os dados de pesquisa.
+<b class="fc">&nbsp;            Tratamento.validarProduto(requestProduto, true);</b>
+&nbsp;
+&nbsp;            // Busca os produtos no banco semelhantes aos dados de pesquisa.
+&nbsp;            // Se não houver dados de pesquisa, busca todos os produtos.
+<b class="fc">&nbsp;            List&lt;Produto&gt; produtos = produtoRepository.findAll(</b>
+<b class="fc">&nbsp;                Example.of(</b>
+&nbsp;                    requestProduto, 
+&nbsp;                    ExampleMatcher
+<b class="fc">&nbsp;                        .matching()</b>
+<b class="fc">&nbsp;                        .withIgnoreCase()</b>
+<b class="fc">&nbsp;                        .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING)</b>
+&nbsp;                )
+&nbsp;            );
+&nbsp;
+&nbsp;            // Lista de produtos que será retornada.
+<b class="fc">&nbsp;            List&lt;ResponseProduto&gt; responseProduto = new ArrayList&lt;ResponseProduto&gt;();</b>
+&nbsp;
+&nbsp;            // Adiciona os prdutos à lista.
+<b class="fc">&nbsp;            for(Produto produto : produtos) {</b>
+<b class="fc">&nbsp;                responseProduto.add(new ResponseProduto(produto));</b>
+<b class="fc">&nbsp;            }</b>
+&nbsp;
+&nbsp;            // Se houver produtos,
+<b class="pc">&nbsp;            if(responseProduto != null) {</b>
+&nbsp;                // Percorre os produtos,
+<b class="fc">&nbsp;                for(ResponseProduto produto : responseProduto) {</b>
+&nbsp;                    // Adiciona o link para a rota de detalhamento de produto.
+<b class="fc">&nbsp;                    produto.add(</b>
+<b class="fc">&nbsp;                        linkTo(</b>
+<b class="fc">&nbsp;                            methodOn(ProdutoController.class).ler(produto.getId())</b>
+&nbsp;                        )
+<b class="fc">&nbsp;                        .withSelfRel()</b>
+&nbsp;                    );
+<b class="fc">&nbsp;                }</b>
+&nbsp;            }
+&nbsp;
+<b class="fc">&nbsp;            return responseProduto;</b>
+&nbsp;
+<b class="fc">&nbsp;        } catch (DadosInvalidosException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(400, e.getMessage(), e);</b>
+<b class="nc">&nbsp;        } catch (NullPointerException e) {</b>
+<b class="nc">&nbsp;            throw new ResponseStatusException(404, &quot;nao_encontrado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (UnsupportedOperationException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Rota responsável por editar um produto.
+&nbsp;     * @param id - Id do produto a ser editado.
+&nbsp;     * @param requestProduto - Dados modificados do produto.
+&nbsp;     * @return Dados novos do produto editado.
+&nbsp;     */
+&nbsp;    @PatchMapping(&quot;/{id}&quot;)
+&nbsp;    public ResponseProduto editar(@PathVariable int id, @RequestBody Produto requestProduto) {
+&nbsp;        try {
+&nbsp;
+&nbsp;            // Valida os dados fornecidos.
+<b class="fc">&nbsp;            Tratamento.validarProduto(requestProduto, true);</b>
+&nbsp;
+&nbsp;            // Se as características fornecidas pertencer a um produto já existente,
+<b class="fc">&nbsp;            if(produtoRepository.findByCaracteristicas(</b>
+<b class="fc">&nbsp;                requestProduto.getNome(), </b>
+<b class="fc">&nbsp;                requestProduto.getMarca(),</b>
+<b class="fc">&nbsp;                requestProduto.getTamanho(), </b>
+<b class="fc">&nbsp;                requestProduto.getCor()) != null</b>
+&nbsp;            )
+&nbsp;                // Retorna um erro.
+<b class="fc">&nbsp;                throw new DadosConflitantesException(&quot;produto_existente&quot;);</b>
+&nbsp;
+&nbsp;            // Busca o produto a ser editado.
+<b class="fc">&nbsp;            Produto produtoAtual = produtoRepository.findById(id).get();</b>
+&nbsp;            
+&nbsp;            // Se a categoria informada não existir,
+<b class="fc">&nbsp;            if(!categoriaRepository.existsById(requestProduto.getCategoriaId()))</b>
+&nbsp;                // Retorna um erro.
+<b class="fc">&nbsp;                throw new DadosInvalidosException(&quot;categoria_nao_encontrado&quot;);</b>
+&nbsp;
+&nbsp;            // Chama o recurso de tratamento de edição de produto.
+&nbsp;            // Insere os dados tratados no banco de dados.
+&nbsp;            // Transforma os dados inseridos em resposta.
+<b class="fc">&nbsp;            ResponseProduto responseProduto = new ResponseProduto(</b>
+<b class="fc">&nbsp;                produtoRepository.save(</b>
+<b class="fc">&nbsp;                    EditaRecurso.editarProduto(</b>
+&nbsp;                        produtoAtual, 
+&nbsp;                        requestProduto
+&nbsp;                    )
+&nbsp;                )
+&nbsp;            );
+&nbsp;    
+&nbsp;            // Adiciona o link para a rota de detalhamento de produto.
+<b class="fc">&nbsp;            responseProduto.add(</b>
+<b class="fc">&nbsp;                linkTo(</b>
+<b class="fc">&nbsp;                    methodOn(ProdutoController.class).ler(responseProduto.getId())</b>
+&nbsp;                )
+<b class="fc">&nbsp;                .withSelfRel()</b>
+&nbsp;            );
+&nbsp;
+&nbsp;            // Retorna a resposta.
+<b class="fc">&nbsp;            return responseProduto;</b>
+&nbsp;
+<b class="fc">&nbsp;        } catch (DadosConflitantesException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(409, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (DadosInvalidosException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(400, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (DataIntegrityViolationException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_insercao&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (IllegalArgumentException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (NoSuchElementException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(404, &quot;nao_encontrado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Rota responsável por substituir um produto.
+&nbsp;     * @param id - Id do produto a ser substituído.
+&nbsp;     * @param requestProduto - Dados do novo produto.
+&nbsp;     * @return Dados do novo produto.
+&nbsp;     */
+&nbsp;    @PutMapping(&quot;/{id}&quot;)
+&nbsp;    public ResponseProduto atualizar(@PathVariable int id, @RequestBody Produto requestProduto) {
+&nbsp;        try {
+&nbsp;
+&nbsp;            // Valida os dados fornecidos.
+<b class="fc">&nbsp;            Tratamento.validarProduto(requestProduto, false);</b>
+&nbsp;
+&nbsp;            // Se o usuário informado não existir,
+<b class="fc">&nbsp;            if(!usuarioRepository.existsById(requestProduto.getCriadoPor()))</b>
+&nbsp;                // Retorna um erro.
+<b class="fc">&nbsp;                throw new DadosInvalidosException(&quot;usuario_nao_encontrado&quot;);</b>
+&nbsp;
+&nbsp;            // Se a categoria informada não existir,
+<b class="fc">&nbsp;            if(!categoriaRepository.existsById(requestProduto.getCategoriaId()))</b>
+&nbsp;                // Retorna um erro.
+<b class="fc">&nbsp;                throw new DadosInvalidosException(&quot;categoria_nao_encontrado&quot;);</b>
+&nbsp;
+&nbsp;            // Se as características fornecidas pertencer a um produto já existente,
+<b class="fc">&nbsp;            if(produtoRepository.findByCaracteristicas(</b>
+<b class="fc">&nbsp;                requestProduto.getNome(), </b>
+<b class="fc">&nbsp;                requestProduto.getMarca(),</b>
+<b class="fc">&nbsp;                requestProduto.getTamanho(), </b>
+<b class="fc">&nbsp;                requestProduto.getCor()) != null</b>
+&nbsp;            )
+&nbsp;                // Retorna um erro.
+<b class="fc">&nbsp;                throw new DadosConflitantesException(&quot;produto_existente&quot;);</b>
+&nbsp;
+&nbsp;            // Busca o produto a ser substituído.
+<b class="fc">&nbsp;            Produto produto = produtoRepository.findById(id).get();</b>
+&nbsp;
+&nbsp;            // Define o id do produto como o id fornecido.
+<b class="fc">&nbsp;            requestProduto.setId(id);</b>
+&nbsp;
+&nbsp;            // Define o id do usuário criador como o id atual do banco dedos, haja vista que não pode ser alterado.
+<b class="fc">&nbsp;            requestProduto.setCriadoPor(produto.getCriadoPor());</b>
+&nbsp;            
+&nbsp;            // Insere o novo produto e transforma os dados inseridos em resposta.
+<b class="fc">&nbsp;            ResponseProduto responseProduto = new ResponseProduto(produtoRepository.save(requestProduto));</b>
+&nbsp;
+&nbsp;            // Adiciona o link para a rota de detalhamento de produto.
+<b class="fc">&nbsp;            responseProduto.add(</b>
+<b class="fc">&nbsp;                linkTo(</b>
+<b class="fc">&nbsp;                    methodOn(ProdutoController.class).ler(responseProduto.getId())</b>
+&nbsp;                )
+<b class="fc">&nbsp;                .withSelfRel()</b>
+&nbsp;            );
+&nbsp;
+&nbsp;            // Retorna a resposta.
+<b class="fc">&nbsp;            return responseProduto;</b>
+&nbsp;
+<b class="fc">&nbsp;        } catch (DadosConflitantesException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(409, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (DadosInvalidosException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(400, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (NoSuchElementException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(404, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (DataIntegrityViolationException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_insercao&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (IllegalArgumentException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Rota responsável por excluir um produto.
+&nbsp;     * @param id - Id do produto a ser excluído.
+&nbsp;     */
+&nbsp;    @DeleteMapping(&quot;/{id}&quot;)
+&nbsp;    @CacheEvict(value = &quot;produtos&quot;, allEntries = true)
+&nbsp;    public Object remover(@PathVariable int id) {
+&nbsp;        try {
+&nbsp;
+&nbsp;            // Se o produto informado não existir,
+<b class="fc">&nbsp;            if(!produtoRepository.existsById(id))</b>
+&nbsp;                // Retorna um erro.
+<b class="fc">&nbsp;                throw new NoSuchElementException(&quot;nao_encontrado&quot;);</b>
+&nbsp;
+&nbsp;            // Exclui o produto.
+<b class="fc">&nbsp;            produtoRepository.deleteById(id);</b>
+&nbsp;
+&nbsp;            // Retorna um link para a rota de listagem de produtos.
+<b class="fc">&nbsp;            return linkTo(</b>
+<b class="fc">&nbsp;                        methodOn(ProdutoController.class).listar(new Produto())</b>
+&nbsp;                    )
+<b class="fc">&nbsp;                    .withRel(&quot;collection&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        } catch (NoSuchElementException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(404, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (DataIntegrityViolationException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_remocao&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (IllegalArgumentException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-25 03:05</div>
+</div>
+</body>
+</html>

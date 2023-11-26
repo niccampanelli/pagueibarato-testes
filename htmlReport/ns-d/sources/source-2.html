@@ -1,0 +1,186 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > PatchMercado</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.pagueibaratoapi.utils.patches</a>
+</div>
+
+<h1>Coverage Summary for Class: PatchMercado (com.pagueibaratoapi.utils.patches)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PatchMercado</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (1/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (10/20)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    90,9%
+  </span>
+  <span class="absValue">
+    (20/22)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.pagueibaratoapi.utils.patches;
+&nbsp;
+&nbsp;import com.pagueibaratoapi.models.requests.Mercado;
+&nbsp;
+&nbsp;/** Classe resposável pelo patch do Mercado */
+<b class="nc">&nbsp;public class PatchMercado {</b>
+&nbsp;    
+&nbsp;    /**
+&nbsp;     * Método responsável por adicionar os atributos atualizados ao estado atual do Mercado.
+&nbsp;     * @param mercadoAtual - Objeto do Mercado no estado atual do banco de dados.
+&nbsp;     * @param mercadoEditado - Objeto do Mercado com os atributos que serão atualizados.
+&nbsp;     * @return Mercado - Objeto do Mercado após a inserção dos atributos atualizados.
+&nbsp;     */
+&nbsp;    public static Mercado edita(Mercado mercadoAtual, Mercado mercadoEditado) {
+&nbsp;        // Se o atributo do Id do Ramo não for nulo
+<b class="pc">&nbsp;        if(mercadoEditado.getRamoId() != null)</b>
+&nbsp;            // Atribui o Id do Ramo ao objeto do Mercado atual
+<b class="fc">&nbsp;            mercadoAtual.setRamoId(mercadoEditado.getRamoId());</b>
+&nbsp;
+&nbsp;        // Se o atributo do nome do Mercado não for nulo
+<b class="pc">&nbsp;        if(mercadoEditado.getNome() != null)</b>
+&nbsp;            // Atribui o nome do Mercado ao objeto do Mercado atual
+<b class="fc">&nbsp;            mercadoAtual.setNome(mercadoEditado.getNome());</b>
+&nbsp;
+&nbsp;        // Se o atributo do logradouro do Mercado não for nulo
+<b class="pc">&nbsp;        if(mercadoEditado.getLogradouro() != null)</b>
+&nbsp;            // Atribui o logradouro do Mercado ao objeto do Mercado atual
+<b class="fc">&nbsp;            mercadoAtual.setLogradouro(mercadoEditado.getLogradouro());</b>
+&nbsp;
+&nbsp;        // Se o atribuito do número do endereço do Mercado não for nulo
+<b class="pc">&nbsp;        if(mercadoEditado.getNumero() != null)</b>
+&nbsp;            // Atribui o número do endereço do Mercado ao objeto do Mercado atual
+<b class="fc">&nbsp;            mercadoAtual.setNumero(mercadoEditado.getNumero());</b>
+&nbsp;
+&nbsp;        // Se o atributo do complemento do Mercado não for nulo
+<b class="pc">&nbsp;        if(mercadoEditado.getComplemento() != null) {</b>
+&nbsp;            // Se o atributo enviado do complemento do Mercado for vazio (aspas vazias)
+<b class="pc">&nbsp;            if(mercadoEditado.getComplemento().trim().isEmpty())</b>
+&nbsp;                // Define como nulo o atributo do complemento do Mercado do objeto do Mercado atual.
+&nbsp;                // Isso significa que esse mercado não possui um complemento.
+<b class="nc">&nbsp;                mercadoAtual.setComplemento(null);</b>
+&nbsp;            else
+&nbsp;                // Caso contrário, atribui o complemento do Mercado ao objeto do Mercado atual.
+<b class="fc">&nbsp;                mercadoAtual.setComplemento(mercadoEditado.getComplemento());</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        // Se o atributo do bairro do Mercado não for nulo
+<b class="pc">&nbsp;        if(mercadoEditado.getBairro() != null)</b>
+&nbsp;            // Atribui o bairro do Mercado ao objeto do Mercado atual
+<b class="fc">&nbsp;            mercadoAtual.setBairro(mercadoEditado.getBairro());</b>
+&nbsp;
+&nbsp;        // Se o atributo da cidade do Mercado não for nulo
+<b class="pc">&nbsp;        if(mercadoEditado.getCidade() != null)</b>
+&nbsp;            // Atribui a cidade do Mercado ao objeto do Mercado atual
+<b class="fc">&nbsp;            mercadoAtual.setCidade(mercadoEditado.getCidade());</b>
+&nbsp;        
+&nbsp;        // Se o atributo do estado do Mercado não for nulo
+<b class="pc">&nbsp;        if(mercadoEditado.getUf() != null)</b>
+&nbsp;            // Atribui o estado do Mercado ao objeto do Mercado atual
+<b class="fc">&nbsp;            mercadoAtual.setUf(mercadoEditado.getUf());</b>
+&nbsp;        
+&nbsp;        // Se o atributo do CEP do Mercado não for nulo
+<b class="pc">&nbsp;        if(mercadoEditado.getCep() != null)</b>
+&nbsp;            // Atribui o CEP do Mercado ao objeto do Mercado atual
+<b class="fc">&nbsp;            mercadoAtual.setCep(mercadoEditado.getCep());</b>
+&nbsp;
+&nbsp;        // Retorna o mercado com os atributos atualizados e os demais atributos no estado atual.
+<b class="fc">&nbsp;        return mercadoAtual;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-25 03:05</div>
+</div>
+</body>
+</html>

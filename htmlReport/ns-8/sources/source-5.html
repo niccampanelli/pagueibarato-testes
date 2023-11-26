@@ -1,0 +1,1231 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ProdutoControllerIntegrationTest</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.pagueibaratoapi.pagueibaratoapi.integration</a>
+</div>
+
+<h1>Coverage Summary for Class: ProdutoControllerIntegrationTest (com.pagueibaratoapi.pagueibaratoapi.integration)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ProdutoControllerIntegrationTest</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (52/52)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (14/28)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    93,4%
+  </span>
+  <span class="absValue">
+    (619/663)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.pagueibaratoapi.pagueibaratoapi.integration;
+&nbsp;
+&nbsp;import static org.junit.Assert.assertTrue;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;import org.junit.Before;
+&nbsp;import org.junit.Test;
+&nbsp;import org.junit.runner.RunWith;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.http.HttpStatus;
+&nbsp;import org.springframework.test.context.junit4.SpringRunner;
+&nbsp;import org.springframework.web.server.ResponseStatusException;
+&nbsp;
+&nbsp;import com.pagueibaratoapi.controllers.ProdutoController;
+&nbsp;import com.pagueibaratoapi.models.requests.Categoria;
+&nbsp;import com.pagueibaratoapi.models.requests.Produto;
+&nbsp;import com.pagueibaratoapi.models.requests.Usuario;
+&nbsp;import com.pagueibaratoapi.models.responses.ResponseProduto;
+&nbsp;import com.pagueibaratoapi.pagueibaratoapi.PagueiBaratoApiApplicationTests;
+&nbsp;import com.pagueibaratoapi.repository.CategoriaRepository;
+&nbsp;import com.pagueibaratoapi.repository.ProdutoRepository;
+&nbsp;import com.pagueibaratoapi.repository.UsuarioRepository;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;@RunWith(SpringRunner.class)
+<b class="fc">&nbsp;public class ProdutoControllerIntegrationTest extends PagueiBaratoApiApplicationTests {</b>
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private ProdutoController produtoController;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private ProdutoRepository produtoRepository;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private UsuarioRepository usuarioRepository;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private CategoriaRepository categoriaRepository;
+&nbsp;
+&nbsp;    @Before
+&nbsp;    public void setUp() {
+<b class="fc">&nbsp;        produtoRepository.deleteAll();</b>
+<b class="fc">&nbsp;        usuarioRepository.deleteAll();</b>
+<b class="fc">&nbsp;        categoriaRepository.deleteAll();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarProdutoComSucesso() {
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuarioCriar = new Usuario();</b>
+<b class="fc">&nbsp;        usuarioCriar.setNome(&quot;Usuario Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setEmail(&quot;teste@email.com&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setSenha(&quot;Senha!123456&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setLogradouro(&quot;Logradouro Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setNumero(123);</b>
+<b class="fc">&nbsp;        usuarioCriar.setBairro(&quot;Bairro Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setCidade(&quot;Cidade Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setUf(&quot;SP&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setCep(&quot;12345-678&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idUsuario = usuarioRepository.save(usuarioCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Categoria categoriaCriar = new Categoria();</b>
+<b class="fc">&nbsp;        categoriaCriar.setNome(&quot;Categoria Teste&quot;);</b>
+<b class="fc">&nbsp;        categoriaCriar.setDescricao(&quot;Descricao Testeeeeeee&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idCategoria = categoriaRepository.save(categoriaCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoCriar = new Produto();</b>
+<b class="fc">&nbsp;        produtoCriar.setNome(&quot;Produto Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setMarca(&quot;Marca Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setCor(&quot;Cor Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setTamanho(&quot;Tamanho Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setCriadoPor(idUsuario);</b>
+<b class="fc">&nbsp;        produtoCriar.setCategoriaId(idCategoria);</b>
+&nbsp;
+<b class="fc">&nbsp;        ResponseProduto responseProduto = produtoController.criar(produtoCriar);</b>
+&nbsp;
+<b class="pc">&nbsp;        assertTrue(responseProduto.getId() != null &amp;&amp; responseProduto.getId() &gt; 0);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarProdutoComCorpoNulo() {
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.criar(null);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;corpo_nulo&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarProdutoComIdFornecido() {
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoCriar = new Produto();</b>
+<b class="fc">&nbsp;        produtoCriar.setId(1);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.criar(produtoCriar);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;id_fornecido&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarProdutoComCorInvalida() {
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoCriar = new Produto();</b>
+<b class="fc">&nbsp;        produtoCriar.setCor(&quot;lorem ipsum dolor sit amet consectetur adipiscing elit&quot;);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.criar(produtoCriar);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;cor_invalido&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarProdutoComNomeInvalido() {
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoCriar = new Produto();</b>
+<b class="fc">&nbsp;        produtoCriar.setNome(&quot;uva&quot;);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.criar(produtoCriar);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;nome_invalido&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarProdutoComMarcaInvalida() {
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoCriar = new Produto();</b>
+<b class="fc">&nbsp;        produtoCriar.setNome(&quot;banana pera&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setMarca(&quot;a&quot;);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.criar(produtoCriar);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;marca_invalido&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarProdutoComTamanhoInvalido() {
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoCriar = new Produto();</b>
+<b class="fc">&nbsp;        produtoCriar.setNome(&quot;banana pera&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setMarca(&quot;banana&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setTamanho(&quot;lorem ipsum dolor sit amet consectetur adipiscing elit&quot;);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.criar(produtoCriar);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;tamanho_invalido&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarProdutoComUsuarioInvalido() {
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoCriar = new Produto();</b>
+<b class="fc">&nbsp;        produtoCriar.setNome(&quot;banana pera&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setMarca(&quot;banana&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setTamanho(&quot;pequeno&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setCriadoPor(0);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.criar(produtoCriar);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;usuario_invalido&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarProdutoComCategoriaInvalida() {
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoCriar = new Produto();</b>
+<b class="fc">&nbsp;        produtoCriar.setNome(&quot;banana pera&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setMarca(&quot;banana&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setTamanho(&quot;pequeno&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setCriadoPor(1);</b>
+<b class="fc">&nbsp;        produtoCriar.setCategoriaId(0);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.criar(produtoCriar);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;categoria_invalido&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarProdutoComUsuarioNaoEncontrado() {
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoCriar = new Produto();</b>
+<b class="fc">&nbsp;        produtoCriar.setNome(&quot;banana pera&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setMarca(&quot;banana&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setTamanho(&quot;pequeno&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setCriadoPor(1);</b>
+<b class="fc">&nbsp;        produtoCriar.setCategoriaId(1);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.criar(produtoCriar);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;usuario_nao_encontrado&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void crairProdutoComCategoriaNaoEncontrada() {
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuarioCriar = new Usuario();</b>
+<b class="fc">&nbsp;        usuarioCriar.setNome(&quot;Usuario Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setEmail(&quot;teste@email.com&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setSenha(&quot;Senha!123456&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setLogradouro(&quot;Logradouro Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setNumero(123);</b>
+<b class="fc">&nbsp;        usuarioCriar.setBairro(&quot;Bairro Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setCidade(&quot;Cidade Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setUf(&quot;SP&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setCep(&quot;12345-678&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idUsuario = usuarioRepository.save(usuarioCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoCriar = new Produto();</b>
+<b class="fc">&nbsp;        produtoCriar.setNome(&quot;banana pera&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setMarca(&quot;banana&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setTamanho(&quot;pequeno&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setCriadoPor(idUsuario);</b>
+<b class="fc">&nbsp;        produtoCriar.setCategoriaId(1);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.criar(produtoCriar);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;categoria_nao_encontrado&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarProdutoComProdutoExistente() {
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuarioCriar = new Usuario();</b>
+<b class="fc">&nbsp;        usuarioCriar.setNome(&quot;Usuario Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setEmail(&quot;teste@email.com&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setSenha(&quot;Senha!123456&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setLogradouro(&quot;Logradouro Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setNumero(123);</b>
+<b class="fc">&nbsp;        usuarioCriar.setBairro(&quot;Bairro Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setCidade(&quot;Cidade Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setUf(&quot;SP&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setCep(&quot;12345-678&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idUsuario = usuarioRepository.save(usuarioCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Categoria categoriaCriar = new Categoria();</b>
+<b class="fc">&nbsp;        categoriaCriar.setNome(&quot;Categoria Teste&quot;);</b>
+<b class="fc">&nbsp;        categoriaCriar.setDescricao(&quot;Descricao Testeeeeeee&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idCategoria = categoriaRepository.save(categoriaCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoCriar = new Produto();</b>
+<b class="fc">&nbsp;        produtoCriar.setNome(&quot;Produto Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setMarca(&quot;Marca Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setCor(&quot;Cor Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setTamanho(&quot;Tamanho Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setCriadoPor(idUsuario);</b>
+<b class="fc">&nbsp;        produtoCriar.setCategoriaId(idCategoria);</b>
+&nbsp;
+<b class="fc">&nbsp;        produtoRepository.save(produtoCriar);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoCriar.setId(null);</b>
+&nbsp;
+<b class="fc">&nbsp;            produtoController.criar(produtoCriar);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;produto_existente&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarProdutoComExcecaoNoSuchElement() {
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuarioCriar = new Usuario();</b>
+<b class="fc">&nbsp;        usuarioCriar.setNome(&quot;Usuario Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setEmail(&quot;&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setSenha(&quot;Senha!123456&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setLogradouro(&quot;Logradouro Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setNumero(123);</b>
+<b class="fc">&nbsp;        usuarioCriar.setBairro(&quot;Bairro Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setCidade(&quot;Cidade Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setUf(&quot;SP&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setCep(&quot;12345-678&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idUsuario = usuarioRepository.save(usuarioCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Categoria categoriaCriar = new Categoria();</b>
+<b class="fc">&nbsp;        categoriaCriar.setNome(&quot;Categoria Teste&quot;);</b>
+<b class="fc">&nbsp;        categoriaCriar.setDescricao(&quot;Descricao Testeeeeeee&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idCategoria = categoriaRepository.save(categoriaCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoCriar = new Produto();</b>
+<b class="fc">&nbsp;        produtoCriar.setNome(&quot;Produto Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setMarca(&quot;Marca Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setCor(&quot;Cor Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setTamanho(&quot;Tamanho Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setCriadoPor(idUsuario);</b>
+<b class="fc">&nbsp;        produtoCriar.setCategoriaId(idCategoria);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.criar(produtoCriar);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().toString());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().toString().contains(&quot;NoSuchElementException&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void lerProdutoComSucesso() {
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuarioCriar = new Usuario();</b>
+<b class="fc">&nbsp;        usuarioCriar.setNome(&quot;Usuario Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setEmail(&quot;teste@email.com&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setSenha(&quot;Senha!123456&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setLogradouro(&quot;Logradouro Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setNumero(123);</b>
+<b class="fc">&nbsp;        usuarioCriar.setBairro(&quot;Bairro Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setCidade(&quot;Cidade Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setUf(&quot;SP&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setCep(&quot;12345-678&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idUsuario = usuarioRepository.save(usuarioCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Categoria categoriaCriar = new Categoria();</b>
+<b class="fc">&nbsp;        categoriaCriar.setNome(&quot;Categoria Teste&quot;);</b>
+<b class="fc">&nbsp;        categoriaCriar.setDescricao(&quot;Descricao Testeeeeeee&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idCategoria = categoriaRepository.save(categoriaCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoCriar = new Produto();</b>
+<b class="fc">&nbsp;        produtoCriar.setNome(&quot;Produto Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setMarca(&quot;Marca Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setCor(&quot;Cor Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setTamanho(&quot;Tamanho Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setCriadoPor(idUsuario);</b>
+<b class="fc">&nbsp;        produtoCriar.setCategoriaId(idCategoria);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idProduto = produtoRepository.save(produtoCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        ResponseProduto responseProduto = produtoController.ler(idProduto);</b>
+&nbsp;
+<b class="pc">&nbsp;        assertTrue(responseProduto != null &amp;&amp; responseProduto.getId() != null &amp;&amp; responseProduto.getId() &gt; 0);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void lerProdutoComExcecaoNoSuchElement() {
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.ler(1);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().toString());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().toString().contains(&quot;NoSuchElementException&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void lerProdutoComExcecao() {
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.ler(null);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getStatus());</b>
+<b class="fc">&nbsp;            assertTrue(e.getStatus().toString().equals(HttpStatus.INTERNAL_SERVER_ERROR.toString()));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarProdutoComSucesso() {
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuarioCriar = new Usuario();</b>
+<b class="fc">&nbsp;        usuarioCriar.setNome(&quot;Usuario Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setEmail(&quot;teste@email.com&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setSenha(&quot;Senha!123456&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setLogradouro(&quot;Logradouro Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setNumero(123);</b>
+<b class="fc">&nbsp;        usuarioCriar.setBairro(&quot;Bairro Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setCidade(&quot;Cidade Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setUf(&quot;SP&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setCep(&quot;12345-678&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idUsuario = usuarioRepository.save(usuarioCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Categoria categoriaCriar = new Categoria();</b>
+<b class="fc">&nbsp;        categoriaCriar.setNome(&quot;Categoria Teste&quot;);</b>
+<b class="fc">&nbsp;        categoriaCriar.setDescricao(&quot;Descricao Testeeeeeee&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idCategoria = categoriaRepository.save(categoriaCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoCriar = new Produto();</b>
+<b class="fc">&nbsp;        produtoCriar.setNome(&quot;Produto Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setMarca(&quot;Marca Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setCor(&quot;Cor Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setTamanho(&quot;Tamanho Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setCriadoPor(idUsuario);</b>
+<b class="fc">&nbsp;        produtoCriar.setCategoriaId(idCategoria);</b>
+&nbsp;
+<b class="fc">&nbsp;        produtoRepository.save(produtoCriar);</b>
+&nbsp;
+<b class="fc">&nbsp;        List&lt;ResponseProduto&gt; responseProdutos = produtoController.listar(new Produto());</b>
+&nbsp;
+<b class="pc">&nbsp;        assertTrue(responseProdutos != null &amp;&amp; responseProdutos.size() == 1);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarProdutoComCorpoNulo() {
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.listar(null);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;corpo_nulo&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarProdutoComIdFornecido() {
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoListar = new Produto();</b>
+<b class="fc">&nbsp;        produtoListar.setId(1);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.listar(produtoListar);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;id_fornecido&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarProdutoComCorInvalida() {
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoListar = new Produto();</b>
+<b class="fc">&nbsp;        produtoListar.setCor(&quot;lorem ipsum dolor sit amet consectetur adipiscing elit&quot;);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.listar(produtoListar);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;cor_invalido&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarProdutoComNomeInvalido() {
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoListar = new Produto();</b>
+<b class="fc">&nbsp;        produtoListar.setNome(&quot;uva&quot;);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.listar(produtoListar);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;nome_invalido&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarProdutoComMarcaInvalida() {
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoListar = new Produto();</b>
+<b class="fc">&nbsp;        produtoListar.setNome(&quot;banana pera&quot;);</b>
+<b class="fc">&nbsp;        produtoListar.setMarca(&quot;a&quot;);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.listar(produtoListar);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;marca_invalido&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarProdutoComTamanhoInvalido() {
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoListar = new Produto();</b>
+<b class="fc">&nbsp;        produtoListar.setNome(&quot;banana pera&quot;);</b>
+<b class="fc">&nbsp;        produtoListar.setMarca(&quot;banana&quot;);</b>
+<b class="fc">&nbsp;        produtoListar.setTamanho(&quot;lorem ipsum dolor sit amet consectetur adipiscing elit&quot;);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.listar(produtoListar);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;tamanho_invalido&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarProdutoComUsuarioInvalido() {
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoListar = new Produto();</b>
+<b class="fc">&nbsp;        produtoListar.setNome(&quot;banana pera&quot;);</b>
+<b class="fc">&nbsp;        produtoListar.setMarca(&quot;banana&quot;);</b>
+<b class="fc">&nbsp;        produtoListar.setTamanho(&quot;pequeno&quot;);</b>
+<b class="fc">&nbsp;        produtoListar.setCriadoPor(0);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.listar(produtoListar);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;usuario_invalido&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarProdutoComCategoriaInvalida() {
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoListar = new Produto();</b>
+<b class="fc">&nbsp;        produtoListar.setNome(&quot;banana pera&quot;);</b>
+<b class="fc">&nbsp;        produtoListar.setMarca(&quot;banana&quot;);</b>
+<b class="fc">&nbsp;        produtoListar.setTamanho(&quot;pequeno&quot;);</b>
+<b class="fc">&nbsp;        produtoListar.setCriadoPor(1);</b>
+<b class="fc">&nbsp;        produtoListar.setCategoriaId(0);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.listar(produtoListar);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;categoria_invalido&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarProdutoComSucesso() {
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuarioCriar = new Usuario();</b>
+<b class="fc">&nbsp;        usuarioCriar.setNome(&quot;Usuario Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setEmail(&quot;teste@email.com&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setSenha(&quot;Senha!123456&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setLogradouro(&quot;Logradouro Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setNumero(123);</b>
+<b class="fc">&nbsp;        usuarioCriar.setBairro(&quot;Bairro Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setCidade(&quot;Cidade Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setUf(&quot;SP&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setCep(&quot;12345-678&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idUsuario = usuarioRepository.save(usuarioCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Categoria categoriaCriar = new Categoria();</b>
+<b class="fc">&nbsp;        categoriaCriar.setNome(&quot;Categoria Teste&quot;);</b>
+<b class="fc">&nbsp;        categoriaCriar.setDescricao(&quot;Descricao Testeeeeeee&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idCategoria = categoriaRepository.save(categoriaCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoCriar = new Produto();</b>
+<b class="fc">&nbsp;        produtoCriar.setNome(&quot;Produto Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setMarca(&quot;Marca Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setCor(&quot;Cor Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setTamanho(&quot;Tamanho Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setCriadoPor(idUsuario);</b>
+<b class="fc">&nbsp;        produtoCriar.setCategoriaId(idCategoria);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idProduto = produtoRepository.save(produtoCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoEditar = new Produto();</b>
+<b class="fc">&nbsp;        produtoEditar.setNome(&quot;Produto Teste Editado&quot;);</b>
+<b class="fc">&nbsp;        produtoEditar.setCategoriaId(idCategoria);</b>
+&nbsp;
+<b class="fc">&nbsp;        ResponseProduto responseProduto = produtoController.editar(idProduto, produtoEditar);</b>
+&nbsp;
+<b class="pc">&nbsp;        assertTrue(responseProduto != null &amp;&amp; responseProduto.getId() != null &amp;&amp; responseProduto.getId() &gt; 0);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarProdutoComCorpoNulo() {
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.editar(1, null);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;corpo_nulo&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarProdutoComIdFornecido() {
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoEditar = new Produto();</b>
+<b class="fc">&nbsp;        produtoEditar.setId(1);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.editar(1, produtoEditar);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;id_fornecido&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarProdutoComCorInvalida() {
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoEditar = new Produto();</b>
+<b class="fc">&nbsp;        produtoEditar.setCor(&quot;lorem ipsum dolor sit amet consectetur adipiscing elit&quot;);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.editar(1, produtoEditar);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;cor_invalido&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarProdutoComNomeInvalido() {
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoEditar = new Produto();</b>
+<b class="fc">&nbsp;        produtoEditar.setNome(&quot;uva&quot;);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.editar(1, produtoEditar);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;nome_invalido&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarProdutoComMarcaInvalida() {
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoEditar = new Produto();</b>
+<b class="fc">&nbsp;        produtoEditar.setNome(&quot;banana pera&quot;);</b>
+<b class="fc">&nbsp;        produtoEditar.setMarca(&quot;a&quot;);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.editar(1, produtoEditar);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;marca_invalido&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarProdutoComTamanhoInvalido() {
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoEditar = new Produto();</b>
+<b class="fc">&nbsp;        produtoEditar.setNome(&quot;banana pera&quot;);</b>
+<b class="fc">&nbsp;        produtoEditar.setMarca(&quot;banana&quot;);</b>
+<b class="fc">&nbsp;        produtoEditar.setTamanho(&quot;lorem ipsum dolor sit amet consectetur adipiscing elit&quot;);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.editar(1, produtoEditar);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;tamanho_invalido&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarProdutoComUsuarioInvalido() {
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoEditar = new Produto();</b>
+<b class="fc">&nbsp;        produtoEditar.setNome(&quot;banana pera&quot;);</b>
+<b class="fc">&nbsp;        produtoEditar.setMarca(&quot;banana&quot;);</b>
+<b class="fc">&nbsp;        produtoEditar.setTamanho(&quot;pequeno&quot;);</b>
+<b class="fc">&nbsp;        produtoEditar.setCriadoPor(0);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.editar(1, produtoEditar);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;usuario_invalido&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarProdutoComCategoriaInvalida() {
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoEditar = new Produto();</b>
+<b class="fc">&nbsp;        produtoEditar.setNome(&quot;banana pera&quot;);</b>
+<b class="fc">&nbsp;        produtoEditar.setMarca(&quot;banana&quot;);</b>
+<b class="fc">&nbsp;        produtoEditar.setTamanho(&quot;pequeno&quot;);</b>
+<b class="fc">&nbsp;        produtoEditar.setCriadoPor(1);</b>
+<b class="fc">&nbsp;        produtoEditar.setCategoriaId(0);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.editar(1, produtoEditar);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;categoria_invalido&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarProdutoComProdutoExistente() {
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuarioCriar = new Usuario();</b>
+<b class="fc">&nbsp;        usuarioCriar.setNome(&quot;Usuario Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setEmail(&quot;teste@email.com&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setSenha(&quot;Senha!123456&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setLogradouro(&quot;Logradouro Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setNumero(123);</b>
+<b class="fc">&nbsp;        usuarioCriar.setBairro(&quot;Bairro Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setCidade(&quot;Cidade Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setUf(&quot;SP&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setCep(&quot;12345-678&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idUsuario = usuarioRepository.save(usuarioCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Categoria categoriaCriar = new Categoria();</b>
+<b class="fc">&nbsp;        categoriaCriar.setNome(&quot;Categoria Teste&quot;);</b>
+<b class="fc">&nbsp;        categoriaCriar.setDescricao(&quot;Descricao Testeeeeeee&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idCategoria = categoriaRepository.save(categoriaCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoCriar = new Produto();</b>
+<b class="fc">&nbsp;        produtoCriar.setNome(&quot;Produto Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setMarca(&quot;Marca Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setCor(&quot;Cor Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setTamanho(&quot;Tamanho Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setCriadoPor(idUsuario);</b>
+<b class="fc">&nbsp;        produtoCriar.setCategoriaId(idCategoria);</b>
+&nbsp;
+<b class="fc">&nbsp;        produtoRepository.save(produtoCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoEditar = new Produto();</b>
+<b class="fc">&nbsp;        produtoEditar.setNome(&quot;Produto Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoEditar.setMarca(&quot;Marca Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoEditar.setCor(&quot;Cor Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoEditar.setTamanho(&quot;Tamanho Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoEditar.setCriadoPor(idUsuario);</b>
+<b class="fc">&nbsp;        produtoEditar.setCategoriaId(idCategoria);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.editar(1, produtoEditar);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;produto_existente&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarProdutoComExcecaoCategoriaNaoEncontrado() {
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuarioCriar = new Usuario();</b>
+<b class="fc">&nbsp;        usuarioCriar.setNome(&quot;Usuario Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setEmail(&quot;teste@email.com&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setSenha(&quot;Senha!123456&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setLogradouro(&quot;Logradouro Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setNumero(123);</b>
+<b class="fc">&nbsp;        usuarioCriar.setBairro(&quot;Bairro Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setCidade(&quot;Cidade Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setUf(&quot;SP&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setCep(&quot;12345-678&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idUsuario = usuarioRepository.save(usuarioCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Categoria categoriaCriar = new Categoria();</b>
+<b class="fc">&nbsp;        categoriaCriar.setNome(&quot;Categoria Teste&quot;);</b>
+<b class="fc">&nbsp;        categoriaCriar.setDescricao(&quot;Descricao Testeeeeeee&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idCategoria = categoriaRepository.save(categoriaCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoCriar = new Produto();</b>
+<b class="fc">&nbsp;        produtoCriar.setNome(&quot;Produto Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setMarca(&quot;Marca Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setCor(&quot;Cor Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setTamanho(&quot;Tamanho Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setCriadoPor(idUsuario);</b>
+<b class="fc">&nbsp;        produtoCriar.setCategoriaId(idCategoria);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idProduto = produtoRepository.save(produtoCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoEditar = new Produto();</b>
+<b class="fc">&nbsp;        produtoEditar.setNome(&quot;Produto Teste 2&quot;);</b>
+<b class="fc">&nbsp;        produtoEditar.setMarca(&quot;Marca Teste 2&quot;);</b>
+<b class="fc">&nbsp;        produtoEditar.setCor(&quot;Cor Teste 2&quot;);</b>
+<b class="fc">&nbsp;        produtoEditar.setTamanho(&quot;Tamanho Teste 2&quot;);</b>
+<b class="fc">&nbsp;        produtoEditar.setCriadoPor(idUsuario);</b>
+<b class="fc">&nbsp;        produtoEditar.setCategoriaId(1);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.editar(idProduto, produtoEditar);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;categoria_nao_encontrado&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarProdutoComSucesso() {
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuarioCriar = new Usuario();</b>
+<b class="fc">&nbsp;        usuarioCriar.setNome(&quot;Usuario Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setEmail(&quot;teste@email.com&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setSenha(&quot;Senha!123456&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setLogradouro(&quot;Logradouro Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setNumero(123);</b>
+<b class="fc">&nbsp;        usuarioCriar.setBairro(&quot;Bairro Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setCidade(&quot;Cidade Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setUf(&quot;SP&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setCep(&quot;12345-678&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idUsuario = usuarioRepository.save(usuarioCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Categoria categoriaCriar = new Categoria();</b>
+<b class="fc">&nbsp;        categoriaCriar.setNome(&quot;Categoria Teste&quot;);</b>
+<b class="fc">&nbsp;        categoriaCriar.setDescricao(&quot;Descricao Testeeeeeee&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idCategoria = categoriaRepository.save(categoriaCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoCriar = new Produto();</b>
+<b class="fc">&nbsp;        produtoCriar.setNome(&quot;Produto Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setMarca(&quot;Marca Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setCor(&quot;Cor Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setTamanho(&quot;Tamanho Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setCriadoPor(idUsuario);</b>
+<b class="fc">&nbsp;        produtoCriar.setCategoriaId(idCategoria);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idProduto = produtoRepository.save(produtoCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoAtualizar = new Produto();</b>
+<b class="fc">&nbsp;        produtoAtualizar.setNome(&quot;Produto Teste 2&quot;);</b>
+<b class="fc">&nbsp;        produtoAtualizar.setMarca(&quot;Marca Teste 2&quot;);</b>
+<b class="fc">&nbsp;        produtoAtualizar.setCor(&quot;Cor Teste 2&quot;);</b>
+<b class="fc">&nbsp;        produtoAtualizar.setTamanho(&quot;Tamanho Teste 2&quot;);</b>
+<b class="fc">&nbsp;        produtoAtualizar.setCriadoPor(idUsuario);</b>
+<b class="fc">&nbsp;        produtoAtualizar.setCategoriaId(idCategoria);</b>
+&nbsp;
+<b class="fc">&nbsp;        ResponseProduto responseProduto = produtoController.atualizar(idProduto, produtoAtualizar);</b>
+&nbsp;
+<b class="pc">&nbsp;        assertTrue(responseProduto != null &amp;&amp; responseProduto.getId() != null &amp;&amp; responseProduto.getId() &gt; 0);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarProdutoComCorpoNulo() {
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.atualizar(1, null);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;corpo_nulo&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarProdutoComIdFornecido() {
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoAtualizar = new Produto();</b>
+<b class="fc">&nbsp;        produtoAtualizar.setId(1);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.atualizar(1, produtoAtualizar);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;id_fornecido&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarProdutoComCorInvalida() {
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoAtualizar = new Produto();</b>
+<b class="fc">&nbsp;        produtoAtualizar.setCor(&quot;lorem ipsum dolor sit amet consectetur adipiscing elit&quot;);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.atualizar(1, produtoAtualizar);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;cor_invalido&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarProdutoComNomeInvalido() {
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoAtualizar = new Produto();</b>
+<b class="fc">&nbsp;        produtoAtualizar.setNome(&quot;uva&quot;);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.atualizar(1, produtoAtualizar);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;nome_invalido&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarProdutoComMarcaInvalida() {
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoAtualizar = new Produto();</b>
+<b class="fc">&nbsp;        produtoAtualizar.setNome(&quot;banana pera&quot;);</b>
+<b class="fc">&nbsp;        produtoAtualizar.setMarca(&quot;a&quot;);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.atualizar(1, produtoAtualizar);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;marca_invalido&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarProdutoComTamanhoInvalido() {
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoAtualizar = new Produto();</b>
+<b class="fc">&nbsp;        produtoAtualizar.setNome(&quot;banana pera&quot;);</b>
+<b class="fc">&nbsp;        produtoAtualizar.setMarca(&quot;banana&quot;);</b>
+<b class="fc">&nbsp;        produtoAtualizar.setTamanho(&quot;lorem ipsum dolor sit amet consectetur adipiscing elit&quot;);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.atualizar(1, produtoAtualizar);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;tamanho_invalido&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarProdutoComUsuarioInvalido() {
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoAtualizar = new Produto();</b>
+<b class="fc">&nbsp;        produtoAtualizar.setNome(&quot;banana pera&quot;);</b>
+<b class="fc">&nbsp;        produtoAtualizar.setMarca(&quot;banana&quot;);</b>
+<b class="fc">&nbsp;        produtoAtualizar.setTamanho(&quot;pequeno&quot;);</b>
+<b class="fc">&nbsp;        produtoAtualizar.setCriadoPor(0);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.atualizar(1, produtoAtualizar);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;usuario_invalido&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarProdutoComCategoriaInvalida() {
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoAtualizar = new Produto();</b>
+<b class="fc">&nbsp;        produtoAtualizar.setNome(&quot;banana pera&quot;);</b>
+<b class="fc">&nbsp;        produtoAtualizar.setMarca(&quot;banana&quot;);</b>
+<b class="fc">&nbsp;        produtoAtualizar.setTamanho(&quot;pequeno&quot;);</b>
+<b class="fc">&nbsp;        produtoAtualizar.setCriadoPor(1);</b>
+<b class="fc">&nbsp;        produtoAtualizar.setCategoriaId(0);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.atualizar(1, produtoAtualizar);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;categoria_invalido&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarProdutoComUsuarioNaoEncontrado() {
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoAtualizar = new Produto();</b>
+<b class="fc">&nbsp;        produtoAtualizar.setNome(&quot;banana pera&quot;);</b>
+<b class="fc">&nbsp;        produtoAtualizar.setMarca(&quot;banana&quot;);</b>
+<b class="fc">&nbsp;        produtoAtualizar.setTamanho(&quot;pequeno&quot;);</b>
+<b class="fc">&nbsp;        produtoAtualizar.setCriadoPor(1);</b>
+<b class="fc">&nbsp;        produtoAtualizar.setCategoriaId(1);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.atualizar(1, produtoAtualizar);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;usuario_nao_encontrado&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarProdutoComCategoriaNaoEncontrada() {
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuarioCriar = new Usuario();</b>
+<b class="fc">&nbsp;        usuarioCriar.setNome(&quot;Usuario Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setEmail(&quot;&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setSenha(&quot;Senha!123456&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setLogradouro(&quot;Logradouro Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setNumero(123);</b>
+<b class="fc">&nbsp;        usuarioCriar.setBairro(&quot;Bairro Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setCidade(&quot;Cidade Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setUf(&quot;SP&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setCep(&quot;12345-678&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idUsuario = usuarioRepository.save(usuarioCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoAtualizar = new Produto();</b>
+<b class="fc">&nbsp;        produtoAtualizar.setNome(&quot;banana pera&quot;);</b>
+<b class="fc">&nbsp;        produtoAtualizar.setMarca(&quot;banana&quot;);</b>
+<b class="fc">&nbsp;        produtoAtualizar.setTamanho(&quot;pequeno&quot;);</b>
+<b class="fc">&nbsp;        produtoAtualizar.setCriadoPor(idUsuario);</b>
+<b class="fc">&nbsp;        produtoAtualizar.setCategoriaId(1);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.atualizar(1, produtoAtualizar);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;categoria_nao_encontrado&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarProdutoComProdutoExistente() {
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuarioCriar = new Usuario();</b>
+<b class="fc">&nbsp;        usuarioCriar.setNome(&quot;Usuario Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setEmail(&quot;&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setSenha(&quot;Senha!123456&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setLogradouro(&quot;Logradouro Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setNumero(123);</b>
+<b class="fc">&nbsp;        usuarioCriar.setBairro(&quot;Bairro Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setCidade(&quot;Cidade Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setUf(&quot;SP&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setCep(&quot;12345-678&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idUsuario = usuarioRepository.save(usuarioCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Categoria categoriaCriar = new Categoria();</b>
+<b class="fc">&nbsp;        categoriaCriar.setNome(&quot;Categoria Teste&quot;);</b>
+<b class="fc">&nbsp;        categoriaCriar.setDescricao(&quot;Descricao Testeeeeeee&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idCategoria = categoriaRepository.save(categoriaCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoCriar = new Produto();</b>
+<b class="fc">&nbsp;        produtoCriar.setNome(&quot;Produto Teste 1&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setMarca(&quot;Marca Teste 1&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setCor(&quot;Cor Teste 1&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setTamanho(&quot;Tamanho Teste 1&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setCriadoPor(idUsuario);</b>
+<b class="fc">&nbsp;        produtoCriar.setCategoriaId(idCategoria);</b>
+&nbsp;
+<b class="fc">&nbsp;        produtoRepository.save(produtoCriar);</b>
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoAtualizar = new Produto();</b>
+<b class="fc">&nbsp;        produtoAtualizar.setNome(&quot;Produto Teste 1&quot;);</b>
+<b class="fc">&nbsp;        produtoAtualizar.setMarca(&quot;Marca Teste 1&quot;);</b>
+<b class="fc">&nbsp;        produtoAtualizar.setCor(&quot;Cor Teste 1&quot;);</b>
+<b class="fc">&nbsp;        produtoAtualizar.setTamanho(&quot;Tamanho Teste 1&quot;);</b>
+<b class="fc">&nbsp;        produtoAtualizar.setCriadoPor(idUsuario);</b>
+<b class="fc">&nbsp;        produtoAtualizar.setCategoriaId(idCategoria);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.atualizar(1, produtoAtualizar);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;produto_existente&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void removerProdutoComSucesso() {
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuarioCriar = new Usuario();</b>
+<b class="fc">&nbsp;        usuarioCriar.setNome(&quot;Usuario Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setEmail(&quot;teste@email.com&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setSenha(&quot;Senha!123456&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setLogradouro(&quot;Logradouro Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setNumero(123);</b>
+<b class="fc">&nbsp;        usuarioCriar.setBairro(&quot;Bairro Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setCidade(&quot;Cidade Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setUf(&quot;SP&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setCep(&quot;12345-678&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idUsuario = usuarioRepository.save(usuarioCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Categoria categoriaCriar = new Categoria();</b>
+<b class="fc">&nbsp;        categoriaCriar.setNome(&quot;Categoria Teste&quot;);</b>
+<b class="fc">&nbsp;        categoriaCriar.setDescricao(&quot;Descricao Testeeeeeee&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idCategoria = categoriaRepository.save(categoriaCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoCriar = new Produto();</b>
+<b class="fc">&nbsp;        produtoCriar.setNome(&quot;Produto Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setMarca(&quot;Marca Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setCor(&quot;Cor Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setTamanho(&quot;Tamanho Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setCriadoPor(idUsuario);</b>
+<b class="fc">&nbsp;        produtoCriar.setCategoriaId(idCategoria);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idProduto = produtoRepository.save(produtoCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        int quantidadeProdutosAntes = produtoRepository.findAll().size();</b>
+&nbsp;
+<b class="fc">&nbsp;        produtoController.remover(idProduto);</b>
+&nbsp;
+<b class="fc">&nbsp;        int quantidadeProdutosDepois = produtoRepository.findAll().size();</b>
+&nbsp;        
+<b class="pc">&nbsp;        assertTrue(quantidadeProdutosAntes == quantidadeProdutosDepois + 1);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void removerProdutoComExcecaoNoSuchElement() {
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.remover(1);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().toString());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().toString().contains(&quot;NoSuchElementException&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-25 03:05</div>
+</div>
+</body>
+</html>

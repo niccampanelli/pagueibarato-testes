@@ -41,40 +41,40 @@ Current scope:     <a href="../../index.html">all classes</a>
   <td class="name">IndiceController</td>
 <td class="coverageStat">
   <span class="percent">
-    50%
+    100%
   </span>
   <span class="absValue">
-    (1/2)
+    (2/2)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    3%
+    93,9%
   </span>
   <span class="absValue">
-    (1/33)
+    (31/33)
   </span>
 </td>
 </tr>
   <tr>
-    <td class="name">IndiceController$$EnhancerBySpringCGLIB$$ac0b9454</td>
+    <td class="name">IndiceController$$EnhancerBySpringCGLIB$$99ad5b6f</td>
   </tr>
 <tr>
   <td class="name"><strong>Total</strong></td>
 <td class="coverageStat">
   <span class="percent">
-    50%
+    100%
   </span>
   <span class="absValue">
-    (1/2)
+    (2/2)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    3%
+    93,9%
   </span>
   <span class="absValue">
-    (1/33)
+    (31/33)
   </span>
 </td>
 </tr>
@@ -122,66 +122,66 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;        try {
 &nbsp;            
 &nbsp;            // Lista de objetos para adicionar links.
-<b class="nc">&nbsp;            List&lt;Object&gt; responseLinks = new ArrayList&lt;Object&gt;();</b>
+<b class="fc">&nbsp;            List&lt;Object&gt; responseLinks = new ArrayList&lt;Object&gt;();</b>
 &nbsp;    
 &nbsp;            // Adiciona link para listar categorias.
-<b class="nc">&nbsp;            responseLinks.add(</b>
-<b class="nc">&nbsp;                linkTo(</b>
-<b class="nc">&nbsp;                    methodOn(CategoriaController.class).listar()</b>
+<b class="fc">&nbsp;            responseLinks.add(</b>
+<b class="fc">&nbsp;                linkTo(</b>
+<b class="fc">&nbsp;                    methodOn(CategoriaController.class).listar()</b>
 &nbsp;                )
-<b class="nc">&nbsp;                .withRel(&quot;categoria&quot;)</b>
+<b class="fc">&nbsp;                .withRel(&quot;categoria&quot;)</b>
 &nbsp;            );
 &nbsp;    
 &nbsp;            // Adiciona link para listar estoques.
-<b class="nc">&nbsp;            responseLinks.add(</b>
-<b class="nc">&nbsp;                linkTo(</b>
-<b class="nc">&nbsp;                    methodOn(EstoqueController.class).listar(new Estoque())</b>
+<b class="fc">&nbsp;            responseLinks.add(</b>
+<b class="fc">&nbsp;                linkTo(</b>
+<b class="fc">&nbsp;                    methodOn(EstoqueController.class).listar(new Estoque())</b>
 &nbsp;                )
-<b class="nc">&nbsp;                .withRel(&quot;estoque&quot;)</b>
+<b class="fc">&nbsp;                .withRel(&quot;estoque&quot;)</b>
 &nbsp;            );
 &nbsp;    
 &nbsp;            // Adiciona link para listar mercados.
-<b class="nc">&nbsp;            responseLinks.add(</b>
-<b class="nc">&nbsp;                linkTo(</b>
-<b class="nc">&nbsp;                    methodOn(MercadoController.class).listar(new Mercado())</b>
+<b class="fc">&nbsp;            responseLinks.add(</b>
+<b class="fc">&nbsp;                linkTo(</b>
+<b class="fc">&nbsp;                    methodOn(MercadoController.class).listar(new Mercado())</b>
 &nbsp;                )
-<b class="nc">&nbsp;                .withRel(&quot;mercado&quot;)</b>
+<b class="fc">&nbsp;                .withRel(&quot;mercado&quot;)</b>
 &nbsp;            );
 &nbsp;    
 &nbsp;            // Adiciona link para listar produtos.
-<b class="nc">&nbsp;            responseLinks.add(</b>
-<b class="nc">&nbsp;                linkTo(</b>
-<b class="nc">&nbsp;                    methodOn(ProdutoController.class).listar(new Produto())</b>
+<b class="fc">&nbsp;            responseLinks.add(</b>
+<b class="fc">&nbsp;                linkTo(</b>
+<b class="fc">&nbsp;                    methodOn(ProdutoController.class).listar(new Produto())</b>
 &nbsp;                )
-<b class="nc">&nbsp;                .withRel(&quot;produto&quot;)</b>
+<b class="fc">&nbsp;                .withRel(&quot;produto&quot;)</b>
 &nbsp;            );
 &nbsp;    
 &nbsp;            // Adiciona link para listar ramos.
-<b class="nc">&nbsp;            responseLinks.add(</b>
-<b class="nc">&nbsp;                linkTo(</b>
-<b class="nc">&nbsp;                    methodOn(RamoController.class).listar(new Ramo())</b>
+<b class="fc">&nbsp;            responseLinks.add(</b>
+<b class="fc">&nbsp;                linkTo(</b>
+<b class="fc">&nbsp;                    methodOn(RamoController.class).listar(new Ramo())</b>
 &nbsp;                )
-<b class="nc">&nbsp;                .withRel(&quot;ramo&quot;)</b>
+<b class="fc">&nbsp;                .withRel(&quot;ramo&quot;)</b>
 &nbsp;            );
 &nbsp;    
 &nbsp;            // Adiciona link para listar sugestões.
-<b class="nc">&nbsp;            responseLinks.add(</b>
-<b class="nc">&nbsp;                linkTo(</b>
-<b class="nc">&nbsp;                    methodOn(SugestaoController.class).listar(new Sugestao())</b>
+<b class="fc">&nbsp;            responseLinks.add(</b>
+<b class="fc">&nbsp;                linkTo(</b>
+<b class="fc">&nbsp;                    methodOn(SugestaoController.class).listar(new Sugestao())</b>
 &nbsp;                )
-<b class="nc">&nbsp;                .withRel(&quot;sugestao&quot;)</b>
+<b class="fc">&nbsp;                .withRel(&quot;sugestao&quot;)</b>
 &nbsp;            );
 &nbsp;    
 &nbsp;            // Adiciona link para listar usuários.
-<b class="nc">&nbsp;            responseLinks.add(</b>
-<b class="nc">&nbsp;                linkTo(</b>
-<b class="nc">&nbsp;                    methodOn(UsuarioController.class).listar()</b>
+<b class="fc">&nbsp;            responseLinks.add(</b>
+<b class="fc">&nbsp;                linkTo(</b>
+<b class="fc">&nbsp;                    methodOn(UsuarioController.class).listar()</b>
 &nbsp;                )
-<b class="nc">&nbsp;                .withRel(&quot;usuario&quot;)</b>
+<b class="fc">&nbsp;                .withRel(&quot;usuario&quot;)</b>
 &nbsp;            );
 &nbsp;    
 &nbsp;            // Retorna lista de links.
-<b class="nc">&nbsp;            return responseLinks;</b>
+<b class="fc">&nbsp;            return responseLinks;</b>
 &nbsp;
 <b class="nc">&nbsp;        } catch (Exception e) {</b>
 <b class="nc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_interno&quot;, e);</b>
@@ -211,7 +211,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-11-23 21:20</div>
+    <div style="float:right;">generated on 2023-11-25 03:21</div>
 </div>
 </body>
 </html>

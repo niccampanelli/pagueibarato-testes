@@ -1,0 +1,460 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > CategoriaController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.pagueibaratoapi.controllers</a>
+</div>
+
+<h1>Coverage Summary for Class: CategoriaController (com.pagueibaratoapi.controllers)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CategoriaController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    94,4%
+  </span>
+  <span class="absValue">
+    (17/18)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    98,2%
+  </span>
+  <span class="absValue">
+    (112/114)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">CategoriaController$$EnhancerBySpringCGLIB$$14a52ae8</td>
+  </tr>
+  <tr>
+    <td class="name">CategoriaController$$EnhancerBySpringCGLIB$$cc692d4b</td>
+  </tr>
+  <tr>
+    <td class="name">CategoriaController$$EnhancerBySpringCGLIB$$cc692d4b$$FastClassBySpringCGLIB$$4752791</td>
+  </tr>
+  <tr>
+    <td class="name">CategoriaController$$FastClassBySpringCGLIB$$54e7484b</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    94,4%
+  </span>
+  <span class="absValue">
+    (17/18)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    98,2%
+  </span>
+  <span class="absValue">
+    (112/114)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.pagueibaratoapi.controllers;
+&nbsp;
+&nbsp;import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+&nbsp;import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;import java.util.NoSuchElementException;
+&nbsp;
+&nbsp;import org.springframework.cache.annotation.CacheEvict;
+&nbsp;import org.springframework.cache.annotation.Cacheable;
+&nbsp;import org.springframework.dao.DataIntegrityViolationException;
+&nbsp;import org.springframework.web.bind.annotation.DeleteMapping;
+&nbsp;import org.springframework.web.bind.annotation.GetMapping;
+&nbsp;import org.springframework.web.bind.annotation.PatchMapping;
+&nbsp;import org.springframework.web.bind.annotation.PathVariable;
+&nbsp;import org.springframework.web.bind.annotation.PostMapping;
+&nbsp;import org.springframework.web.bind.annotation.PutMapping;
+&nbsp;import org.springframework.web.bind.annotation.RequestBody;
+&nbsp;import org.springframework.web.bind.annotation.RequestMapping;
+&nbsp;import org.springframework.web.bind.annotation.RestController;
+&nbsp;import org.springframework.web.server.ResponseStatusException;
+&nbsp;
+&nbsp;import com.pagueibaratoapi.models.exceptions.DadosConflitantesException;
+&nbsp;import com.pagueibaratoapi.models.exceptions.DadosInvalidosException;
+&nbsp;import com.pagueibaratoapi.models.requests.Categoria;
+&nbsp;import com.pagueibaratoapi.models.responses.ResponseCategoria;
+&nbsp;import com.pagueibaratoapi.repository.CategoriaRepository;
+&nbsp;import com.pagueibaratoapi.utils.EditaRecurso;
+&nbsp;import com.pagueibaratoapi.utils.Tratamento;
+&nbsp;
+&nbsp;/**
+&nbsp; * Classe responsável por controlar as requisições da categoria.
+&nbsp; */
+&nbsp;@RestController
+&nbsp;@RequestMapping(&quot;/categoria&quot;)
+&nbsp;public class CategoriaController {
+&nbsp;
+&nbsp;    // Repositório da categoria, responsável pelos métodos JPA no banco.
+&nbsp;    private final CategoriaRepository categoriaRepository;
+&nbsp;
+&nbsp;    // Construtor
+<b class="fc">&nbsp;    public CategoriaController(CategoriaRepository categoriaRepository) {</b>
+<b class="fc">&nbsp;        this.categoriaRepository = categoriaRepository;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Rota responsável por criar uma categoria.
+&nbsp;     * @param categoria - Dados da categoria a ser criada.
+&nbsp;     * @return Dados e id da categoria criada.
+&nbsp;     */
+&nbsp;    @PostMapping
+&nbsp;    @CacheEvict(value = &quot;categorias&quot;, allEntries = true)
+&nbsp;    public ResponseCategoria criar(@RequestBody Categoria requestCategoria) {
+&nbsp;        try {
+&nbsp;
+&nbsp;            // Valida os dados fornecidos.
+<b class="fc">&nbsp;            Tratamento.validarCategoria(requestCategoria, false);</b>
+&nbsp;
+&nbsp;            // Se existir alguma categoria com o mesmo nome no banco,
+<b class="fc">&nbsp;            if(categoriaRepository.existsByNomeIgnoreCase(requestCategoria.getNome()))</b>
+&nbsp;                // Retorna erro.
+<b class="fc">&nbsp;                throw new DadosConflitantesException(&quot;nome_existente&quot;);</b>
+&nbsp;
+&nbsp;            // Insere a categoria e transforma os dados obtidos em modelo de resposta.
+<b class="fc">&nbsp;            ResponseCategoria responseCategoria = new ResponseCategoria(categoriaRepository.save(requestCategoria));</b>
+&nbsp;
+&nbsp;            // Adiciona o link para a categoria.
+<b class="fc">&nbsp;            responseCategoria.add(</b>
+<b class="fc">&nbsp;                linkTo(</b>
+<b class="fc">&nbsp;                    methodOn(CategoriaController.class).ler(responseCategoria.getId())</b>
+&nbsp;                )
+<b class="fc">&nbsp;                .withSelfRel()</b>
+&nbsp;            );
+&nbsp;
+&nbsp;            // Retorna os dados da categoria.
+<b class="fc">&nbsp;            return responseCategoria;</b>
+&nbsp;
+<b class="fc">&nbsp;        } catch (DadosConflitantesException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(409, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (DadosInvalidosException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(400, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (DataIntegrityViolationException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_insercao&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (IllegalArgumentException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Rota responsável por ler uma categoria específica.
+&nbsp;     * @param id - Id da categoria a ser lida.
+&nbsp;     * @return Dados da categoria.
+&nbsp;     */
+&nbsp;    @GetMapping(&quot;/{id}&quot;)
+&nbsp;    public ResponseCategoria ler(@PathVariable(&quot;id&quot;) Integer id) {
+&nbsp;        try {
+&nbsp;
+&nbsp;            // Busca a categoria no banco e transforma os dados obtidos em modelo de resposta.
+<b class="fc">&nbsp;            ResponseCategoria responseCategoria = new ResponseCategoria(categoriaRepository.findById(id).get());</b>
+&nbsp;
+&nbsp;            // Adiciona o link para a rota de listagem das categorias.
+<b class="pc">&nbsp;            if(responseCategoria != null) {</b>
+<b class="fc">&nbsp;                responseCategoria.add(</b>
+<b class="fc">&nbsp;                    linkTo(</b>
+<b class="fc">&nbsp;                        methodOn(CategoriaController.class).listar()</b>
+&nbsp;                    )
+<b class="fc">&nbsp;                    .withRel(&quot;collection&quot;)</b>
+&nbsp;                );
+&nbsp;            }
+&nbsp;
+&nbsp;            // Retorna os dados da categoria.
+<b class="fc">&nbsp;            return responseCategoria;</b>
+&nbsp;
+<b class="fc">&nbsp;        } catch (NoSuchElementException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(404, &quot;nao_encontrado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Rota responsável por listar todas as categorias.
+&nbsp;     * @return Lista de categorias.
+&nbsp;     */
+&nbsp;    @GetMapping
+&nbsp;    @Cacheable(&quot;categorias&quot;)
+&nbsp;    public List&lt;ResponseCategoria&gt; listar() {
+&nbsp;        try {
+&nbsp;            
+&nbsp;            // Busca todas as categorias e cria uma array de resposta.
+<b class="fc">&nbsp;            List&lt;Categoria&gt; categorias = categoriaRepository.findAll();</b>
+<b class="fc">&nbsp;            List&lt;ResponseCategoria&gt; responseCategoria = new ArrayList&lt;ResponseCategoria&gt;();</b>
+&nbsp;
+&nbsp;            // Para cada categoria, transforma os dados obtidos em modelo de resposta.
+<b class="fc">&nbsp;            for(Categoria categoria : categorias) {</b>
+<b class="fc">&nbsp;                responseCategoria.add(</b>
+<b class="fc">&nbsp;                    new ResponseCategoria(categoria)</b>
+&nbsp;                );
+&nbsp;            }
+&nbsp;
+&nbsp;            // Se a lista de resposta não estiver vazia,
+<b class="fc">&nbsp;            if(!responseCategoria.isEmpty()) {</b>
+&nbsp;                // Itera sobres as categorias
+<b class="fc">&nbsp;                for(ResponseCategoria categoria : responseCategoria) {</b>
+&nbsp;                    // E adiciona o link para a categoria atual
+<b class="fc">&nbsp;                    categoria.add(</b>
+<b class="fc">&nbsp;                        linkTo(</b>
+<b class="fc">&nbsp;                            methodOn(CategoriaController.class).ler(categoria.getId())</b>
+&nbsp;                        )
+<b class="fc">&nbsp;                        .withSelfRel()</b>
+&nbsp;                    );
+&nbsp;                }
+&nbsp;            }
+&nbsp;
+&nbsp;            // Retorna a lista de categorias.
+<b class="fc">&nbsp;            return responseCategoria;</b>
+&nbsp;
+<b class="fc">&nbsp;        } catch (NullPointerException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(404, &quot;nao_encontrado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (UnsupportedOperationException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+<b class="nc">&nbsp;        } catch (Exception e) {</b>
+<b class="nc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Rota responsável por editar uma categoria.
+&nbsp;     * @param id - Id da categoria a ser editada.
+&nbsp;     * @param categoria - Dados modificados da categoria.
+&nbsp;     * @return Dados novos da categoria editada.
+&nbsp;     */
+&nbsp;    @PatchMapping(&quot;/{id}&quot;)
+&nbsp;    public ResponseCategoria editar(@PathVariable int id, @RequestBody Categoria requestCategoria) {
+&nbsp;        try {
+&nbsp;
+&nbsp;            // Valida os dados fornecidos.
+<b class="fc">&nbsp;            Tratamento.validarCategoria(requestCategoria, true);</b>
+&nbsp;
+&nbsp;            // Se existir alguma categoria com o mesmo nome no banco,
+<b class="fc">&nbsp;            if(categoriaRepository.existsByNomeIgnoreCase(requestCategoria.getNome()))</b>
+&nbsp;                // Retorna erro.
+<b class="fc">&nbsp;                throw new DadosConflitantesException(&quot;nome_existente&quot;);</b>
+&nbsp;
+&nbsp;            // Busca a categoria para ser editada.
+<b class="fc">&nbsp;            Categoria categoriaAtual = categoriaRepository.findById(id).get();</b>
+&nbsp;
+&nbsp;            // Chama o recurso de tratamento de edição de categoria.
+&nbsp;            // Insere os dados tratados no banco de dados.
+&nbsp;            // Transforma os dados inseridos em resposta.
+<b class="fc">&nbsp;            ResponseCategoria responseCategoria = new ResponseCategoria(</b>
+<b class="fc">&nbsp;                categoriaRepository.save(</b>
+<b class="fc">&nbsp;                    EditaRecurso.editarCategoria(</b>
+<b class="fc">&nbsp;                        categoriaAtual,</b>
+<b class="fc">&nbsp;                        requestCategoria</b>
+&nbsp;                    )
+&nbsp;                )
+&nbsp;            );
+&nbsp;
+&nbsp;            // Adiciona o link para a categoria editada.
+<b class="fc">&nbsp;            responseCategoria.add(</b>
+<b class="fc">&nbsp;                linkTo(</b>
+<b class="fc">&nbsp;                    methodOn(CategoriaController.class).ler(responseCategoria.getId())</b>
+&nbsp;                )
+<b class="fc">&nbsp;                .withSelfRel()</b>
+&nbsp;            );
+&nbsp;
+&nbsp;            // Retorna os dados da categoria editada.
+<b class="fc">&nbsp;            return responseCategoria;</b>
+&nbsp;
+<b class="fc">&nbsp;        } catch (DadosConflitantesException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(409, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (DadosInvalidosException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(400, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (DataIntegrityViolationException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_insercao&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (IllegalArgumentException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (NoSuchElementException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(404, &quot;nao_encontrado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Rota responsável por substituir uma categoria.
+&nbsp;     * @param id - Id da categoria a ser substituída.
+&nbsp;     * @param requestCategoria - Dados da nova categoria.
+&nbsp;     * @return Dados da nova categoria inserida.
+&nbsp;     */
+&nbsp;    @PutMapping(&quot;/{id}&quot;)
+&nbsp;    public ResponseCategoria atualizar(@PathVariable int id, @RequestBody Categoria requestCategoria) {
+&nbsp;        try {
+&nbsp;
+&nbsp;            // Se existir alguma categoria com o mesmo nome no banco,
+<b class="fc">&nbsp;            if(categoriaRepository.existsByNomeIgnoreCase(requestCategoria.getNome()))</b>
+&nbsp;                // Retorna erro.
+<b class="fc">&nbsp;                throw new DadosConflitantesException(&quot;nome_existente&quot;);</b>
+&nbsp;
+&nbsp;            // Valida os dados fornecidos.
+<b class="fc">&nbsp;            Tratamento.validarCategoria(requestCategoria, false);</b>
+&nbsp;
+&nbsp;            // Se não existir alguma categoria com o id fornecido,
+<b class="fc">&nbsp;            if(!categoriaRepository.existsById(id))</b>
+&nbsp;                // Retorna erro.
+<b class="fc">&nbsp;                throw new NoSuchElementException(&quot;nao_encontrado&quot;);</b>
+&nbsp;
+&nbsp;            // Define o id da categoria como o id fornecido.
+<b class="fc">&nbsp;            requestCategoria.setId(id);</b>
+&nbsp;
+&nbsp;            // Insere a categoria e transforma os dados inseridos em resposta.
+<b class="fc">&nbsp;            ResponseCategoria responseCategoria = new ResponseCategoria(categoriaRepository.save(requestCategoria));</b>
+&nbsp;
+&nbsp;            // Adiciona o link para a categoria inserida.
+<b class="fc">&nbsp;            responseCategoria.add(</b>
+<b class="fc">&nbsp;                linkTo(</b>
+<b class="fc">&nbsp;                    methodOn(CategoriaController.class).ler(responseCategoria.getId())</b>
+&nbsp;                )
+<b class="fc">&nbsp;                .withSelfRel()</b>
+&nbsp;            );
+&nbsp;
+&nbsp;            // Retorna os dados da categoria nova.
+<b class="fc">&nbsp;            return responseCategoria;</b>
+&nbsp;
+<b class="fc">&nbsp;        } catch (DadosConflitantesException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(409, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (DadosInvalidosException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(400, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (NoSuchElementException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(404, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (DataIntegrityViolationException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_insercao&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (IllegalArgumentException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Rota responsável por excluir uma categoria.
+&nbsp;     * @param id - Id da categoria a ser excluída.
+&nbsp;     */
+&nbsp;    @DeleteMapping(&quot;/{id}&quot;)
+&nbsp;    @CacheEvict(value = &quot;categorias&quot;, allEntries = true)
+&nbsp;    public Object remover(@PathVariable int id) {
+&nbsp;        try {
+&nbsp;
+&nbsp;            // Se não existir alguma categoria com o id fornecido,
+<b class="fc">&nbsp;            if(!categoriaRepository.existsById(id))</b>
+&nbsp;                // Retorna erro.
+<b class="fc">&nbsp;                throw new NoSuchElementException(&quot;nao_encontrado&quot;);</b>
+&nbsp;
+&nbsp;            // Exclui a categoria com o id fornecido.
+<b class="fc">&nbsp;            categoriaRepository.deleteById(id);</b>
+&nbsp;
+&nbsp;            // Retorna o link para a rota responsável por listar todas as categorias.
+<b class="fc">&nbsp;            return linkTo(</b>
+<b class="fc">&nbsp;                        methodOn(CategoriaController.class).listar()</b>
+&nbsp;                    )
+<b class="fc">&nbsp;                    .withRel(&quot;collection&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        } catch (NoSuchElementException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(404, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (DataIntegrityViolationException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_remocao&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (IllegalArgumentException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-25 03:05</div>
+</div>
+</body>
+</html>

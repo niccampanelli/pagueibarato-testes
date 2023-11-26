@@ -1,0 +1,105 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > UsuarioRepository</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.pagueibaratoapi.repository</a>
+</div>
+
+<h1>Coverage Summary for Class: UsuarioRepository (com.pagueibaratoapi.repository)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">UsuarioRepository$MockitoMock$FSS4glEy</td>
+  </tr>
+  <tr>
+    <td class="name">UsuarioRepository$MockitoMock$FSS4glEy$auxiliary$1fLnMLMe</td>
+  </tr>
+  <tr>
+    <td class="name">UsuarioRepository$MockitoMock$FSS4glEy$auxiliary$En9nuqVy</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.pagueibaratoapi.repository;
+&nbsp;
+&nbsp;import org.springframework.data.jpa.repository.JpaRepository;
+&nbsp;import org.springframework.stereotype.Component;
+&nbsp;
+&nbsp;import com.pagueibaratoapi.models.requests.Usuario;
+&nbsp;
+&nbsp;/**
+&nbsp; * Repositório de usuários.
+&nbsp; */
+&nbsp;@Component
+&nbsp;public interface UsuarioRepository extends JpaRepository&lt;Usuario, Integer&gt; {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Verifica se o usuário existe com base no id.
+&nbsp;     * @param id - Id para verificar.
+&nbsp;     * @return &lt;b&gt;true&lt;/b&gt; se o id estiver cadastrado e &lt;b&gt;false&lt;/b&gt; se não estiver.
+&nbsp;     */
+&nbsp;    public boolean existsById(Integer id);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Busca um usuário pelo endereço de email.
+&nbsp;     * @param email - Email do usuário para buscar.
+&nbsp;     * @return Usuário encontrado ou null.
+&nbsp;     */
+&nbsp;    public Usuario findByEmail(String email);
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-25 03:05</div>
+</div>
+</body>
+</html>

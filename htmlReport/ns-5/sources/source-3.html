@@ -1,0 +1,279 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > Mercado</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.pagueibaratoapi.models.requests</a>
+</div>
+
+<h1>Coverage Summary for Class: Mercado (com.pagueibaratoapi.models.requests)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Mercado</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (23/23)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (1/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    96,2%
+  </span>
+  <span class="absValue">
+    (25/26)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">Mercado$HibernateProxy$ucEMf6VK</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (23/23)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (1/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    96,2%
+  </span>
+  <span class="absValue">
+    (25/26)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.pagueibaratoapi.models.requests;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;import javax.persistence.Column;
+&nbsp;import javax.persistence.Entity;
+&nbsp;import javax.persistence.GeneratedValue;
+&nbsp;import javax.persistence.GenerationType;
+&nbsp;import javax.persistence.Id;
+&nbsp;import javax.persistence.JoinColumn;
+&nbsp;import javax.persistence.ManyToOne;
+&nbsp;import javax.persistence.OneToMany;
+&nbsp;import javax.persistence.Table;
+&nbsp;
+&nbsp;import com.fasterxml.jackson.annotation.JsonIgnore;
+&nbsp;
+&nbsp;@Entity
+&nbsp;@Table(name = &quot;mercado&quot;)
+<b class="fc">&nbsp;public class Mercado {</b>
+&nbsp;
+&nbsp;    @Id
+&nbsp;    @GeneratedValue(strategy = GenerationType.IDENTITY)
+&nbsp;    private Integer id;
+&nbsp;
+&nbsp;    private String nome;
+&nbsp;    private String logradouro;
+&nbsp;    private Integer numero;
+&nbsp;    private String complemento;
+&nbsp;    private String bairro;
+&nbsp;    private String cidade;
+&nbsp;    private String uf;
+&nbsp;    private String cep;
+&nbsp;
+&nbsp;    @Column(name = &quot;\&quot;criadoPor\&quot;&quot;)
+&nbsp;    private Integer criadoPor;
+&nbsp;
+&nbsp;    @Column(name = &quot;\&quot;ramoId\&quot;&quot;)
+&nbsp;    private Integer ramoId;
+&nbsp;
+&nbsp;    @JsonIgnore
+&nbsp;    @ManyToOne
+&nbsp;    @JoinColumn(name = &quot;\&quot;criadoPor\&quot;&quot;, updatable = false, insertable = false)
+&nbsp;    private Usuario usuario;
+&nbsp;
+&nbsp;    @JsonIgnore
+&nbsp;    @ManyToOne
+&nbsp;    @JoinColumn(name = &quot;\&quot;ramoId\&quot;&quot;, updatable = false, insertable = false)
+&nbsp;    private Ramo ramo;
+&nbsp;
+&nbsp;    @JsonIgnore
+&nbsp;    @OneToMany(mappedBy = &quot;mercado&quot;, orphanRemoval = true)
+<b class="fc">&nbsp;    private List&lt;Estoque&gt; estoques = new ArrayList&lt;Estoque&gt;();</b>
+&nbsp;
+&nbsp;    public Integer getId() {
+<b class="fc">&nbsp;        return id;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setId(Integer id) {
+<b class="fc">&nbsp;        this.id = id;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getNome() {
+<b class="fc">&nbsp;        return nome;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setNome(String nome) {
+<b class="fc">&nbsp;        this.nome = nome.trim();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getLogradouro() {
+<b class="fc">&nbsp;        return logradouro;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setLogradouro(String logradouro) {
+<b class="fc">&nbsp;        this.logradouro = logradouro.trim();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Integer getNumero() {
+<b class="fc">&nbsp;        return numero;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setNumero(Integer numero) {
+<b class="fc">&nbsp;        this.numero = numero;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getComplemento() {
+<b class="fc">&nbsp;        return complemento;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setComplemento(String complemento) {
+<b class="pc">&nbsp;        if (complemento != null)</b>
+<b class="fc">&nbsp;            this.complemento = complemento.trim();</b>
+&nbsp;        else
+<b class="nc">&nbsp;            this.complemento = null;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getBairro() {
+<b class="fc">&nbsp;        return bairro;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setBairro(String bairro) {
+<b class="fc">&nbsp;        this.bairro = bairro.trim();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getCidade() {
+<b class="fc">&nbsp;        return cidade;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setCidade(String cidade) {
+<b class="fc">&nbsp;        this.cidade = cidade.trim();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getUf() {
+<b class="fc">&nbsp;        return uf;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setUf(String uf) {
+<b class="fc">&nbsp;        this.uf = uf.trim().toUpperCase();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getCep() {
+<b class="fc">&nbsp;        return cep;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setCep(String cep) {
+<b class="fc">&nbsp;        this.cep = cep.trim().replaceAll(&quot;[^0-9-]&quot;, &quot;&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Integer getCriadoPor() {
+<b class="fc">&nbsp;        return criadoPor;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setCriadoPor(Integer criadoPor) {
+<b class="fc">&nbsp;        this.criadoPor = criadoPor;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Integer getRamoId() {
+<b class="fc">&nbsp;        return ramoId;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setRamoId(Integer ramoId) {
+<b class="fc">&nbsp;        this.ramoId = ramoId;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-25 03:05</div>
+</div>
+</body>
+</html>

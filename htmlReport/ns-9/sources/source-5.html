@@ -1,0 +1,1174 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ProdutoControllerTest</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.pagueibaratoapi.pagueibaratoapi.unit</a>
+</div>
+
+<h1>Coverage Summary for Class: ProdutoControllerTest (com.pagueibaratoapi.pagueibaratoapi.unit)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ProdutoControllerTest</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (46/46)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (6/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    93,4%
+  </span>
+  <span class="absValue">
+    (577/618)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.pagueibaratoapi.pagueibaratoapi.unit;
+&nbsp;
+&nbsp;import static org.junit.Assert.assertTrue;
+&nbsp;import static org.mockito.ArgumentMatchers.any;
+&nbsp;import static org.mockito.ArgumentMatchers.anyInt;
+&nbsp;import static org.mockito.ArgumentMatchers.isA;
+&nbsp;import static org.mockito.Mockito.verify;
+&nbsp;import static org.mockito.Mockito.when;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;import org.junit.Before;
+&nbsp;import org.junit.Test;
+&nbsp;import org.mockito.InjectMocks;
+&nbsp;import org.mockito.Mock;
+&nbsp;import org.mockito.MockitoAnnotations;
+&nbsp;import org.springframework.dao.DataIntegrityViolationException;
+&nbsp;import org.springframework.data.domain.Example;
+&nbsp;import org.springframework.http.HttpStatus;
+&nbsp;import org.springframework.web.server.ResponseStatusException;
+&nbsp;
+&nbsp;import com.pagueibaratoapi.controllers.ProdutoController;
+&nbsp;import com.pagueibaratoapi.models.requests.Produto;
+&nbsp;import com.pagueibaratoapi.models.requests.Usuario;
+&nbsp;import com.pagueibaratoapi.models.responses.ResponseProduto;
+&nbsp;import com.pagueibaratoapi.pagueibaratoapi.PagueiBaratoApiApplicationTests;
+&nbsp;import com.pagueibaratoapi.repository.CategoriaRepository;
+&nbsp;import com.pagueibaratoapi.repository.EstoqueRepository;
+&nbsp;import com.pagueibaratoapi.repository.ProdutoRepository;
+&nbsp;import com.pagueibaratoapi.repository.UsuarioRepository;
+&nbsp;
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;public class ProdutoControllerTest extends PagueiBaratoApiApplicationTests {</b>
+&nbsp;
+&nbsp;    @InjectMocks
+&nbsp;    private ProdutoController produtoController;
+&nbsp;
+&nbsp;    @Mock
+&nbsp;    private ProdutoRepository produtoRepository;
+&nbsp;
+&nbsp;    @Mock
+&nbsp;    private UsuarioRepository usuarioRepository;
+&nbsp;
+&nbsp;    @Mock
+&nbsp;    private CategoriaRepository categoriaRepository;
+&nbsp;
+&nbsp;    @Mock
+&nbsp;    private Optional&lt;Usuario&gt; optionalUsuario;
+&nbsp;
+&nbsp;    @Mock
+&nbsp;    private Optional&lt;Produto&gt; optionalProduto;
+&nbsp;
+&nbsp;    @Mock
+&nbsp;    private EstoqueRepository estoqueRepository;
+&nbsp;
+&nbsp;    @Before
+&nbsp;    public void setUp() {
+<b class="fc">&nbsp;        MockitoAnnotations.openMocks(this);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarProdutoComSucesso() {
+&nbsp;
+<b class="fc">&nbsp;        Produto requestProduto = new Produto();</b>
+<b class="fc">&nbsp;        requestProduto.setNome(&quot;Produto Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setMarca(&quot;Marca Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setCor(&quot;Cor Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setTamanho(&quot;Tamanho Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setCategoriaId(1);</b>
+<b class="fc">&nbsp;        requestProduto.setCriadoPor(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuario = new Usuario();</b>
+<b class="fc">&nbsp;        usuario.setId(1);</b>
+<b class="fc">&nbsp;        usuario.setNome(&quot;Usuario Teste&quot;);</b>
+<b class="fc">&nbsp;        usuario.setEmail(&quot;teste@email.com&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(usuarioRepository.existsById(anyInt())).thenReturn(true);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(categoriaRepository.existsById(anyInt())).thenReturn(true);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(produtoRepository.findByCaracteristicas(</b>
+<b class="fc">&nbsp;                requestProduto.getNome(),</b>
+<b class="fc">&nbsp;                requestProduto.getMarca(),</b>
+<b class="fc">&nbsp;                requestProduto.getTamanho(),</b>
+<b class="fc">&nbsp;                requestProduto.getCor()))</b>
+<b class="fc">&nbsp;                .thenReturn(null);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(usuarioRepository.findById(anyInt())).thenReturn(optionalUsuario);</b>
+<b class="fc">&nbsp;        when(optionalUsuario.get()).thenReturn(usuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoCriado = new Produto();</b>
+<b class="fc">&nbsp;        produtoCriado.setId(1);</b>
+<b class="fc">&nbsp;        produtoCriado.setNome(&quot;Produto Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriado.setMarca(&quot;Marca Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriado.setCor(&quot;Cor Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriado.setTamanho(&quot;Tamanho Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriado.setCategoriaId(1);</b>
+<b class="fc">&nbsp;        produtoCriado.setCriadoPor(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(produtoRepository.save(requestProduto)).thenReturn(produtoCriado);</b>
+&nbsp;
+<b class="fc">&nbsp;        ResponseProduto responseProduto = produtoController.criar(requestProduto);</b>
+&nbsp;
+<b class="pc">&nbsp;        assertTrue(responseProduto.getId() != null);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarProdutoComExcecaoDadosInvalidos() {
+&nbsp;
+<b class="fc">&nbsp;        Produto requestProduto = new Produto();</b>
+<b class="fc">&nbsp;        requestProduto.setId(1);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.criar(requestProduto);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getStatus());</b>
+<b class="fc">&nbsp;            assertTrue(e.getStatus().toString().equals(HttpStatus.BAD_REQUEST.toString()));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarProdutoComUsuarioInvalido() {
+&nbsp;
+<b class="fc">&nbsp;        Produto requestProduto = new Produto();</b>
+<b class="fc">&nbsp;        requestProduto.setNome(&quot;Produto Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setMarca(&quot;Marca Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setCor(&quot;Cor Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setTamanho(&quot;Tamanho Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setCategoriaId(1);</b>
+<b class="fc">&nbsp;        requestProduto.setCriadoPor(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(usuarioRepository.existsById(anyInt())).thenReturn(false);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.criar(requestProduto);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getStatus());</b>
+<b class="fc">&nbsp;            assertTrue(e.getStatus().toString().equals(HttpStatus.BAD_REQUEST.toString()));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarProdutoComCategoriaInvalida() {
+&nbsp;
+<b class="fc">&nbsp;        Produto requestProduto = new Produto();</b>
+<b class="fc">&nbsp;        requestProduto.setNome(&quot;Produto Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setMarca(&quot;Marca Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setCor(&quot;Cor Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setTamanho(&quot;Tamanho Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setCategoriaId(1);</b>
+<b class="fc">&nbsp;        requestProduto.setCriadoPor(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuario = new Usuario();</b>
+<b class="fc">&nbsp;        usuario.setId(1);</b>
+<b class="fc">&nbsp;        usuario.setNome(&quot;Usuario Teste&quot;);</b>
+<b class="fc">&nbsp;        usuario.setEmail(&quot;teste@email.com&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(usuarioRepository.existsById(anyInt())).thenReturn(true);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(categoriaRepository.existsById(anyInt())).thenReturn(false);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.criar(requestProduto);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getStatus());</b>
+<b class="fc">&nbsp;            assertTrue(e.getStatus().toString().equals(HttpStatus.BAD_REQUEST.toString()));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarProdutoComExcecaoDadosConflitantes() {
+&nbsp;
+<b class="fc">&nbsp;        Produto requestProduto = new Produto();</b>
+<b class="fc">&nbsp;        requestProduto.setNome(&quot;Produto Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setMarca(&quot;Marca Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setCor(&quot;Cor Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setTamanho(&quot;Tamanho Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setCategoriaId(1);</b>
+<b class="fc">&nbsp;        requestProduto.setCriadoPor(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuario = new Usuario();</b>
+<b class="fc">&nbsp;        usuario.setId(1);</b>
+<b class="fc">&nbsp;        usuario.setNome(&quot;Usuario Teste&quot;);</b>
+<b class="fc">&nbsp;        usuario.setEmail(&quot;teste@email.com&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(usuarioRepository.existsById(anyInt())).thenReturn(true);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(categoriaRepository.existsById(anyInt())).thenReturn(true);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(produtoRepository.findByCaracteristicas(</b>
+<b class="fc">&nbsp;                requestProduto.getNome(),</b>
+<b class="fc">&nbsp;                requestProduto.getMarca(),</b>
+<b class="fc">&nbsp;                requestProduto.getTamanho(),</b>
+<b class="fc">&nbsp;                requestProduto.getCor()))</b>
+<b class="fc">&nbsp;                .thenReturn(requestProduto);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.criar(requestProduto);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getStatus());</b>
+<b class="fc">&nbsp;            assertTrue(e.getStatus().toString().equals(HttpStatus.CONFLICT.toString()));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarProdutoComExcecaoNoSuchElement() {
+&nbsp;
+<b class="fc">&nbsp;        Produto requestProduto = new Produto();</b>
+<b class="fc">&nbsp;        requestProduto.setNome(&quot;Produto Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setMarca(&quot;Marca Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setCor(&quot;Cor Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setTamanho(&quot;Tamanho Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setCategoriaId(1);</b>
+<b class="fc">&nbsp;        requestProduto.setCriadoPor(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuario = new Usuario();</b>
+<b class="fc">&nbsp;        usuario.setId(1);</b>
+<b class="fc">&nbsp;        usuario.setNome(&quot;Usuario Teste&quot;);</b>
+<b class="fc">&nbsp;        usuario.setEmail(&quot;teste@email.com&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(usuarioRepository.existsById(anyInt())).thenReturn(true);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(categoriaRepository.existsById(anyInt())).thenReturn(true);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(produtoRepository.findByCaracteristicas(</b>
+<b class="fc">&nbsp;                requestProduto.getNome(),</b>
+<b class="fc">&nbsp;                requestProduto.getMarca(),</b>
+<b class="fc">&nbsp;                requestProduto.getTamanho(),</b>
+<b class="fc">&nbsp;                requestProduto.getCor()))</b>
+<b class="fc">&nbsp;                .thenReturn(null);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.criar(requestProduto);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getStatus());</b>
+<b class="fc">&nbsp;            assertTrue(e.getStatus().toString().equals(HttpStatus.NOT_FOUND.toString()));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarProdutoComExcecaoDataIntegrityViolation() {
+&nbsp;
+<b class="fc">&nbsp;        Produto requestProduto = new Produto();</b>
+<b class="fc">&nbsp;        requestProduto.setNome(&quot;Produto Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setMarca(&quot;Marca Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setCor(&quot;Cor Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setTamanho(&quot;Tamanho Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setCategoriaId(1);</b>
+<b class="fc">&nbsp;        requestProduto.setCriadoPor(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(usuarioRepository.existsById(anyInt())).thenThrow(new DataIntegrityViolationException(&quot;erro_insercao&quot;));</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.criar(requestProduto);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().toString());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().toString().contains(&quot;org.springframework.dao.DataIntegrityViolationException&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarProdutoComExcecaoIllegalArgument() {
+&nbsp;
+<b class="fc">&nbsp;        Produto requestProduto = new Produto();</b>
+<b class="fc">&nbsp;        requestProduto.setNome(&quot;Produto Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setMarca(&quot;Marca Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setCor(&quot;Cor Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setTamanho(&quot;Tamanho Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setCategoriaId(1);</b>
+<b class="fc">&nbsp;        requestProduto.setCriadoPor(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(usuarioRepository.existsById(anyInt())).thenThrow(new IllegalArgumentException(&quot;erro_inesperado&quot;));</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.criar(requestProduto);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().toString());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().toString().contains(&quot;java.lang.IllegalArgumentException&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarProdutoComExcecao() {
+&nbsp;
+<b class="fc">&nbsp;        Produto requestProduto = new Produto();</b>
+<b class="fc">&nbsp;        requestProduto.setNome(&quot;Produto Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setMarca(&quot;Marca Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setCor(&quot;Cor Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setTamanho(&quot;Tamanho Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setCategoriaId(1);</b>
+<b class="fc">&nbsp;        requestProduto.setCriadoPor(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(usuarioRepository.existsById(anyInt())).thenThrow(new RuntimeException(&quot;erro_inesperado&quot;));</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.criar(requestProduto);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().toString());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().toString().contains(&quot;java.lang.RuntimeException&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void lerProdutoPorIdComSucesso() {
+&nbsp;
+<b class="fc">&nbsp;        Produto produto = new Produto();</b>
+<b class="fc">&nbsp;        produto.setId(1);</b>
+<b class="fc">&nbsp;        produto.setNome(&quot;Produto Teste&quot;);</b>
+<b class="fc">&nbsp;        produto.setMarca(&quot;Marca Teste&quot;);</b>
+<b class="fc">&nbsp;        produto.setCor(&quot;Cor Teste&quot;);</b>
+<b class="fc">&nbsp;        produto.setTamanho(&quot;Tamanho Teste&quot;);</b>
+<b class="fc">&nbsp;        produto.setCategoriaId(1);</b>
+<b class="fc">&nbsp;        produto.setCriadoPor(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(produtoRepository.findById(anyInt())).thenReturn(optionalProduto);</b>
+<b class="fc">&nbsp;        when(optionalProduto.get()).thenReturn(produto);</b>
+&nbsp;
+<b class="fc">&nbsp;        ResponseProduto responseProduto = produtoController.ler(anyInt());</b>
+&nbsp;
+<b class="fc">&nbsp;        System.out.println(responseProduto.getId());</b>
+&nbsp;
+<b class="pc">&nbsp;        assertTrue(responseProduto.getId() != null);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void lerProdutoPorIdComExcecaoNoSuchElement() {
+&nbsp;
+<b class="fc">&nbsp;        when(produtoRepository.findById(anyInt())).thenReturn(Optional.empty());</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.ler(anyInt());</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getStatus());</b>
+<b class="fc">&nbsp;            assertTrue(e.getStatus().toString().equals(HttpStatus.NOT_FOUND.toString()));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void lerProdutoComExcecao() {
+&nbsp;        
+<b class="fc">&nbsp;        when(produtoRepository.findById(anyInt())).thenThrow(new RuntimeException(&quot;erro_inesperado&quot;));</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.ler(anyInt());</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().toString());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().toString().contains(&quot;java.lang.RuntimeException&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarTodosProdutosComSucesso() {
+&nbsp;
+<b class="fc">&nbsp;        Produto produto1 = new Produto();</b>
+<b class="fc">&nbsp;        produto1.setId(1);</b>
+<b class="fc">&nbsp;        produto1.setNome(&quot;Produto Teste 1&quot;);</b>
+<b class="fc">&nbsp;        produto1.setMarca(&quot;Marca Teste 1&quot;);</b>
+<b class="fc">&nbsp;        produto1.setCor(&quot;Cor Teste 1&quot;);</b>
+<b class="fc">&nbsp;        produto1.setTamanho(&quot;Tamanho Teste 1&quot;);</b>
+<b class="fc">&nbsp;        produto1.setCategoriaId(1);</b>
+<b class="fc">&nbsp;        produto1.setCriadoPor(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        Produto produto2 = new Produto();</b>
+<b class="fc">&nbsp;        produto2.setId(2);</b>
+<b class="fc">&nbsp;        produto2.setNome(&quot;Produto Teste 2&quot;);</b>
+<b class="fc">&nbsp;        produto2.setMarca(&quot;Marca Teste 2&quot;);</b>
+<b class="fc">&nbsp;        produto2.setCor(&quot;Cor Teste 2&quot;);</b>
+<b class="fc">&nbsp;        produto2.setTamanho(&quot;Tamanho Teste 2&quot;);</b>
+<b class="fc">&nbsp;        produto2.setCategoriaId(2);</b>
+<b class="fc">&nbsp;        produto2.setCriadoPor(2);</b>
+&nbsp;
+<b class="fc">&nbsp;        List&lt;Produto&gt; produtos = List.of(produto1, produto2);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(produtoRepository.findAll(isA(Example.class))).thenReturn(produtos);</b>
+&nbsp;
+<b class="fc">&nbsp;        List&lt;ResponseProduto&gt; responseProdutos = produtoController.listar(new Produto());</b>
+&nbsp;
+<b class="fc">&nbsp;        System.out.println(responseProdutos.size());</b>
+&nbsp;
+<b class="pc">&nbsp;        assertTrue(responseProdutos.size() == 2);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarTodosProdutosComExcecaoDadosInvalidos() {
+&nbsp;
+<b class="fc">&nbsp;        Produto requestProduto = new Produto();</b>
+<b class="fc">&nbsp;        requestProduto.setId(1);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.listar(requestProduto);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getStatus());</b>
+<b class="fc">&nbsp;            assertTrue(e.getStatus().toString().equals(HttpStatus.BAD_REQUEST.toString()));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarTodosProdutosComExcecaoNullPointer() {
+&nbsp;
+<b class="fc">&nbsp;        List&lt;Produto&gt; produtos = List.of();</b>
+&nbsp;
+<b class="fc">&nbsp;        when(produtoRepository.findAll(isA(Example.class))).thenReturn(produtos);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.listar(new Produto());</b>
+<b class="nc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="nc">&nbsp;            System.out.println(e.getStatus());</b>
+<b class="nc">&nbsp;            assertTrue(e.getStatus().toString().equals(HttpStatus.NOT_FOUND.toString()));</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarTodosProdutosComExecaoUnsupportedOperation() {
+&nbsp;
+<b class="fc">&nbsp;        when(produtoRepository.findAll(isA(Example.class))).thenThrow(new UnsupportedOperationException(&quot;erro_inesperado&quot;));</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.listar(new Produto());</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().toString());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().toString().contains(&quot;java.lang.UnsupportedOperationException&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarTodosProdutosComExcecao() {
+&nbsp;
+<b class="fc">&nbsp;        when(produtoRepository.findAll(isA(Example.class))).thenThrow(new RuntimeException(&quot;erro_inesperado&quot;));</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.listar(new Produto());</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().toString());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().toString().contains(&quot;java.lang.RuntimeException&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarProdutosSemelhantesComSucesso() {
+&nbsp;
+<b class="fc">&nbsp;        Produto produto1 = new Produto();</b>
+<b class="fc">&nbsp;        produto1.setId(1);</b>
+<b class="fc">&nbsp;        produto1.setNome(&quot;Produto Teste 1&quot;);</b>
+<b class="fc">&nbsp;        produto1.setMarca(&quot;Marca Teste 1&quot;);</b>
+<b class="fc">&nbsp;        produto1.setCor(&quot;Cor Teste 1&quot;);</b>
+<b class="fc">&nbsp;        produto1.setTamanho(&quot;Tamanho Teste 1&quot;);</b>
+<b class="fc">&nbsp;        produto1.setCategoriaId(1);</b>
+<b class="fc">&nbsp;        produto1.setCriadoPor(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        Produto produto2 = new Produto();</b>
+<b class="fc">&nbsp;        produto2.setId(2);</b>
+<b class="fc">&nbsp;        produto2.setNome(&quot;Produto Teste 2&quot;);</b>
+<b class="fc">&nbsp;        produto2.setMarca(&quot;Marca Teste 2&quot;);</b>
+<b class="fc">&nbsp;        produto2.setCor(&quot;Cor Teste 2&quot;);</b>
+<b class="fc">&nbsp;        produto2.setTamanho(&quot;Tamanho Teste 2&quot;);</b>
+<b class="fc">&nbsp;        produto2.setCategoriaId(2);</b>
+<b class="fc">&nbsp;        produto2.setCriadoPor(2);</b>
+&nbsp;
+<b class="fc">&nbsp;        List&lt;Produto&gt; produtos = List.of(produto1, produto2);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(produtoRepository.findAll(isA(Example.class))).thenReturn(produtos);</b>
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoExemplo = new Produto();</b>
+<b class="fc">&nbsp;        produtoExemplo.setNome(&quot;Produto Teste 1&quot;);</b>
+<b class="fc">&nbsp;        produtoExemplo.setMarca(&quot;Marca Teste 1&quot;);</b>
+<b class="fc">&nbsp;        produtoExemplo.setCor(&quot;Cor Teste 1&quot;);</b>
+<b class="fc">&nbsp;        produtoExemplo.setTamanho(&quot;Tamanho Teste 1&quot;);</b>
+<b class="fc">&nbsp;        produtoExemplo.setCategoriaId(1);</b>
+<b class="fc">&nbsp;        produtoExemplo.setCriadoPor(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        List&lt;ResponseProduto&gt; responseProdutos = produtoController.listar(produtoExemplo);</b>
+&nbsp;
+<b class="fc">&nbsp;        System.out.println(responseProdutos.size());</b>
+&nbsp;
+<b class="pc">&nbsp;        assertTrue(responseProdutos.size() == 2);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarProdutosSemelhantesComExcecaoDadosInvalidos() {
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoExemplo = new Produto();</b>
+<b class="fc">&nbsp;        produtoExemplo.setId(1);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.listar(produtoExemplo);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getStatus());</b>
+<b class="fc">&nbsp;            assertTrue(e.getStatus().toString().equals(HttpStatus.BAD_REQUEST.toString()));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarProdutosSemelhantesComExcecaoNullPointer() {
+&nbsp;
+<b class="fc">&nbsp;        List&lt;Produto&gt; produtos = List.of();</b>
+&nbsp;
+<b class="fc">&nbsp;        when(produtoRepository.findAll(isA(Example.class))).thenReturn(produtos);</b>
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoExemplo = new Produto();</b>
+<b class="fc">&nbsp;        produtoExemplo.setNome(&quot;Produto Teste 1&quot;);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.listar(produtoExemplo);</b>
+<b class="nc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="nc">&nbsp;            System.out.println(e.getMessage());</b>
+<b class="nc">&nbsp;            assertTrue(e.getStatus().toString().equals(HttpStatus.NOT_FOUND.toString()));</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarProdutosSemelhantesComExecaoUnsupportedOperation() {
+&nbsp;
+<b class="fc">&nbsp;        when(produtoRepository.findAll(isA(Example.class))).thenThrow(new UnsupportedOperationException(&quot;erro_inesperado&quot;));</b>
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoExemplo = new Produto();</b>
+<b class="fc">&nbsp;        produtoExemplo.setNome(&quot;Produto Teste 1&quot;);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.listar(produtoExemplo);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().toString());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().toString().contains(&quot;java.lang.UnsupportedOperationException&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarProdutosSemelhantesComExcecao() {
+&nbsp;
+<b class="fc">&nbsp;        when(produtoRepository.findAll(isA(Example.class))).thenThrow(new RuntimeException(&quot;erro_inesperado&quot;));</b>
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoExemplo = new Produto();</b>
+<b class="fc">&nbsp;        produtoExemplo.setNome(&quot;Produto Teste 1&quot;);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.listar(produtoExemplo);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().toString());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().toString().contains(&quot;java.lang.RuntimeException&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarProdutoComSucesso() {
+&nbsp;
+<b class="fc">&nbsp;        Produto requestProduto = new Produto();</b>
+<b class="fc">&nbsp;        requestProduto.setNome(&quot;Produto Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setMarca(&quot;Marca Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setCor(&quot;Cor Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setTamanho(&quot;Tamanho Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setCategoriaId(1);</b>
+<b class="fc">&nbsp;        requestProduto.setCriadoPor(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(produtoRepository.findByCaracteristicas(</b>
+<b class="fc">&nbsp;                requestProduto.getNome(),</b>
+<b class="fc">&nbsp;                requestProduto.getMarca(),</b>
+<b class="fc">&nbsp;                requestProduto.getTamanho(),</b>
+<b class="fc">&nbsp;                requestProduto.getCor()))</b>
+<b class="fc">&nbsp;                .thenReturn(null);</b>
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoAtual = new Produto();</b>
+<b class="fc">&nbsp;        produtoAtual.setId(1);</b>
+<b class="fc">&nbsp;        produtoAtual.setNome(&quot;Produto Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoAtual.setMarca(&quot;Marca Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoAtual.setCor(&quot;Cor Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoAtual.setTamanho(&quot;Tamanho Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoAtual.setCategoriaId(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(produtoRepository.findById(anyInt())).thenReturn(optionalProduto);</b>
+<b class="fc">&nbsp;        when(optionalProduto.get()).thenReturn(produtoAtual);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(categoriaRepository.existsById(anyInt())).thenReturn(true);</b>
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoEditado = new Produto();</b>
+<b class="fc">&nbsp;        produtoEditado.setId(1);</b>
+<b class="fc">&nbsp;        produtoEditado.setNome(&quot;Produto Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoEditado.setMarca(&quot;Marca Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoEditado.setCor(&quot;Cor Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoEditado.setTamanho(&quot;Tamanho Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoEditado.setCategoriaId(1);</b>
+<b class="fc">&nbsp;        produtoEditado.setCriadoPor(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(produtoRepository.save(any())).thenReturn(produtoEditado);</b>
+&nbsp;
+<b class="fc">&nbsp;        ResponseProduto responseProduto = produtoController.editar(1, requestProduto);</b>
+&nbsp;
+<b class="pc">&nbsp;        assertTrue(responseProduto.getId() != null);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarProdutoComExcecaoDadosConflitantes() {
+&nbsp;
+<b class="fc">&nbsp;        Produto requestProduto = new Produto();</b>
+<b class="fc">&nbsp;        requestProduto.setNome(&quot;Produto Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setMarca(&quot;Marca Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setCor(&quot;Cor Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setTamanho(&quot;Tamanho Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setCategoriaId(1);</b>
+<b class="fc">&nbsp;        requestProduto.setCriadoPor(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(produtoRepository.findByCaracteristicas(</b>
+<b class="fc">&nbsp;                requestProduto.getNome(),</b>
+<b class="fc">&nbsp;                requestProduto.getMarca(),</b>
+<b class="fc">&nbsp;                requestProduto.getTamanho(),</b>
+<b class="fc">&nbsp;                requestProduto.getCor()))</b>
+<b class="fc">&nbsp;                .thenReturn(new Produto());</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.editar(1, requestProduto);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getStatus());</b>
+<b class="fc">&nbsp;            assertTrue(e.getStatus().toString().equals(HttpStatus.CONFLICT.toString()));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarProdutoComExcecaoDadosInvalidos() {
+&nbsp;
+<b class="fc">&nbsp;        Produto requestProduto = new Produto();</b>
+<b class="fc">&nbsp;        requestProduto.setId(1);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.editar(1, requestProduto);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getStatus());</b>
+<b class="fc">&nbsp;            assertTrue(e.getStatus().toString().equals(HttpStatus.BAD_REQUEST.toString()));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarProdutoComCategoriaInvalida() {
+&nbsp;
+<b class="fc">&nbsp;        Produto requestProduto = new Produto();</b>
+<b class="fc">&nbsp;        requestProduto.setNome(&quot;Produto Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setMarca(&quot;Marca Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setCor(&quot;Cor Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setTamanho(&quot;Tamanho Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setCategoriaId(1);</b>
+<b class="fc">&nbsp;        requestProduto.setCriadoPor(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(produtoRepository.findByCaracteristicas(</b>
+<b class="fc">&nbsp;                requestProduto.getNome(),</b>
+<b class="fc">&nbsp;                requestProduto.getMarca(),</b>
+<b class="fc">&nbsp;                requestProduto.getTamanho(),</b>
+<b class="fc">&nbsp;                requestProduto.getCor()))</b>
+<b class="fc">&nbsp;                .thenReturn(null);</b>
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoAtual = new Produto();</b>
+<b class="fc">&nbsp;        produtoAtual.setId(1);</b>
+<b class="fc">&nbsp;        produtoAtual.setNome(&quot;Produto Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoAtual.setMarca(&quot;Marca Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoAtual.setCor(&quot;Cor Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoAtual.setTamanho(&quot;Tamanho Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoAtual.setCategoriaId(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(produtoRepository.findById(anyInt())).thenReturn(optionalProduto);</b>
+<b class="fc">&nbsp;        when(optionalProduto.get()).thenReturn(produtoAtual);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(categoriaRepository.existsById(anyInt())).thenReturn(false);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.editar(1, requestProduto);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getStatus());</b>
+<b class="fc">&nbsp;            assertTrue(e.getStatus().toString().equals(HttpStatus.BAD_REQUEST.toString()));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarProdutoComExcecaoDataIntegrityViolation() {
+&nbsp;
+<b class="fc">&nbsp;        Produto requestProduto = new Produto();</b>
+<b class="fc">&nbsp;        requestProduto.setNome(&quot;Produto Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setMarca(&quot;Marca Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setCor(&quot;Cor Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setTamanho(&quot;Tamanho Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setCategoriaId(1);</b>
+<b class="fc">&nbsp;        requestProduto.setCriadoPor(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(produtoRepository.findByCaracteristicas(</b>
+<b class="fc">&nbsp;                requestProduto.getNome(),</b>
+<b class="fc">&nbsp;                requestProduto.getMarca(),</b>
+<b class="fc">&nbsp;                requestProduto.getTamanho(),</b>
+<b class="fc">&nbsp;                requestProduto.getCor()))</b>
+<b class="fc">&nbsp;                .thenThrow(new DataIntegrityViolationException(&quot;erro_insercao&quot;));</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.editar(1, requestProduto);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().toString());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().toString().contains(&quot;org.springframework.dao.DataIntegrityViolationException&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarProdutoComExcecaoIllegalArgument() {
+&nbsp;
+<b class="fc">&nbsp;        Produto requestProduto = new Produto();</b>
+<b class="fc">&nbsp;        requestProduto.setNome(&quot;Produto Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setMarca(&quot;Marca Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setCor(&quot;Cor Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setTamanho(&quot;Tamanho Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setCategoriaId(1);</b>
+<b class="fc">&nbsp;        requestProduto.setCriadoPor(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(produtoRepository.findByCaracteristicas(</b>
+<b class="fc">&nbsp;                requestProduto.getNome(),</b>
+<b class="fc">&nbsp;                requestProduto.getMarca(),</b>
+<b class="fc">&nbsp;                requestProduto.getTamanho(),</b>
+<b class="fc">&nbsp;                requestProduto.getCor()))</b>
+<b class="fc">&nbsp;                .thenThrow(new IllegalArgumentException(&quot;erro_inesperado&quot;));</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.editar(1, requestProduto);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().toString());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().toString().contains(&quot;java.lang.IllegalArgumentException&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarProdutoComExcecaoNoSuchElement() {
+&nbsp;
+<b class="fc">&nbsp;        Produto requestProduto = new Produto();</b>
+<b class="fc">&nbsp;        requestProduto.setNome(&quot;Produto Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setMarca(&quot;Marca Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setCor(&quot;Cor Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setTamanho(&quot;Tamanho Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setCategoriaId(1);</b>
+<b class="fc">&nbsp;        requestProduto.setCriadoPor(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(produtoRepository.findByCaracteristicas(</b>
+<b class="fc">&nbsp;                requestProduto.getNome(),</b>
+<b class="fc">&nbsp;                requestProduto.getMarca(),</b>
+<b class="fc">&nbsp;                requestProduto.getTamanho(),</b>
+<b class="fc">&nbsp;                requestProduto.getCor()))</b>
+<b class="fc">&nbsp;                .thenReturn(null);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(produtoRepository.findById(anyInt())).thenReturn(Optional.empty());</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.editar(1, requestProduto);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getStatus());</b>
+<b class="fc">&nbsp;            assertTrue(e.getStatus().toString().equals(HttpStatus.NOT_FOUND.toString()));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarProdutoComExcecao() {
+&nbsp;
+<b class="fc">&nbsp;        Produto requestProduto = new Produto();</b>
+<b class="fc">&nbsp;        requestProduto.setNome(&quot;Produto Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setMarca(&quot;Marca Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setCor(&quot;Cor Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setTamanho(&quot;Tamanho Teste&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setCategoriaId(1);</b>
+<b class="fc">&nbsp;        requestProduto.setCriadoPor(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(produtoRepository.findByCaracteristicas(</b>
+<b class="fc">&nbsp;                requestProduto.getNome(),</b>
+<b class="fc">&nbsp;                requestProduto.getMarca(),</b>
+<b class="fc">&nbsp;                requestProduto.getTamanho(),</b>
+<b class="fc">&nbsp;                requestProduto.getCor()))</b>
+<b class="fc">&nbsp;                .thenThrow(new RuntimeException(&quot;erro_inesperado&quot;));</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.editar(1, requestProduto);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().toString());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().toString().contains(&quot;java.lang.RuntimeException&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarProdutoComSucesso() {
+&nbsp;
+<b class="fc">&nbsp;        Produto requestProduto = new Produto();</b>
+<b class="fc">&nbsp;        requestProduto.setNome(&quot;Produto Teste Atualizado&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setMarca(&quot;Marca Teste Atualizado&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setCor(&quot;Cor Teste Atualizado&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setTamanho(&quot;Tamanho&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setCategoriaId(1);</b>
+<b class="fc">&nbsp;        requestProduto.setCriadoPor(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(usuarioRepository.existsById(anyInt())).thenReturn(true);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(categoriaRepository.existsById(anyInt())).thenReturn(true);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(produtoRepository.findByCaracteristicas(</b>
+<b class="fc">&nbsp;                requestProduto.getNome(),</b>
+<b class="fc">&nbsp;                requestProduto.getMarca(),</b>
+<b class="fc">&nbsp;                requestProduto.getTamanho(),</b>
+<b class="fc">&nbsp;                requestProduto.getCor()))</b>
+<b class="fc">&nbsp;                .thenReturn(null);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(produtoRepository.findById(anyInt())).thenReturn(optionalProduto);</b>
+<b class="fc">&nbsp;        when(optionalProduto.get()).thenReturn(new Produto());</b>
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoAtualizado = new Produto();</b>
+<b class="fc">&nbsp;        produtoAtualizado.setId(1);</b>
+<b class="fc">&nbsp;        produtoAtualizado.setNome(&quot;Produto Teste Atualizado&quot;);</b>
+<b class="fc">&nbsp;        produtoAtualizado.setMarca(&quot;Marca Teste Atualizado&quot;);</b>
+<b class="fc">&nbsp;        produtoAtualizado.setCor(&quot;Cor Teste Atualizado&quot;);</b>
+<b class="fc">&nbsp;        produtoAtualizado.setTamanho(&quot;Tamanho Teste Atualizado&quot;);</b>
+<b class="fc">&nbsp;        produtoAtualizado.setCategoriaId(1);</b>
+<b class="fc">&nbsp;        produtoAtualizado.setCriadoPor(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(produtoRepository.save(any())).thenReturn(produtoAtualizado);</b>
+&nbsp;
+<b class="fc">&nbsp;        ResponseProduto responseProduto = produtoController.atualizar(1, requestProduto);</b>
+&nbsp;
+<b class="pc">&nbsp;        assertTrue(responseProduto.getId() != null);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarProdutoComExcecaoDadosInvalidos() {
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.atualizar(1, new Produto());</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getStatus());</b>
+<b class="fc">&nbsp;            assertTrue(e.getStatus().toString().equals(HttpStatus.BAD_REQUEST.toString()));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarProdutoComUsuarioInvalido() {
+&nbsp;
+<b class="fc">&nbsp;        Produto requestProduto = new Produto();</b>
+<b class="fc">&nbsp;        requestProduto.setNome(&quot;Produto Teste Atualizado&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setMarca(&quot;Marca Teste Atualizado&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setCor(&quot;Cor Teste Atualizado&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setTamanho(&quot;Tamanho&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setCategoriaId(1);</b>
+<b class="fc">&nbsp;        requestProduto.setCriadoPor(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(usuarioRepository.existsById(anyInt())).thenReturn(false);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.atualizar(1, requestProduto);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getStatus());</b>
+<b class="fc">&nbsp;            assertTrue(e.getStatus().toString().equals(HttpStatus.BAD_REQUEST.toString()));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarProdutoComCategoriaInvalida() {
+&nbsp;
+<b class="fc">&nbsp;        Produto requestProduto = new Produto();</b>
+<b class="fc">&nbsp;        requestProduto.setNome(&quot;Produto Teste Atualizado&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setMarca(&quot;Marca Teste Atualizado&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setCor(&quot;Cor Teste Atualizado&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setTamanho(&quot;Tamanho&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setCategoriaId(1);</b>
+<b class="fc">&nbsp;        requestProduto.setCriadoPor(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(usuarioRepository.existsById(anyInt())).thenReturn(true);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(categoriaRepository.existsById(anyInt())).thenReturn(false);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.atualizar(1, requestProduto);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getStatus());</b>
+<b class="fc">&nbsp;            assertTrue(e.getStatus().toString().equals(HttpStatus.BAD_REQUEST.toString()));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarProdutoComExcecaoDadosConflitantes() {
+&nbsp;
+<b class="fc">&nbsp;        Produto requestProduto = new Produto();</b>
+<b class="fc">&nbsp;        requestProduto.setNome(&quot;Produto Teste Atualizado&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setMarca(&quot;Marca Teste Atualizado&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setCor(&quot;Cor Teste Atualizado&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setTamanho(&quot;Tamanho&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setCategoriaId(1);</b>
+<b class="fc">&nbsp;        requestProduto.setCriadoPor(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(usuarioRepository.existsById(anyInt())).thenReturn(true);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(categoriaRepository.existsById(anyInt())).thenReturn(true);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(produtoRepository.findByCaracteristicas(</b>
+<b class="fc">&nbsp;                requestProduto.getNome(),</b>
+<b class="fc">&nbsp;                requestProduto.getMarca(),</b>
+<b class="fc">&nbsp;                requestProduto.getTamanho(),</b>
+<b class="fc">&nbsp;                requestProduto.getCor()))</b>
+<b class="fc">&nbsp;                .thenReturn(new Produto());</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.atualizar(1, requestProduto);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getStatus());</b>
+<b class="fc">&nbsp;            assertTrue(e.getStatus().toString().equals(HttpStatus.CONFLICT.toString()));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarProdutoComExcecaoNoSuchElement() {
+&nbsp;
+<b class="fc">&nbsp;        Produto requestProduto = new Produto();</b>
+<b class="fc">&nbsp;        requestProduto.setNome(&quot;Produto Teste Atualizado&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setMarca(&quot;Marca Teste Atualizado&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setCor(&quot;Cor Teste Atualizado&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setTamanho(&quot;Tamanho&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setCategoriaId(1);</b>
+<b class="fc">&nbsp;        requestProduto.setCriadoPor(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(usuarioRepository.existsById(anyInt())).thenReturn(true);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(categoriaRepository.existsById(anyInt())).thenReturn(true);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(produtoRepository.findByCaracteristicas(</b>
+<b class="fc">&nbsp;                requestProduto.getNome(),</b>
+<b class="fc">&nbsp;                requestProduto.getMarca(),</b>
+<b class="fc">&nbsp;                requestProduto.getTamanho(),</b>
+<b class="fc">&nbsp;                requestProduto.getCor()))</b>
+<b class="fc">&nbsp;                .thenReturn(null);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(produtoRepository.findById(anyInt())).thenReturn(Optional.empty());</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.atualizar(1, requestProduto);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getStatus());</b>
+<b class="fc">&nbsp;            assertTrue(e.getStatus().toString().equals(HttpStatus.NOT_FOUND.toString()));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarProdutoComExcecaoDataIntegrityViolation() {
+&nbsp;
+<b class="fc">&nbsp;        Produto requestProduto = new Produto();</b>
+<b class="fc">&nbsp;        requestProduto.setNome(&quot;Produto Teste Atualizado&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setMarca(&quot;Marca Teste Atualizado&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setCor(&quot;Cor Teste Atualizado&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setTamanho(&quot;Tamanho&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setCategoriaId(1);</b>
+<b class="fc">&nbsp;        requestProduto.setCriadoPor(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(usuarioRepository.existsById(anyInt())).thenThrow(new DataIntegrityViolationException(&quot;erro_insercao&quot;));</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.atualizar(1, requestProduto);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().toString());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().toString().contains(&quot;org.springframework.dao.DataIntegrityViolationException&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarProdutoComExcecaoIllegalArgument() {
+&nbsp;
+<b class="fc">&nbsp;        Produto requestProduto = new Produto();</b>
+<b class="fc">&nbsp;        requestProduto.setNome(&quot;Produto Teste Atualizado&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setMarca(&quot;Marca Teste Atualizado&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setCor(&quot;Cor Teste Atualizado&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setTamanho(&quot;Tamanho&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setCategoriaId(1);</b>
+<b class="fc">&nbsp;        requestProduto.setCriadoPor(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(usuarioRepository.existsById(anyInt())).thenThrow(new IllegalArgumentException(&quot;erro_inesperado&quot;));</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.atualizar(1, requestProduto);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().toString());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().toString().contains(&quot;java.lang.IllegalArgumentException&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarProdutoComExcecao() {
+&nbsp;
+<b class="fc">&nbsp;        Produto requestProduto = new Produto();</b>
+<b class="fc">&nbsp;        requestProduto.setNome(&quot;Produto Teste Atualizado&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setMarca(&quot;Marca Teste Atualizado&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setCor(&quot;Cor Teste Atualizado&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setTamanho(&quot;Tamanho&quot;);</b>
+<b class="fc">&nbsp;        requestProduto.setCategoriaId(1);</b>
+<b class="fc">&nbsp;        requestProduto.setCriadoPor(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(usuarioRepository.existsById(anyInt())).thenThrow(new RuntimeException(&quot;erro_inesperado&quot;));</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.atualizar(1, requestProduto);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().toString());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().toString().contains(&quot;java.lang.RuntimeException&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void removerProdutoComSucesso() {
+&nbsp;
+<b class="fc">&nbsp;        when(produtoRepository.existsById(anyInt())).thenReturn(true);</b>
+&nbsp;
+<b class="fc">&nbsp;        produtoController.remover(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        verify(produtoRepository).deleteById(anyInt());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void removerProdutoComExcecaoNoSuchElement() {
+&nbsp;        
+<b class="fc">&nbsp;        when(produtoRepository.existsById(anyInt())).thenReturn(false);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.remover(1);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getStatus());</b>
+<b class="fc">&nbsp;            assertTrue(e.getStatus().toString().equals(HttpStatus.NOT_FOUND.toString()));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void removerProdutoComExcecaoDataIntegrityViolation() {
+&nbsp;
+<b class="fc">&nbsp;        when(produtoRepository.existsById(anyInt())).thenThrow(new DataIntegrityViolationException(&quot;erro_insercao&quot;));</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.remover(1);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().toString());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().toString().contains(&quot;org.springframework.dao.DataIntegrityViolationException&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void removerProdutoComExcecaoIllegalArgument() {
+&nbsp;
+<b class="fc">&nbsp;        when(produtoRepository.existsById(anyInt())).thenThrow(new IllegalArgumentException(&quot;erro_inesperado&quot;));</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.remover(1);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().toString());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().toString().contains(&quot;java.lang.IllegalArgumentException&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void removerProdutoComExcecao() {
+&nbsp;
+<b class="fc">&nbsp;        when(produtoRepository.existsById(anyInt())).thenThrow(new RuntimeException(&quot;erro_inesperado&quot;));</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            produtoController.remover(1);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().toString());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().toString().contains(&quot;java.lang.RuntimeException&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-25 03:05</div>
+</div>
+</body>
+</html>

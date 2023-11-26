@@ -1,0 +1,263 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > Tratamento</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.pagueibaratoapi.utils</a>
+</div>
+
+<h1>Coverage Summary for Class: Tratamento (com.pagueibaratoapi.utils)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Tratamento</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    90%
+  </span>
+  <span class="absValue">
+    (9/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    96,4%
+  </span>
+  <span class="absValue">
+    (27/28)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.pagueibaratoapi.utils;
+&nbsp;
+&nbsp;import com.pagueibaratoapi.models.exceptions.DadosInvalidosException;
+&nbsp;import com.pagueibaratoapi.models.requests.Categoria;
+&nbsp;import com.pagueibaratoapi.models.requests.Estoque;
+&nbsp;import com.pagueibaratoapi.models.requests.Mercado;
+&nbsp;import com.pagueibaratoapi.models.requests.Produto;
+&nbsp;import com.pagueibaratoapi.models.requests.Ramo;
+&nbsp;import com.pagueibaratoapi.models.requests.Sugestao;
+&nbsp;import com.pagueibaratoapi.models.requests.Usuario;
+&nbsp;import com.pagueibaratoapi.utils.tratamentos.TratamentoCategoria;
+&nbsp;import com.pagueibaratoapi.utils.tratamentos.TratamentoEstoque;
+&nbsp;import com.pagueibaratoapi.utils.tratamentos.TratamentoMercado;
+&nbsp;import com.pagueibaratoapi.utils.tratamentos.TratamentoProduto;
+&nbsp;import com.pagueibaratoapi.utils.tratamentos.TratamentoRamo;
+&nbsp;import com.pagueibaratoapi.utils.tratamentos.TratamentoSugestao;
+&nbsp;import com.pagueibaratoapi.utils.tratamentos.TratamentoUsuario;
+&nbsp;
+&nbsp;/**
+&nbsp; * Classe de tratamento de dados.
+&nbsp; */
+<b class="nc">&nbsp;public class Tratamento {</b>
+&nbsp;    
+&nbsp;    /**
+&nbsp;     * Trata os dados da categoria.
+&nbsp;     * @param categoria - Categoria a ser tratada.
+&nbsp;     * @param opcional - Se os dados da categoria podem ser opcionais.
+&nbsp;     * @throws DadosInvalidosException Caso algum dos dados da categoria for inválido ou não for preenchido.
+&nbsp;     */
+&nbsp;    public static void validarCategoria(Categoria categoria, boolean opcional) throws DadosInvalidosException {
+&nbsp;        try{
+<b class="fc">&nbsp;            TratamentoCategoria.validar(categoria, opcional);</b>
+<b class="fc">&nbsp;        } catch(DadosInvalidosException e){</b>
+<b class="fc">&nbsp;            throw new DadosInvalidosException(e.getMessage());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;    
+&nbsp;    /**
+&nbsp;     * Trata os dados do estoque.
+&nbsp;     * @param estoque - Estoque a ser tratado.
+&nbsp;     * @param opcional - Se os dados do estoque podem ser opcionais.
+&nbsp;     * @throws DadosInvalidosException Caso algum dos dados do estoque for inválido ou não for preenchido.
+&nbsp;     */
+&nbsp;    public static void validarEstoque(Estoque estoque, boolean opcional) throws DadosInvalidosException {
+&nbsp;        try{
+<b class="fc">&nbsp;            TratamentoEstoque.validar(estoque, opcional);</b>
+<b class="fc">&nbsp;        } catch(DadosInvalidosException e){</b>
+<b class="fc">&nbsp;            throw new DadosInvalidosException(e.getMessage());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;    
+&nbsp;    /**
+&nbsp;     * Trata os dados do mercado.
+&nbsp;     * @param mercado - Mercado a ser tratado.
+&nbsp;     * @param opcional - Se os dados do mercado podem ser opcionais.
+&nbsp;     * @throws DadosInvalidosException Caso algum dos dados do mercado for inválido ou não for preenchido.
+&nbsp;     */
+&nbsp;    public static void validarMercado(Mercado mercado, boolean opcional) throws DadosInvalidosException {
+&nbsp;        try{
+<b class="fc">&nbsp;            TratamentoMercado.validar(mercado, opcional);</b>
+<b class="fc">&nbsp;        } catch(DadosInvalidosException e){</b>
+<b class="fc">&nbsp;            throw new DadosInvalidosException(e.getMessage());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;    
+&nbsp;    /**
+&nbsp;     * Trata os dados do produto.
+&nbsp;     * @param produto - Produto a ser tratado.
+&nbsp;     * @param opcional - Se os dados do produto podem ser opcionais.
+&nbsp;     * @throws DadosInvalidosException Caso algum dos dados do produto for inválido ou não for preenchido.
+&nbsp;     */
+&nbsp;    public static void validarProduto(Produto produto, boolean opcional) throws DadosInvalidosException {
+&nbsp;        try{
+<b class="fc">&nbsp;            TratamentoProduto.validar(produto, opcional);</b>
+<b class="fc">&nbsp;        } catch(DadosInvalidosException e){</b>
+<b class="fc">&nbsp;            throw new DadosInvalidosException(e.getMessage());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;    
+&nbsp;    /**
+&nbsp;     * Trata os dados do ramo.
+&nbsp;     * @param ramo - Ramo a ser tratado.
+&nbsp;     * @param opcional - Se os dados do ramo podem ser opcionais.
+&nbsp;     * @throws DadosInvalidosException Caso algum dos dados do ramo for inválido ou não for preenchido.
+&nbsp;     */
+&nbsp;    public static void validarRamo(Ramo ramo, boolean opcional) throws DadosInvalidosException {
+&nbsp;        try{
+<b class="fc">&nbsp;            TratamentoRamo.validar(ramo, opcional);</b>
+<b class="fc">&nbsp;        } catch(DadosInvalidosException e){</b>
+<b class="fc">&nbsp;            throw new DadosInvalidosException(e.getMessage());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;    
+&nbsp;    /**
+&nbsp;     * Trata os dados da sugestão.
+&nbsp;     * @param sugestao - Sugestão a ser tratada.
+&nbsp;     * @param opcional - Se os dados da sugestão podem ser opcionais.
+&nbsp;     * @throws DadosInvalidosException Caso algum dos dados da sugestão for inválido ou não for preenchido.
+&nbsp;     */
+&nbsp;    public static void validarSugestao(Sugestao sugestao, boolean opcional) throws DadosInvalidosException {
+&nbsp;        try{
+<b class="fc">&nbsp;            TratamentoSugestao.validar(sugestao, opcional);</b>
+<b class="fc">&nbsp;        } catch(DadosInvalidosException e){</b>
+<b class="fc">&nbsp;            throw new DadosInvalidosException(e.getMessage());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;    
+&nbsp;    /**
+&nbsp;     * Trata os dados do usuário.
+&nbsp;     * @param usuario - Usuário a ser tratado.
+&nbsp;     * @param opcional - Se os dados do usuário podem ser opcionais.
+&nbsp;     * @throws DadosInvalidosException Caso algum dos dados do usuário for inválido ou não for preenchido.
+&nbsp;     */
+&nbsp;    public static void validarUsuario(Usuario usuario, boolean opcional) throws DadosInvalidosException {
+&nbsp;        try{
+<b class="fc">&nbsp;            TratamentoUsuario.validar(usuario, opcional);</b>
+<b class="fc">&nbsp;        } catch(DadosInvalidosException e){</b>
+<b class="fc">&nbsp;            throw new DadosInvalidosException(e.getMessage());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Método responsável por verificar se um dado usuário foi removido ou não.
+&nbsp;     * @param usuario - Usuário a ser verificado.
+&nbsp;     * @return boolean - Retorna true caso o usuário exista, caso contrário, retorna false.
+&nbsp;     */
+&nbsp;    public static boolean usuarioExiste(Usuario usuario) {
+<b class="fc">&nbsp;        return TratamentoUsuario.existe(usuario);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Verifica se o UF informado é um dos UFs brasileiros válidos. Este método é case insensitive, o valor passado como parâmetro é transformado em maiúsculas antes de ser verificado.
+&nbsp;     * @param uf - String de 2 caracteres contendo o UF a ser verificado.
+&nbsp;     * @return &lt;b&gt;true&lt;/b&gt; se o UF for válido, &lt;b&gt;false&lt;/b&gt; caso contrário.
+&nbsp;     */
+&nbsp;    public static boolean validarUf(String uf) {
+&nbsp;
+<b class="fc">&nbsp;        String[] ufs = {&quot;AC&quot;, &quot;AL&quot;, &quot;AP&quot;, &quot;AM&quot;, &quot;BA&quot;, &quot;CE&quot;, &quot;DF&quot;, &quot;ES&quot;, &quot;GO&quot;, &quot;MA&quot;, &quot;MT&quot;, &quot;MS&quot;, &quot;MG&quot;, &quot;PA&quot;, &quot;PB&quot;, &quot;PR&quot;, &quot;PE&quot;, &quot;PI&quot;, &quot;RJ&quot;, &quot;RN&quot;, &quot;RS&quot;, &quot;RO&quot;, &quot;RR&quot;, &quot;SC&quot;, &quot;SP&quot;, &quot;SE&quot;, &quot;TO&quot;};</b>
+&nbsp;
+<b class="fc">&nbsp;        for(String ufValida : ufs) {</b>
+<b class="fc">&nbsp;            if(ufValida.equals(uf.toUpperCase()))</b>
+<b class="fc">&nbsp;                return true;</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        return false;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-25 03:05</div>
+</div>
+</body>
+</html>

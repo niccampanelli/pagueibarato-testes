@@ -1,0 +1,173 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > UsuarioService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.pagueibaratoapi.data</a>
+</div>
+
+<h1>Coverage Summary for Class: UsuarioService (com.pagueibaratoapi.data)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">UsuarioService</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    12,5%
+  </span>
+  <span class="absValue">
+    (1/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    22,2%
+  </span>
+  <span class="absValue">
+    (2/9)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.pagueibaratoapi.data;
+&nbsp;
+&nbsp;import java.util.Collection;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;import org.springframework.security.core.GrantedAuthority;
+&nbsp;import org.springframework.security.core.userdetails.UserDetails;
+&nbsp;import org.springframework.stereotype.Component;
+&nbsp;
+&nbsp;import com.pagueibaratoapi.models.requests.Usuario;
+&nbsp;
+&nbsp;/**
+&nbsp; * Classe de serviços do usuário.
+&nbsp; */
+&nbsp;@Component
+&nbsp;public class UsuarioService implements UserDetails {
+&nbsp;
+&nbsp;    // Modelo do usuário.
+&nbsp;    private final Optional&lt;Usuario&gt; usuario;
+&nbsp;
+&nbsp;    // Construtor.
+<b class="fc">&nbsp;    public UsuarioService(Optional&lt;Usuario&gt; usuario) {</b>
+<b class="fc">&nbsp;        this.usuario = usuario;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // Obtém níveis de acesso.
+&nbsp;    @Override
+&nbsp;    public Collection&lt;? extends GrantedAuthority&gt; getAuthorities() {
+<b class="nc">&nbsp;        return null;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // Obtém senha.
+&nbsp;    @Override
+&nbsp;    public String getPassword() {
+&nbsp;        // Retorna um modelo de usuário null ou sua senha
+<b class="nc">&nbsp;        return usuario.orElse(new Usuario()).getSenha();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // Obtém usuário.
+&nbsp;    @Override
+&nbsp;    public String getUsername() {
+&nbsp;        // Retorna um modelo de usuário null ou seu email
+<b class="nc">&nbsp;        return usuario.orElse(new Usuario()).getEmail();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // Verifica se o usuário está vencido.
+&nbsp;    @Override
+&nbsp;    public boolean isAccountNonExpired() {
+<b class="nc">&nbsp;        return true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // Verifica se o usuário está bloqueado.
+&nbsp;    @Override
+&nbsp;    public boolean isAccountNonLocked() {
+<b class="nc">&nbsp;        return true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // Verifica se a senha está expirada.
+&nbsp;    @Override
+&nbsp;    public boolean isCredentialsNonExpired() {
+<b class="nc">&nbsp;        return true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // Verifica se o usuário está ativo.
+&nbsp;    @Override
+&nbsp;    public boolean isEnabled() {
+<b class="nc">&nbsp;        return true;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-25 03:05</div>
+</div>
+</body>
+</html>

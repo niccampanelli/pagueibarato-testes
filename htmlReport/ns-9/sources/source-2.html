@@ -1,0 +1,838 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > EstoqueControllerTest</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.pagueibaratoapi.pagueibaratoapi.unit</a>
+</div>
+
+<h1>Coverage Summary for Class: EstoqueControllerTest (com.pagueibaratoapi.pagueibaratoapi.unit)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">EstoqueControllerTest</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (29/29)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    66,7%
+  </span>
+  <span class="absValue">
+    (8/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    91,5%
+  </span>
+  <span class="absValue">
+    (346/378)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.pagueibaratoapi.pagueibaratoapi.unit;
+&nbsp;
+&nbsp;import static org.junit.Assert.assertTrue;
+&nbsp;import static org.mockito.ArgumentMatchers.anyInt;
+&nbsp;import static org.mockito.ArgumentMatchers.isA;
+&nbsp;import static org.mockito.Mockito.doThrow;
+&nbsp;import static org.mockito.Mockito.verify;
+&nbsp;import static org.mockito.Mockito.when;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;import java.util.NoSuchElementException;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;import org.junit.Before;
+&nbsp;import org.junit.Test;
+&nbsp;import org.mockito.InjectMocks;
+&nbsp;import org.mockito.Mock;
+&nbsp;import org.mockito.MockitoAnnotations;
+&nbsp;import org.springframework.dao.DataIntegrityViolationException;
+&nbsp;import org.springframework.data.domain.Example;
+&nbsp;import org.springframework.data.domain.ExampleMatcher;
+&nbsp;import org.springframework.http.HttpStatus;
+&nbsp;import org.springframework.web.server.ResponseStatusException;
+&nbsp;
+&nbsp;import com.pagueibaratoapi.controllers.EstoqueController;
+&nbsp;import com.pagueibaratoapi.models.requests.Estoque;
+&nbsp;import com.pagueibaratoapi.models.requests.Usuario;
+&nbsp;import com.pagueibaratoapi.models.responses.ResponseEstoque;
+&nbsp;import com.pagueibaratoapi.pagueibaratoapi.PagueiBaratoApiApplicationTests;
+&nbsp;import com.pagueibaratoapi.repository.EstoqueRepository;
+&nbsp;import com.pagueibaratoapi.repository.MercadoRepository;
+&nbsp;import com.pagueibaratoapi.repository.ProdutoRepository;
+&nbsp;import com.pagueibaratoapi.repository.UsuarioRepository;
+&nbsp;
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;public class EstoqueControllerTest extends PagueiBaratoApiApplicationTests {</b>
+&nbsp;
+&nbsp;    @InjectMocks
+&nbsp;    private EstoqueController estoqueController;
+&nbsp;
+&nbsp;    @Mock
+&nbsp;    private UsuarioRepository usuarioRepository;
+&nbsp;
+&nbsp;    @Mock
+&nbsp;    private MercadoRepository mercadoRepository;
+&nbsp;
+&nbsp;    @Mock
+&nbsp;    private ProdutoRepository produtoRepository;
+&nbsp;
+&nbsp;    @Mock
+&nbsp;    private EstoqueRepository estoqueRepository;
+&nbsp;
+&nbsp;    @Mock
+&nbsp;    private Optional&lt;Usuario&gt; optionalUsuario;
+&nbsp;
+&nbsp;    @Mock
+&nbsp;    private Optional&lt;Estoque&gt; optionalEstoque;
+&nbsp;
+&nbsp;    @Before
+&nbsp;    public void setUp() {
+<b class="fc">&nbsp;        MockitoAnnotations.openMocks(this);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarEstoqueComSucesso() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        Estoque requestEstoque = new Estoque();</b>
+<b class="fc">&nbsp;        requestEstoque.setCriadoPor(1);</b>
+<b class="fc">&nbsp;        requestEstoque.setMercadoId(1);</b>
+<b class="fc">&nbsp;        requestEstoque.setProdutoId(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuario = new Usuario();</b>
+<b class="fc">&nbsp;        usuario.setId(1);</b>
+<b class="fc">&nbsp;        usuario.setEmail(&quot;john@email.com&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(usuarioRepository.existsById(requestEstoque.getCriadoPor())).thenReturn(true);</b>
+<b class="fc">&nbsp;        when(usuarioRepository.findById(requestEstoque.getCriadoPor())).thenReturn(optionalUsuario);</b>
+<b class="fc">&nbsp;        when(optionalUsuario.get()).thenReturn(usuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(mercadoRepository.existsById(requestEstoque.getMercadoId())).thenReturn(true);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(produtoRepository.existsById(requestEstoque.getProdutoId())).thenReturn(true);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(estoqueRepository.findAll(</b>
+<b class="fc">&nbsp;                Example.of(</b>
+&nbsp;                        requestEstoque,
+&nbsp;                        ExampleMatcher
+<b class="fc">&nbsp;                                .matching()</b>
+<b class="fc">&nbsp;                                .withIgnoreCase()</b>
+<b class="fc">&nbsp;                                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING))))</b>
+<b class="fc">&nbsp;                .thenReturn(new ArrayList&lt;Estoque&gt;());</b>
+&nbsp;
+<b class="fc">&nbsp;        Estoque estoqueSalvo = new Estoque();</b>
+<b class="fc">&nbsp;        estoqueSalvo.setId(1);</b>
+<b class="fc">&nbsp;        estoqueSalvo.setCriadoPor(1);</b>
+<b class="fc">&nbsp;        estoqueSalvo.setMercadoId(1);</b>
+<b class="fc">&nbsp;        estoqueSalvo.setProdutoId(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(estoqueRepository.save(requestEstoque)).thenReturn(estoqueSalvo);</b>
+&nbsp;
+<b class="fc">&nbsp;        ResponseEstoque responseEstoque = estoqueController.criar(requestEstoque);</b>
+&nbsp;
+<b class="fc">&nbsp;        System.out.println(&quot;Id: &quot; + responseEstoque.getId());</b>
+<b class="fc">&nbsp;        System.out.println(&quot;Id do produto: &quot; + responseEstoque.getProdutoId());</b>
+<b class="fc">&nbsp;        System.out.println(&quot;Id do mercado: &quot; + responseEstoque.getMercadoId());</b>
+<b class="fc">&nbsp;        System.out.println(&quot;Id do usuário: &quot; + responseEstoque.getCriadoPor());</b>
+&nbsp;
+<b class="pc">&nbsp;        assertTrue(responseEstoque.getId() != null);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarEstoqueComUsuarioInvalido() {
+&nbsp;
+<b class="fc">&nbsp;        Estoque requestEstoque = new Estoque();</b>
+<b class="fc">&nbsp;        requestEstoque.setCriadoPor(null);</b>
+<b class="fc">&nbsp;        requestEstoque.setMercadoId(1);</b>
+<b class="fc">&nbsp;        requestEstoque.setProdutoId(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(usuarioRepository.existsById(requestEstoque.getCriadoPor())).thenReturn(false);</b>
+<b class="fc">&nbsp;        when(usuarioRepository.findById(requestEstoque.getCriadoPor())).thenReturn(optionalUsuario);</b>
+<b class="fc">&nbsp;        when(optionalUsuario.get()).thenReturn(null);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(mercadoRepository.existsById(requestEstoque.getMercadoId())).thenReturn(true);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(produtoRepository.existsById(requestEstoque.getProdutoId())).thenReturn(true);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(estoqueRepository.findAll(</b>
+<b class="fc">&nbsp;                Example.of(</b>
+&nbsp;                        requestEstoque,
+&nbsp;                        ExampleMatcher
+<b class="fc">&nbsp;                                .matching()</b>
+<b class="fc">&nbsp;                                .withIgnoreCase()</b>
+<b class="fc">&nbsp;                                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING))))</b>
+<b class="fc">&nbsp;                .thenReturn(new ArrayList&lt;Estoque&gt;());</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            estoqueController.criar(requestEstoque);</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;usuario_invalido&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarEstoqueComProdutoInvalido() {
+&nbsp;
+<b class="fc">&nbsp;        Estoque requestEstoque = new Estoque();</b>
+<b class="fc">&nbsp;        requestEstoque.setCriadoPor(1);</b>
+<b class="fc">&nbsp;        requestEstoque.setMercadoId(1);</b>
+<b class="fc">&nbsp;        requestEstoque.setProdutoId(null);</b>
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuario = new Usuario();</b>
+<b class="fc">&nbsp;        usuario.setId(1);</b>
+<b class="fc">&nbsp;        usuario.setEmail(&quot;john@email.com&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(usuarioRepository.existsById(requestEstoque.getCriadoPor())).thenReturn(true);</b>
+<b class="fc">&nbsp;        when(usuarioRepository.findById(requestEstoque.getCriadoPor())).thenReturn(optionalUsuario);</b>
+<b class="fc">&nbsp;        when(optionalUsuario.get()).thenReturn(usuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(mercadoRepository.existsById(requestEstoque.getMercadoId())).thenReturn(true);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(produtoRepository.existsById(requestEstoque.getProdutoId())).thenReturn(false);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(estoqueRepository.findAll(</b>
+<b class="fc">&nbsp;                Example.of(</b>
+&nbsp;                        requestEstoque,
+&nbsp;                        ExampleMatcher
+<b class="fc">&nbsp;                                .matching()</b>
+<b class="fc">&nbsp;                                .withIgnoreCase()</b>
+<b class="fc">&nbsp;                                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING))))</b>
+<b class="fc">&nbsp;                .thenReturn(new ArrayList&lt;Estoque&gt;());</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            estoqueController.criar(requestEstoque);</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;produto_invalido&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarEstoqueComMercadoInvalido() {
+&nbsp;
+<b class="fc">&nbsp;        Estoque requestEstoque = new Estoque();</b>
+<b class="fc">&nbsp;        requestEstoque.setCriadoPor(1);</b>
+<b class="fc">&nbsp;        requestEstoque.setMercadoId(null);</b>
+<b class="fc">&nbsp;        requestEstoque.setProdutoId(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuario = new Usuario();</b>
+<b class="fc">&nbsp;        usuario.setId(1);</b>
+<b class="fc">&nbsp;        usuario.setEmail(&quot;john@email.com&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(usuarioRepository.existsById(requestEstoque.getCriadoPor())).thenReturn(true);</b>
+<b class="fc">&nbsp;        when(usuarioRepository.findById(requestEstoque.getCriadoPor())).thenReturn(optionalUsuario);</b>
+<b class="fc">&nbsp;        when(optionalUsuario.get()).thenReturn(usuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(mercadoRepository.existsById(requestEstoque.getMercadoId())).thenReturn(false);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(produtoRepository.existsById(requestEstoque.getProdutoId())).thenReturn(true);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(estoqueRepository.findAll(</b>
+<b class="fc">&nbsp;                Example.of(</b>
+&nbsp;                        requestEstoque,
+&nbsp;                        ExampleMatcher
+<b class="fc">&nbsp;                                .matching()</b>
+<b class="fc">&nbsp;                                .withIgnoreCase()</b>
+<b class="fc">&nbsp;                                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING))))</b>
+<b class="fc">&nbsp;                .thenReturn(new ArrayList&lt;Estoque&gt;());</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            estoqueController.criar(requestEstoque);</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;mercado_invalido&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarEstoqueJaExistente() {
+&nbsp;
+<b class="fc">&nbsp;        Estoque requestEstoque = new Estoque();</b>
+<b class="fc">&nbsp;        requestEstoque.setCriadoPor(1);</b>
+<b class="fc">&nbsp;        requestEstoque.setMercadoId(1);</b>
+<b class="fc">&nbsp;        requestEstoque.setProdutoId(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuario = new Usuario();</b>
+<b class="fc">&nbsp;        usuario.setId(1);</b>
+<b class="fc">&nbsp;        usuario.setEmail(&quot;john@email.com&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(usuarioRepository.existsById(requestEstoque.getCriadoPor())).thenReturn(true);</b>
+<b class="fc">&nbsp;        when(usuarioRepository.findById(requestEstoque.getCriadoPor())).thenReturn(optionalUsuario);</b>
+<b class="fc">&nbsp;        when(optionalUsuario.get()).thenReturn(usuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(mercadoRepository.existsById(requestEstoque.getMercadoId())).thenReturn(true);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(produtoRepository.existsById(requestEstoque.getProdutoId())).thenReturn(true);</b>
+&nbsp;
+<b class="fc">&nbsp;        Estoque estoqueEncontrado = new Estoque();</b>
+<b class="fc">&nbsp;        estoqueEncontrado.setId(1);</b>
+<b class="fc">&nbsp;        estoqueEncontrado.setCriadoPor(1);</b>
+<b class="fc">&nbsp;        estoqueEncontrado.setMercadoId(1);</b>
+<b class="fc">&nbsp;        estoqueEncontrado.setProdutoId(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        List&lt;Estoque&gt; estoquesSemelhantes = List.of(estoqueEncontrado);</b>
+&nbsp;
+<b class="fc">&nbsp;        Estoque estoqueComparar = new Estoque();</b>
+<b class="fc">&nbsp;        estoqueComparar.setProdutoId(requestEstoque.getProdutoId());</b>
+<b class="fc">&nbsp;        estoqueComparar.setMercadoId(requestEstoque.getMercadoId());</b>
+&nbsp;
+<b class="fc">&nbsp;        when(estoqueRepository.findAll(isA(Example.class))).thenReturn(estoquesSemelhantes);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            estoqueController.criar(requestEstoque);</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;estoque_existente&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarEstoqueComExcecaoDadosInvalidos() {
+&nbsp;        try {
+<b class="fc">&nbsp;            estoqueController.criar(null);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getStatus());</b>
+<b class="fc">&nbsp;            assertTrue(e.getStatus().toString().equals(HttpStatus.BAD_REQUEST.toString()));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarEstoqueComExcecaoDataIntegrityViolation() {
+&nbsp;
+<b class="fc">&nbsp;        Estoque requestEstoque = new Estoque();</b>
+<b class="fc">&nbsp;        requestEstoque.setCriadoPor(1);</b>
+<b class="fc">&nbsp;        requestEstoque.setMercadoId(1);</b>
+<b class="fc">&nbsp;        requestEstoque.setProdutoId(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuario = new Usuario();</b>
+<b class="fc">&nbsp;        usuario.setId(1);</b>
+<b class="fc">&nbsp;        usuario.setEmail(&quot;john@email.com&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(usuarioRepository.existsById(requestEstoque.getCriadoPor())).thenReturn(true);</b>
+<b class="fc">&nbsp;        when(usuarioRepository.findById(requestEstoque.getCriadoPor())).thenReturn(optionalUsuario);</b>
+<b class="fc">&nbsp;        when(optionalUsuario.get()).thenReturn(usuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(mercadoRepository.existsById(requestEstoque.getMercadoId())).thenReturn(true);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(produtoRepository.existsById(requestEstoque.getProdutoId())).thenReturn(true);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(estoqueRepository.findAll(</b>
+<b class="fc">&nbsp;                Example.of(</b>
+&nbsp;                        requestEstoque,
+&nbsp;                        ExampleMatcher
+<b class="fc">&nbsp;                                .matching()</b>
+<b class="fc">&nbsp;                                .withIgnoreCase()</b>
+<b class="fc">&nbsp;                                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING))))</b>
+<b class="fc">&nbsp;                .thenReturn(new ArrayList&lt;Estoque&gt;());</b>
+&nbsp;
+<b class="fc">&nbsp;        Estoque estoqueSalvo = new Estoque();</b>
+<b class="fc">&nbsp;        estoqueSalvo.setId(1);</b>
+<b class="fc">&nbsp;        estoqueSalvo.setCriadoPor(1);</b>
+<b class="fc">&nbsp;        estoqueSalvo.setMercadoId(1);</b>
+<b class="fc">&nbsp;        estoqueSalvo.setProdutoId(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(estoqueRepository.save(requestEstoque)).thenThrow(new DataIntegrityViolationException(&quot;erro_insercao&quot;));</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            estoqueController.criar(requestEstoque);</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;erro_insercao&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarEstoqueComExcecaoIllegalArgument() {
+&nbsp;
+<b class="fc">&nbsp;        Estoque requestEstoque = new Estoque();</b>
+<b class="fc">&nbsp;        requestEstoque.setCriadoPor(1);</b>
+<b class="fc">&nbsp;        requestEstoque.setMercadoId(1);</b>
+<b class="fc">&nbsp;        requestEstoque.setProdutoId(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuario = new Usuario();</b>
+<b class="fc">&nbsp;        usuario.setId(1);</b>
+<b class="fc">&nbsp;        usuario.setEmail(&quot;john@email.com&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(usuarioRepository.existsById(requestEstoque.getCriadoPor())).thenReturn(true);</b>
+<b class="fc">&nbsp;        when(usuarioRepository.findById(requestEstoque.getCriadoPor())).thenReturn(optionalUsuario);</b>
+<b class="fc">&nbsp;        when(optionalUsuario.get()).thenReturn(usuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(mercadoRepository.existsById(requestEstoque.getMercadoId())).thenReturn(true);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(produtoRepository.existsById(requestEstoque.getProdutoId())).thenReturn(true);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(estoqueRepository.findAll(</b>
+<b class="fc">&nbsp;                Example.of(</b>
+&nbsp;                        requestEstoque,
+&nbsp;                        ExampleMatcher
+<b class="fc">&nbsp;                                .matching()</b>
+<b class="fc">&nbsp;                                .withIgnoreCase()</b>
+<b class="fc">&nbsp;                                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING))))</b>
+<b class="fc">&nbsp;                .thenReturn(new ArrayList&lt;Estoque&gt;());</b>
+&nbsp;
+<b class="fc">&nbsp;        Estoque estoqueSalvo = new Estoque();</b>
+<b class="fc">&nbsp;        estoqueSalvo.setId(1);</b>
+<b class="fc">&nbsp;        estoqueSalvo.setCriadoPor(1);</b>
+<b class="fc">&nbsp;        estoqueSalvo.setMercadoId(1);</b>
+<b class="fc">&nbsp;        estoqueSalvo.setProdutoId(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(estoqueRepository.save(requestEstoque)).thenThrow(new IllegalArgumentException(&quot;erro_inesperado&quot;));</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            estoqueController.criar(requestEstoque);</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().toString());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().toString().contains(&quot;java.lang.IllegalArgumentException&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarEstoqueComExcecao() {
+&nbsp;
+<b class="fc">&nbsp;        Estoque requestEstoque = new Estoque();</b>
+<b class="fc">&nbsp;        requestEstoque.setCriadoPor(1);</b>
+<b class="fc">&nbsp;        requestEstoque.setMercadoId(1);</b>
+<b class="fc">&nbsp;        requestEstoque.setProdutoId(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuario = new Usuario();</b>
+<b class="fc">&nbsp;        usuario.setId(1);</b>
+<b class="fc">&nbsp;        usuario.setEmail(&quot;john@email.com&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(usuarioRepository.existsById(requestEstoque.getCriadoPor())).thenReturn(true);</b>
+<b class="fc">&nbsp;        when(usuarioRepository.findById(requestEstoque.getCriadoPor())).thenReturn(optionalUsuario);</b>
+<b class="fc">&nbsp;        when(optionalUsuario.get()).thenReturn(null);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            estoqueController.criar(requestEstoque);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getStatus());</b>
+<b class="fc">&nbsp;            assertTrue(e.getStatus().toString().equals(HttpStatus.INTERNAL_SERVER_ERROR.toString()));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void lerEstoquePorIdComSucesso() {
+&nbsp;
+<b class="fc">&nbsp;        Estoque estoque = new Estoque();</b>
+<b class="fc">&nbsp;        estoque.setId(1);</b>
+<b class="fc">&nbsp;        estoque.setCriadoPor(1);</b>
+<b class="fc">&nbsp;        estoque.setMercadoId(1);</b>
+<b class="fc">&nbsp;        estoque.setProdutoId(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(estoqueRepository.findById(anyInt())).thenReturn(optionalEstoque);</b>
+<b class="fc">&nbsp;        when(optionalEstoque.get()).thenReturn(estoque);</b>
+&nbsp;
+<b class="fc">&nbsp;        ResponseEstoque responseEstoque = estoqueController.ler(anyInt());</b>
+&nbsp;
+<b class="fc">&nbsp;        System.out.println(&quot;Id: &quot; + responseEstoque.getId());</b>
+<b class="fc">&nbsp;        System.out.println(&quot;Id do produto: &quot; + responseEstoque.getProdutoId());</b>
+<b class="fc">&nbsp;        System.out.println(&quot;Id do mercado: &quot; + responseEstoque.getMercadoId());</b>
+<b class="fc">&nbsp;        System.out.println(&quot;Id do usuário: &quot; + responseEstoque.getCriadoPor());</b>
+&nbsp;
+<b class="pc">&nbsp;        assertTrue(responseEstoque.getId() != null);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void lerEstoquePorIdComExcecaoNoSuchElement() {
+&nbsp;
+<b class="fc">&nbsp;        when(estoqueRepository.findById(anyInt())).thenReturn(optionalEstoque);</b>
+<b class="fc">&nbsp;        when(optionalEstoque.get()).thenThrow(new NoSuchElementException(&quot;nao_encontrado&quot;));</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            estoqueController.ler(anyInt());</b>
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getStatus());</b>
+<b class="fc">&nbsp;            assertTrue(e.getStatus().toString().equals(HttpStatus.NOT_FOUND.toString()));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void lerEstoquePorIdComExcecao() {
+&nbsp;
+<b class="fc">&nbsp;        when(estoqueRepository.findById(null)).thenReturn(optionalEstoque);</b>
+<b class="fc">&nbsp;        when(optionalEstoque.get()).thenReturn(null);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            estoqueController.ler(null);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getStatus());</b>
+<b class="fc">&nbsp;            assertTrue(e.getStatus().toString().equals(HttpStatus.INTERNAL_SERVER_ERROR.toString()));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarTodosEstoquesComSucesso() {
+&nbsp;
+<b class="fc">&nbsp;        Estoque estoque1 = new Estoque();</b>
+<b class="fc">&nbsp;        estoque1.setId(1);</b>
+<b class="fc">&nbsp;        estoque1.setCriadoPor(1);</b>
+<b class="fc">&nbsp;        estoque1.setMercadoId(1);</b>
+<b class="fc">&nbsp;        estoque1.setProdutoId(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        Estoque estoque2 = new Estoque();</b>
+<b class="fc">&nbsp;        estoque2.setId(2);</b>
+<b class="fc">&nbsp;        estoque2.setCriadoPor(1);</b>
+<b class="fc">&nbsp;        estoque2.setMercadoId(1);</b>
+<b class="fc">&nbsp;        estoque2.setProdutoId(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        List&lt;Estoque&gt; estoques = List.of(estoque1, estoque2);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(estoqueRepository.findAll(isA(Example.class))).thenReturn(estoques);</b>
+&nbsp;
+<b class="fc">&nbsp;        List&lt;ResponseEstoque&gt; responseEstoques = estoqueController.listar(new Estoque());</b>
+&nbsp;
+<b class="fc">&nbsp;        System.out.println(&quot;Quantidade de estoques: &quot; + responseEstoques.size());</b>
+&nbsp;
+<b class="fc">&nbsp;        for (ResponseEstoque responseEstoque : responseEstoques) {</b>
+<b class="fc">&nbsp;            System.out.println(&quot;Id: &quot; + responseEstoque.getId());</b>
+<b class="fc">&nbsp;            System.out.println(&quot;Id do produto: &quot; + responseEstoque.getProdutoId());</b>
+<b class="fc">&nbsp;            System.out.println(&quot;Id do mercado: &quot; + responseEstoque.getMercadoId());</b>
+<b class="fc">&nbsp;            System.out.println(&quot;Id do usuário: &quot; + responseEstoque.getCriadoPor());</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+<b class="pc">&nbsp;        assertTrue(responseEstoques.size() == 2);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarEstoquesSemelhantesComSucesso() {
+&nbsp;
+<b class="fc">&nbsp;        Estoque estoqueExemplo = new Estoque();</b>
+<b class="fc">&nbsp;        estoqueExemplo.setCriadoPor(1);</b>
+<b class="fc">&nbsp;        estoqueExemplo.setMercadoId(1);</b>
+<b class="fc">&nbsp;        estoqueExemplo.setProdutoId(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        Estoque estoque1 = new Estoque();</b>
+<b class="fc">&nbsp;        estoque1.setId(1);</b>
+<b class="fc">&nbsp;        estoque1.setCriadoPor(1);</b>
+<b class="fc">&nbsp;        estoque1.setMercadoId(1);</b>
+<b class="fc">&nbsp;        estoque1.setProdutoId(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        List&lt;Estoque&gt; estoques = List.of(estoque1);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(estoqueRepository.findAll(isA(Example.class))).thenReturn(estoques);</b>
+&nbsp;
+<b class="fc">&nbsp;        List&lt;ResponseEstoque&gt; responseEstoques = estoqueController.listar(estoqueExemplo);</b>
+&nbsp;
+<b class="fc">&nbsp;        System.out.println(&quot;Quantidade de estoques: &quot; + responseEstoques.size());</b>
+&nbsp;
+<b class="fc">&nbsp;        for (ResponseEstoque responseEstoque : responseEstoques) {</b>
+<b class="fc">&nbsp;            System.out.println(&quot;Id: &quot; + responseEstoque.getId());</b>
+<b class="fc">&nbsp;            System.out.println(&quot;Id do produto: &quot; + responseEstoque.getProdutoId());</b>
+<b class="fc">&nbsp;            System.out.println(&quot;Id do mercado: &quot; + responseEstoque.getMercadoId());</b>
+<b class="fc">&nbsp;            System.out.println(&quot;Id do usuário: &quot; + responseEstoque.getCriadoPor());</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+<b class="pc">&nbsp;        assertTrue(responseEstoques.size() == 1);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarTodosEstoquesComExcecaoDadosInvalidos() {
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            estoqueController.listar(null);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getStatus());</b>
+<b class="fc">&nbsp;            assertTrue(e.getStatus().toString().equals(HttpStatus.BAD_REQUEST.toString()));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarTodosEstoquesComExcecaoNullPointer() {
+&nbsp;
+<b class="fc">&nbsp;        List&lt;Estoque&gt; estoques = List.of();</b>
+&nbsp;
+<b class="fc">&nbsp;        when(estoqueRepository.findAll(isA(Example.class))).thenReturn(estoques);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            List&lt;ResponseEstoque&gt; responseEstoques = estoqueController.listar(new Estoque());</b>
+&nbsp;
+<b class="fc">&nbsp;            System.out.println(&quot;Quantidade de estoques: &quot; + responseEstoques.size());</b>
+<b class="nc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="nc">&nbsp;            System.out.println(e.getStatus());</b>
+<b class="nc">&nbsp;            assertTrue(e.getStatus().toString().equals(HttpStatus.NOT_FOUND.toString()));</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarTodosEstoquesComExcecaoUnsupportedOperation() {
+&nbsp;        
+<b class="fc">&nbsp;        when(estoqueRepository.findAll(isA(Example.class))).thenThrow(new UnsupportedOperationException(&quot;erro_inesperado&quot;));</b>
+&nbsp;        
+&nbsp;        try {
+<b class="fc">&nbsp;            estoqueController.listar(new Estoque());</b>
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().toString());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().toString().contains(&quot;java.lang.UnsupportedOperationException&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarTodosEstoquesComExcecao() {
+&nbsp;
+<b class="fc">&nbsp;        Estoque estoque = new Estoque();</b>
+<b class="fc">&nbsp;        estoque.setId(1);</b>
+<b class="fc">&nbsp;        estoque.setCriadoPor(null);</b>
+<b class="fc">&nbsp;        estoque.setMercadoId(null);</b>
+<b class="fc">&nbsp;        estoque.setProdutoId(null);</b>
+&nbsp;
+<b class="fc">&nbsp;        List&lt;Estoque&gt; estoques = List.of(estoque);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(estoqueRepository.findAll(isA(Example.class))).thenReturn(estoques);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            estoqueController.listar(new Estoque());</b>
+&nbsp;        }
+<b class="nc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="nc">&nbsp;            System.out.println(e.getStatus());</b>
+<b class="nc">&nbsp;            assertTrue(e.getStatus().toString().equals(HttpStatus.INTERNAL_SERVER_ERROR.toString()));</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarEstoquesSemelhantesComExcecaoDadosInvalidos() {
+&nbsp;
+<b class="fc">&nbsp;        Estoque estoqueExemplo = new Estoque();</b>
+<b class="fc">&nbsp;        estoqueExemplo.setCriadoPor(null);</b>
+<b class="fc">&nbsp;        estoqueExemplo.setMercadoId(null);</b>
+<b class="fc">&nbsp;        estoqueExemplo.setProdutoId(null);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            estoqueController.listar(estoqueExemplo);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="nc">&nbsp;            System.out.println(e.getMessage());</b>
+<b class="nc">&nbsp;            assertTrue(e.getStatus().toString().equals(HttpStatus.BAD_REQUEST.toString()));</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarEstoquesSemelhantesComExcecaoNullPointer() {
+&nbsp;
+<b class="fc">&nbsp;        Estoque estoqueExemplo = new Estoque();</b>
+<b class="fc">&nbsp;        estoqueExemplo.setCriadoPor(1);</b>
+<b class="fc">&nbsp;        estoqueExemplo.setMercadoId(1);</b>
+<b class="fc">&nbsp;        estoqueExemplo.setProdutoId(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        List&lt;Estoque&gt; estoques = List.of();</b>
+&nbsp;
+<b class="fc">&nbsp;        when(estoqueRepository.findAll(isA(Example.class))).thenReturn(estoques);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            estoqueController.listar(estoqueExemplo);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="nc">&nbsp;            System.out.println(e.getStatus());</b>
+<b class="nc">&nbsp;            assertTrue(e.getStatus().toString().equals(HttpStatus.NOT_FOUND.toString()));</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarEstoquesSemelhantesComExcecaoUnsupportedOperation() {
+&nbsp;
+<b class="fc">&nbsp;        Estoque estoqueExemplo = new Estoque();</b>
+<b class="fc">&nbsp;        estoqueExemplo.setCriadoPor(1);</b>
+<b class="fc">&nbsp;        estoqueExemplo.setMercadoId(1);</b>
+<b class="fc">&nbsp;        estoqueExemplo.setProdutoId(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(estoqueRepository.findAll(isA(Example.class))).thenThrow(new UnsupportedOperationException(&quot;erro_inesperado&quot;));</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            estoqueController.listar(estoqueExemplo);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().toString());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().toString().contains(&quot;java.lang.UnsupportedOperationException&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarEstoquesSemelhantesComExcecao() {
+&nbsp;
+<b class="fc">&nbsp;        Estoque estoqueExemplo = new Estoque();</b>
+<b class="fc">&nbsp;        estoqueExemplo.setCriadoPor(1);</b>
+<b class="fc">&nbsp;        estoqueExemplo.setMercadoId(1);</b>
+<b class="fc">&nbsp;        estoqueExemplo.setProdutoId(1);</b>
+&nbsp;
+<b class="fc">&nbsp;        Estoque estoque = new Estoque();</b>
+<b class="fc">&nbsp;        estoque.setId(1);</b>
+<b class="fc">&nbsp;        estoque.setCriadoPor(null);</b>
+<b class="fc">&nbsp;        estoque.setMercadoId(null);</b>
+<b class="fc">&nbsp;        estoque.setProdutoId(null);</b>
+&nbsp;
+<b class="fc">&nbsp;        List&lt;Estoque&gt; estoques = List.of(estoque);</b>
+&nbsp;
+<b class="fc">&nbsp;        when(estoqueRepository.findAll(isA(Example.class))).thenReturn(estoques);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            estoqueController.listar(estoqueExemplo);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="nc">&nbsp;            System.out.println(e.getStatus());</b>
+<b class="nc">&nbsp;            assertTrue(e.getStatus().toString().equals(HttpStatus.INTERNAL_SERVER_ERROR.toString()));</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void removerEstoqueComSucesso() {
+&nbsp;
+<b class="fc">&nbsp;        when(estoqueRepository.existsById(anyInt())).thenReturn(true);</b>
+&nbsp;
+<b class="fc">&nbsp;        estoqueController.remover(anyInt());</b>
+&nbsp;
+<b class="fc">&nbsp;        verify(estoqueRepository).deleteById(anyInt());</b>
+&nbsp;    }
+&nbsp;    
+&nbsp;    @Test
+&nbsp;    public void removerEstoqueComExcecaoNoSuchElement() {
+&nbsp;
+<b class="fc">&nbsp;        when(estoqueRepository.existsById(anyInt())).thenReturn(false);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            estoqueController.remover(anyInt());</b>
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getStatus());</b>
+<b class="fc">&nbsp;            assertTrue(e.getStatus().toString().equals(HttpStatus.NOT_FOUND.toString()));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void removerEstoqueComExcecaoDataIntegrityViolation() {
+&nbsp;
+<b class="fc">&nbsp;        when(estoqueRepository.existsById(anyInt())).thenReturn(true);</b>
+&nbsp;
+<b class="fc">&nbsp;        doThrow(new DataIntegrityViolationException(&quot;erro_remocao&quot;)).when(estoqueRepository).deleteById(anyInt());</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            estoqueController.remover(anyInt());</b>
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().toString());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().toString().contains(&quot;org.springframework.dao.DataIntegrityViolationException&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void removerEstoqueComExcecaoIllegalArgument() {
+&nbsp;
+<b class="fc">&nbsp;        when(estoqueRepository.existsById(anyInt())).thenReturn(true);</b>
+&nbsp;
+<b class="fc">&nbsp;        doThrow(new IllegalArgumentException(&quot;erro_inesperado&quot;)).when(estoqueRepository).deleteById(anyInt());</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            estoqueController.remover(anyInt());</b>
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().toString());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().toString().contains(&quot;java.lang.IllegalArgumentException&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void removerEstoqueComExcecao() {
+&nbsp;
+<b class="fc">&nbsp;        when(estoqueRepository.existsById(anyInt())).thenReturn(true);</b>
+&nbsp;
+<b class="fc">&nbsp;        doThrow(new RuntimeException(&quot;erro_inesperado&quot;)).when(estoqueRepository).deleteById(anyInt());</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            estoqueController.remover(anyInt());</b>
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getStatus());</b>
+<b class="fc">&nbsp;            assertTrue(e.getStatus().toString().equals(HttpStatus.INTERNAL_SERVER_ERROR.toString()));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-25 03:05</div>
+</div>
+</body>
+</html>

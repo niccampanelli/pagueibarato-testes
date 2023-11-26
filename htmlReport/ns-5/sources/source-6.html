@@ -1,0 +1,200 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > Sugestao</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.pagueibaratoapi.models.requests</a>
+</div>
+
+<h1>Coverage Summary for Class: Sugestao (com.pagueibaratoapi.models.requests)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Sugestao</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (11/11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (11/11)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">Sugestao$HibernateProxy$cpELOR4e</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (11/11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (11/11)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.pagueibaratoapi.models.requests;
+&nbsp;
+&nbsp;import java.util.Calendar;
+&nbsp;
+&nbsp;import javax.persistence.Column;
+&nbsp;import javax.persistence.Entity;
+&nbsp;import javax.persistence.GeneratedValue;
+&nbsp;import javax.persistence.GenerationType;
+&nbsp;import javax.persistence.Id;
+&nbsp;import javax.persistence.JoinColumn;
+&nbsp;import javax.persistence.ManyToOne;
+&nbsp;import javax.persistence.Table;
+&nbsp;
+&nbsp;import org.hibernate.annotations.UpdateTimestamp;
+&nbsp;
+&nbsp;import com.fasterxml.jackson.annotation.JsonIgnore;
+&nbsp;
+&nbsp;@Entity
+&nbsp;@Table(name = &quot;sugestao&quot;)
+<b class="fc">&nbsp;public class Sugestao {</b>
+&nbsp;
+&nbsp;    @Id
+&nbsp;    @GeneratedValue(strategy = GenerationType.IDENTITY)
+&nbsp;    private Integer id;
+&nbsp;
+&nbsp;    private Float preco;
+&nbsp;
+&nbsp;    @UpdateTimestamp
+&nbsp;    private Calendar timestamp;
+&nbsp;
+&nbsp;    @Column(name = &quot;\&quot;criadoPor\&quot;&quot;)
+&nbsp;    private Integer criadoPor;
+&nbsp;
+&nbsp;    @Column(name = &quot;\&quot;estoqueId\&quot;&quot;)
+&nbsp;    private Integer estoqueId;
+&nbsp;
+&nbsp;    @JsonIgnore
+&nbsp;    @ManyToOne
+&nbsp;    @JoinColumn(name = &quot;\&quot;estoqueId\&quot;&quot;, updatable = false, insertable = false)
+&nbsp;    private Estoque estoque;
+&nbsp;
+&nbsp;    @JsonIgnore
+&nbsp;    @ManyToOne
+&nbsp;    @JoinColumn(name = &quot;\&quot;criadoPor\&quot;&quot;, updatable = false, insertable = false)
+&nbsp;    private Usuario usuario;
+&nbsp;
+&nbsp;    public Integer getId() {
+<b class="fc">&nbsp;        return id;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setId(Integer id) {
+<b class="fc">&nbsp;        this.id = id;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Float getPreco() {
+<b class="fc">&nbsp;        return preco;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setPreco(Float preco) {
+<b class="fc">&nbsp;        this.preco = preco;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Calendar getTimestamp() {
+<b class="fc">&nbsp;        return timestamp;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setTimestamp(Calendar timestamp) {
+<b class="fc">&nbsp;        this.timestamp = timestamp;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Integer getCriadoPor() {
+<b class="fc">&nbsp;        return criadoPor;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setCriadoPor(Integer criadoPor) {
+<b class="fc">&nbsp;        this.criadoPor = criadoPor;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Integer getEstoqueId() {
+<b class="fc">&nbsp;        return estoqueId;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setEstoqueId(Integer estoqueId) {
+<b class="fc">&nbsp;        this.estoqueId = estoqueId;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-25 03:05</div>
+</div>
+</body>
+</html>

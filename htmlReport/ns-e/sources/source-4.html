@@ -1,0 +1,178 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > TratamentoProduto</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.pagueibaratoapi.utils.tratamentos</a>
+</div>
+
+<h1>Coverage Summary for Class: TratamentoProduto (com.pagueibaratoapi.utils.tratamentos)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">TratamentoProduto</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (1/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    79,2%
+  </span>
+  <span class="absValue">
+    (57/72)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    96,4%
+  </span>
+  <span class="absValue">
+    (27/28)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.pagueibaratoapi.utils.tratamentos;
+&nbsp;
+&nbsp;import com.pagueibaratoapi.models.exceptions.DadosInvalidosException;
+&nbsp;import com.pagueibaratoapi.models.requests.Produto;
+&nbsp;
+&nbsp;/**
+&nbsp; * Classe responsável por tratar os dados de produto.
+&nbsp; */
+<b class="nc">&nbsp;public class TratamentoProduto {</b>
+&nbsp;    
+&nbsp;    /**
+&nbsp;     * Método responsável por validar os dados do produto. Lança um &lt;code&gt;DadosInvalidosException&lt;/code&gt; caso os dados não sejam válidos e interrompe a execução.
+&nbsp;     * @param produto - Objeto do produto a ser validado.
+&nbsp;     * @param opcional - Indica se os dados do produto podem ser opcionais.
+&nbsp;     * @throws DadosInvalidosException Lançada caso os dados do produto sejam inválidos.
+&nbsp;     */
+&nbsp;    public static void validar(Produto produto, boolean opcional) throws DadosInvalidosException {
+<b class="fc">&nbsp;        if(produto == null)</b>
+<b class="fc">&nbsp;            throw new DadosInvalidosException(&quot;corpo_nulo&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        if(produto.getId() != null)</b>
+<b class="fc">&nbsp;            throw new DadosInvalidosException(&quot;id_fornecido&quot;);</b>
+&nbsp;
+<b class="pc">&nbsp;        if(produto.getCor() != null &amp;&amp; (produto.getCor().length() &gt; 20 || produto.getCor().length() &lt; 3))</b>
+<b class="fc">&nbsp;            throw new DadosInvalidosException(&quot;cor_invalido&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        if(!opcional) {</b>
+<b class="pc">&nbsp;            if(produto.getNome() == null || produto.getNome().isEmpty() || produto.getNome().length() &gt; 150 || produto.getNome().length() &lt; 10) {</b>
+<b class="fc">&nbsp;                throw new DadosInvalidosException(&quot;nome_invalido&quot;);</b>
+&nbsp;            }
+<b class="pc">&nbsp;            else if(produto.getMarca() == null || produto.getMarca().isEmpty() || produto.getMarca().length() &gt; 50 || produto.getMarca().length() &lt;= 1) {</b>
+<b class="fc">&nbsp;                throw new DadosInvalidosException(&quot;marca_invalido&quot;);</b>
+&nbsp;            }
+<b class="pc">&nbsp;            else if(produto.getTamanho() == null || produto.getTamanho().isEmpty() || produto.getTamanho().length() &gt; 20) {</b>
+<b class="fc">&nbsp;                throw new DadosInvalidosException(&quot;tamanho_invalido&quot;);</b>
+&nbsp;            }
+<b class="pc">&nbsp;            else if(produto.getCriadoPor() == null || produto.getCriadoPor() &lt;= 0) {</b>
+<b class="fc">&nbsp;                throw new DadosInvalidosException(&quot;usuario_invalido&quot;);</b>
+&nbsp;            }
+<b class="pc">&nbsp;            else if(produto.getCategoriaId() == null || produto.getCategoriaId() &lt;= 0) {</b>
+<b class="fc">&nbsp;                throw new DadosInvalidosException(&quot;categoria_invalido&quot;);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;        else {
+<b class="pc">&nbsp;            if(produto.getNome() != null &amp;&amp; (produto.getNome().isEmpty() || produto.getNome().length() &gt; 150 || produto.getNome().length() &lt; 10)) {</b>
+<b class="fc">&nbsp;                throw new DadosInvalidosException(&quot;nome_invalido&quot;);</b>
+&nbsp;            }
+<b class="pc">&nbsp;            else if(produto.getMarca() != null &amp;&amp; (produto.getMarca().isEmpty() || produto.getMarca().length() &gt; 50 || produto.getMarca().length() &lt;= 1)) {</b>
+<b class="fc">&nbsp;                throw new DadosInvalidosException(&quot;marca_invalido&quot;);</b>
+&nbsp;            }
+<b class="pc">&nbsp;            else if(produto.getTamanho() != null &amp;&amp; (produto.getTamanho().isEmpty() || produto.getTamanho().length() &gt; 20)) {</b>
+<b class="fc">&nbsp;                throw new DadosInvalidosException(&quot;tamanho_invalido&quot;);</b>
+&nbsp;            }
+<b class="fc">&nbsp;            else if(produto.getCriadoPor() != null &amp;&amp; produto.getCriadoPor() &lt;= 0) {</b>
+<b class="fc">&nbsp;                throw new DadosInvalidosException(&quot;usuario_invalido&quot;);</b>
+&nbsp;            }
+<b class="fc">&nbsp;            else if(produto.getCategoriaId() != null &amp;&amp; produto.getCategoriaId() &lt;= 0) {</b>
+<b class="fc">&nbsp;                throw new DadosInvalidosException(&quot;categoria_invalido&quot;);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-25 03:05</div>
+</div>
+</body>
+</html>

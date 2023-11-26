@@ -1,0 +1,127 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > MercadoRepository</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.pagueibaratoapi.repository</a>
+</div>
+
+<h1>Coverage Summary for Class: MercadoRepository (com.pagueibaratoapi.repository)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">MercadoRepository$MockitoMock$gfSWM97i</td>
+  </tr>
+  <tr>
+    <td class="name">MercadoRepository$MockitoMock$gfSWM97i$auxiliary$B1PRaZwX</td>
+  </tr>
+  <tr>
+    <td class="name">MercadoRepository$MockitoMock$gfSWM97i$auxiliary$DQNL8iWo</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.pagueibaratoapi.repository;
+&nbsp;
+&nbsp;import org.springframework.data.jpa.repository.JpaRepository;
+&nbsp;import org.springframework.data.jpa.repository.Query;
+&nbsp;import org.springframework.data.repository.query.Param;
+&nbsp;
+&nbsp;import com.pagueibaratoapi.models.requests.Mercado;
+&nbsp;
+&nbsp;/**
+&nbsp; * Repositório de mercados.
+&nbsp; */
+&nbsp;public interface MercadoRepository extends JpaRepository&lt;Mercado, Integer&gt; {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Verifica se o mercado existe com base no id.
+&nbsp;     * @param id - Id para verificar.
+&nbsp;     * @return &lt;b&gt;true&lt;/b&gt; se o id estiver cadastrado e &lt;b&gt;false&lt;/b&gt; se não estiver.
+&nbsp;     */
+&nbsp;    public boolean existsById(Integer id);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Verifica se o mercado existe com base no nome ignorando maiúsculas e minúsculas.
+&nbsp;     * @param nome - Nome do mercado para verificar.
+&nbsp;     * @return &lt;b&gt;true&lt;/b&gt; se o nome estiver cadastrado e &lt;b&gt;false&lt;/b&gt; se não estiver.
+&nbsp;     */
+&nbsp;    public boolean existsByNomeIgnoreCase(String nome);
+&nbsp;    
+&nbsp;    /**
+&nbsp;     * Busca um mercado que possui o endereço informado.
+&nbsp;     * @param logradouro - Logradouro do mercado para buscar.
+&nbsp;     * @param numero - Número em Integer do mercado para buscar.
+&nbsp;     * @param complemento - Complemento opcional do mercado para buscar.
+&nbsp;     * @param bairro - Bairro do mercado para buscar.
+&nbsp;     * @param cidade - Cidade do mercado para buscar.
+&nbsp;     * @param uf - UF do mercado dentre os UFs brasileiros válidos para buscar.
+&nbsp;     * @param cep - CEP de 8 dígitos com hífen do mercado para buscar.
+&nbsp;     * @return Mercado encontrado ou null.
+&nbsp;     */
+&nbsp;    @Query(&quot;SELECT m FROM Mercado m WHERE UPPER(m.logradouro) LIKE UPPER(CONCAT(&#39;%&#39;,:logradouro,&#39;%&#39;)) AND m.numero = :numero AND (m.complemento IS NULL OR UPPER(m.complemento) LIKE UPPER(CONCAT(&#39;%&#39;,:complemento,&#39;%&#39;))) AND UPPER(m.bairro) = UPPER(:bairro) AND UPPER(m.cidade) = UPPER(:cidade) AND UPPER(m.uf) = UPPER(:uf) AND m.cep = :cep&quot;)
+&nbsp;    public Mercado findByEndereco(
+&nbsp;        @Param(&quot;logradouro&quot;) String logradouro, 
+&nbsp;        @Param(&quot;numero&quot;) Integer numero, 
+&nbsp;        @Param(&quot;complemento&quot;) String complemento, 
+&nbsp;        @Param(&quot;bairro&quot;) String bairro, 
+&nbsp;        @Param(&quot;cidade&quot;) String cidade, 
+&nbsp;        @Param(&quot;uf&quot;) String uf, 
+&nbsp;        @Param(&quot;cep&quot;) String cep
+&nbsp;    );
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-25 03:05</div>
+</div>
+</body>
+</html>

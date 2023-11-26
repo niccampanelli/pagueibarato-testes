@@ -1,0 +1,1152 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > UsuarioControllerIntegrationTest</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.pagueibaratoapi.pagueibaratoapi.integration</a>
+</div>
+
+<h1>Coverage Summary for Class: UsuarioControllerIntegrationTest (com.pagueibaratoapi.pagueibaratoapi.integration)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">UsuarioControllerIntegrationTest</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (54/54)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    89,2%
+  </span>
+  <span class="absValue">
+    (356/399)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.pagueibaratoapi.pagueibaratoapi.integration;
+&nbsp;
+&nbsp;import static org.junit.Assert.assertEquals;
+&nbsp;import static org.junit.Assert.assertNotNull;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;import org.junit.Before;
+&nbsp;import org.junit.Test;
+&nbsp;import org.junit.runner.RunWith;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.test.context.junit4.SpringRunner;
+&nbsp;import org.springframework.web.server.ResponseStatusException;
+&nbsp;
+&nbsp;import com.pagueibaratoapi.controllers.UsuarioController;
+&nbsp;import com.pagueibaratoapi.models.requests.Usuario;
+&nbsp;import com.pagueibaratoapi.models.responses.ResponseUsuario;
+&nbsp;import com.pagueibaratoapi.pagueibaratoapi.PagueiBaratoApiApplicationTests;
+&nbsp;import com.pagueibaratoapi.repository.UsuarioRepository;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;@RunWith(SpringRunner.class)
+<b class="fc">&nbsp;public class UsuarioControllerIntegrationTest extends PagueiBaratoApiApplicationTests {</b>
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private UsuarioController usuarioController;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private UsuarioRepository usuarioRepository;
+&nbsp;
+&nbsp;    private Usuario usuario;
+&nbsp;
+&nbsp;    private List&lt;Usuario&gt; usuarios;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    @Before
+&nbsp;    public void setUp() {
+<b class="fc">&nbsp;        this.usuarioRepository.deleteAll();</b>
+&nbsp;
+<b class="fc">&nbsp;        this.inicializarUsuario();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private void inicializarUsuario() {
+<b class="fc">&nbsp;        usuario = new Usuario();</b>
+&nbsp;
+<b class="fc">&nbsp;        usuario.setNome(&quot;Usuário Teste&quot;);</b>
+<b class="fc">&nbsp;        usuario.setEmail(&quot;fulano@email.com&quot;);</b>
+<b class="fc">&nbsp;        usuario.setLogradouro(&quot;Rua Teste&quot;);</b>
+<b class="fc">&nbsp;        usuario.setNumero(123);</b>
+<b class="fc">&nbsp;        usuario.setComplemento(&quot;Casa&quot;);</b>
+<b class="fc">&nbsp;        usuario.setBairro(&quot;Bairro Teste&quot;);</b>
+<b class="fc">&nbsp;        usuario.setCidade(&quot;Cidade Teste&quot;);</b>
+<b class="fc">&nbsp;        usuario.setUf(&quot;SP&quot;);</b>
+<b class="fc">&nbsp;        usuario.setCep(&quot;12345-678&quot;);</b>
+<b class="fc">&nbsp;        usuario.setSenha(&quot;123456UsuarioT3ST3!&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuario2 = new Usuario();</b>
+&nbsp;
+<b class="fc">&nbsp;        usuario2.setNome(&quot;Usuário Teste 2&quot;);</b>
+<b class="fc">&nbsp;        usuario2.setEmail(&quot;ciclano@email.com&quot;);</b>
+<b class="fc">&nbsp;        usuario2.setLogradouro(&quot;Rua Teste 2&quot;);</b>
+<b class="fc">&nbsp;        usuario2.setNumero(456);</b>
+<b class="fc">&nbsp;        usuario2.setComplemento(&quot;Casa 2&quot;);</b>
+<b class="fc">&nbsp;        usuario2.setBairro(&quot;Bairro Teste 2&quot;);</b>
+<b class="fc">&nbsp;        usuario2.setCidade(&quot;Cidade Teste 2&quot;);</b>
+<b class="fc">&nbsp;        usuario2.setUf(&quot;SP&quot;);</b>
+<b class="fc">&nbsp;        usuario2.setCep(&quot;12345-678&quot;);</b>
+<b class="fc">&nbsp;        usuario2.setSenha(&quot;123456UsuarioT3ST3!&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        this.usuarios = List.of(usuario, usuario2);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    /* --------------------------  CRIAÇÃO DE USUÁRIO  -------------------------- */
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarUsuarioComSucesso() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        ResponseUsuario responseUsuario = this.usuarioController.criar(usuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        usuarioRepository.deleteById(responseUsuario.getId());</b>
+&nbsp;
+<b class="fc">&nbsp;        assertNotNull(responseUsuario);</b>
+<b class="fc">&nbsp;        assertNotNull(responseUsuario.getId());</b>
+<b class="fc">&nbsp;        assertEquals(&quot;Usuário Teste&quot;, responseUsuario.getNome());</b>
+<b class="fc">&nbsp;        assertEquals(&quot;fulano@email.com&quot;, responseUsuario.getEmail());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarUsuarioComCorpoNulo() throws Exception {
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            this.usuarioController.criar(null);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;corpo_nulo&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarUsuarioComIdFornecido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        usuario.setId(1);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            this.usuarioController.criar(usuario);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;id_fornecido&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarUsuarioComComplementoInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        usuario.setComplemento(&quot;Complemento Inválido!&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            this.usuarioController.criar(usuario);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;complemento_invalido&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarUsuarioComNomeInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        usuario.setNome(&quot;An&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            this.usuarioController.criar(usuario);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;nome_invalido&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarUsuarioComEmailInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        usuario.setEmail(&quot;emailinvalido&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            this.usuarioController.criar(usuario);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;email_invalido&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarUsuarioComSenhaInvalida() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        usuario.setSenha(&quot;senhainvalida&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            this.usuarioController.criar(usuario);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;senha_invalido&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarUsuarioComLogradouroInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        usuario.setLogradouro(&quot;Rua&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            this.usuarioController.criar(usuario);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;logradouro_invalido&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarUsuarioComNumeroInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        usuario.setNumero(0);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            this.usuarioController.criar(usuario);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;numero_invalido&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarUsuarioComBairroInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        usuario.setBairro(&quot;Bair&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            this.usuarioController.criar(usuario);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;bairro_invalido&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarUsuarioComCidadeInvalida() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        usuario.setCidade(&quot;São&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            this.usuarioController.criar(usuario);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;cidade_invalido&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarUsuarioComUfInvalida() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        usuario.setUf(&quot;São Paulo&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            this.usuarioController.criar(usuario);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;uf_invalido&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarUsuarioComCepInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        usuario.setCep(&quot;123456789&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            this.usuarioController.criar(usuario);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;cep_invalido&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarUsuarioComEmailExistente() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuarioCriado = this.usuarioRepository.save(usuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        Usuario novoUsuario = new Usuario();</b>
+&nbsp;
+<b class="fc">&nbsp;        novoUsuario.setNome(&quot;Usuário Teste 2&quot;);</b>
+<b class="fc">&nbsp;        novoUsuario.setEmail(this.usuario.getEmail());</b>
+<b class="fc">&nbsp;        novoUsuario.setLogradouro(&quot;Rua Teste 2&quot;);</b>
+<b class="fc">&nbsp;        novoUsuario.setNumero(123);</b>
+<b class="fc">&nbsp;        novoUsuario.setComplemento(&quot;Casa&quot;);</b>
+<b class="fc">&nbsp;        novoUsuario.setBairro(&quot;Bairro Teste&quot;);</b>
+<b class="fc">&nbsp;        novoUsuario.setCidade(&quot;Cidade Teste&quot;);</b>
+<b class="fc">&nbsp;        novoUsuario.setUf(&quot;SP&quot;);</b>
+<b class="fc">&nbsp;        novoUsuario.setCep(&quot;12345-678&quot;);</b>
+<b class="fc">&nbsp;        novoUsuario.setSenha(&quot;123456UsuarioT3ST3!&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            this.usuarioController.criar(novoUsuario);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(409, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;email_em_uso&quot;, e.getReason());</b>
+&nbsp;        }
+&nbsp;        finally {
+<b class="fc">&nbsp;            this.usuarioRepository.deleteById(usuarioCriado.getId());</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /* -------------------------------------------------------------------------- */
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    /* ----------------------  LEITURA DE USUÁRIO POR ID  ----------------------- */
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void lerUsuarioPorIdComSucesso() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuarioCriado = this.usuarioRepository.save(usuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        ResponseUsuario responseUsuario = this.usuarioController.ler(usuarioCriado.getId());</b>
+&nbsp;
+<b class="fc">&nbsp;        this.usuarioRepository.deleteById(usuarioCriado.getId());</b>
+&nbsp;
+<b class="fc">&nbsp;        assertNotNull(responseUsuario);</b>
+<b class="fc">&nbsp;        assertNotNull(responseUsuario.getId());</b>
+<b class="fc">&nbsp;        assertEquals(&quot;Usuário Teste&quot;, responseUsuario.getNome());</b>
+<b class="fc">&nbsp;        assertEquals(&quot;fulano@email.com&quot;, responseUsuario.getEmail());</b>
+<b class="fc">&nbsp;        assertEquals(&quot;Rua Teste&quot;, responseUsuario.getLogradouro());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void lerUsuarioPorIdInexistente() throws Exception {
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            this.usuarioController.ler(1986);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(404, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;usuario_nao_encontrado&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void lerUsuarioPorIdComExcecao() {
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            this.usuarioController.ler(null);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(500, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;erro_inesperado&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /* -------------------------------------------------------------------------- */
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    /* -------------------------  LISTAGEM DE USUÁRIOS  ------------------------- */
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarUsuariosComSucesso() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.usuarioRepository.saveAll(usuarios);</b>
+&nbsp;
+<b class="fc">&nbsp;        List&lt;ResponseUsuario&gt; responseUsuarios = this.usuarioController.listar();</b>
+&nbsp;
+<b class="fc">&nbsp;        this.usuarioRepository.deleteAll();</b>
+&nbsp;
+<b class="fc">&nbsp;        assertNotNull(responseUsuarios);</b>
+<b class="fc">&nbsp;        assertEquals(2, responseUsuarios.size());</b>
+<b class="fc">&nbsp;        assertEquals(&quot;Usuário Teste&quot;, responseUsuarios.get(0).getNome());</b>
+<b class="fc">&nbsp;        assertEquals(&quot;Usuário Teste 2&quot;, responseUsuarios.get(1).getNome());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /* -------------------------------------------------------------------------- */
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    /* --------------------------  EDIÇÃO DE USUÁRIOS  -------------------------- */
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarUsuarioComSucesso() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuarioCriado = this.usuarioRepository.save(usuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuarioEditado = new Usuario();</b>
+&nbsp;
+<b class="fc">&nbsp;        usuarioEditado.setNome(&quot;Usuário Teste Editado&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        ResponseUsuario responseUsuario = this.usuarioController.editar(usuarioCriado.getId(), usuarioEditado);</b>
+&nbsp;
+<b class="fc">&nbsp;        this.usuarioRepository.deleteById(usuarioCriado.getId());</b>
+&nbsp;
+<b class="fc">&nbsp;        assertNotNull(responseUsuario);</b>
+<b class="fc">&nbsp;        assertNotNull(responseUsuario.getId());</b>
+<b class="fc">&nbsp;        assertEquals(&quot;Usuário Teste Editado&quot;, responseUsuario.getNome());</b>
+<b class="fc">&nbsp;        assertEquals(&quot;fulano@email.com&quot;, responseUsuario.getEmail());</b>
+<b class="fc">&nbsp;        assertEquals(&quot;Rua Teste&quot;, responseUsuario.getLogradouro());</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarUsuarioComCorpoNulo() throws Exception {
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            this.usuarioController.editar(1, null);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;corpo_nulo&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarUsuarioComIdFornecido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        usuario.setId(1);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            this.usuarioController.editar(1, usuario);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;id_fornecido&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarUsuarioComComplementoInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        usuario.setComplemento(&quot;Complemento Inválido!&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            this.usuarioController.editar(1, usuario);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;complemento_invalido&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarUsuarioComNomeInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        usuario.setNome(&quot;An&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            this.usuarioController.editar(1, usuario);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;nome_invalido&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarUsuarioComEmailInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        usuario.setEmail(&quot;emailinvalido&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            this.usuarioController.editar(1, usuario);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;email_invalido&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarUsuarioComSenhaInvalida() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        usuario.setSenha(&quot;senhainvalida&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            this.usuarioController.editar(1, usuario);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;senha_invalido&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarUsuarioComLogradouroInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        usuario.setLogradouro(&quot;Rua&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            this.usuarioController.editar(1, usuario);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;logradouro_invalido&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarUsuarioComNumeroInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        usuario.setNumero(0);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            this.usuarioController.editar(1, usuario);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;numero_invalido&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarUsuarioComBairroInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        usuario.setBairro(&quot;Bair&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            this.usuarioController.editar(1, usuario);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;bairro_invalido&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarUsuarioComCidadeInvalida() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        usuario.setCidade(&quot;São&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            this.usuarioController.editar(1, usuario);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;cidade_invalido&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarUsuarioComUfInvalida() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        usuario.setUf(&quot;São Paulo&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            this.usuarioController.editar(1, usuario);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;uf_invalido&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarUsuarioComCepInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        usuario.setCep(&quot;123456789&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            this.usuarioController.editar(1, usuario);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;cep_invalido&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarUsuarioComEmailExistente() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuarioCriado = this.usuarioRepository.save(usuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuarioEditado = new Usuario();</b>
+&nbsp;
+<b class="fc">&nbsp;        usuarioEditado.setNome(&quot;Usuário Teste 2&quot;);</b>
+<b class="fc">&nbsp;        usuarioEditado.setEmail(this.usuarios.get(1).getEmail());</b>
+<b class="fc">&nbsp;        usuarioEditado.setLogradouro(&quot;Rua Teste 2&quot;);</b>
+<b class="fc">&nbsp;        usuarioEditado.setNumero(123);</b>
+<b class="fc">&nbsp;        usuarioEditado.setComplemento(&quot;Casa&quot;);</b>
+<b class="fc">&nbsp;        usuarioEditado.setBairro(&quot;Bairro Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioEditado.setCidade(&quot;Cidade Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioEditado.setUf(&quot;SP&quot;);</b>
+<b class="fc">&nbsp;        usuarioEditado.setCep(&quot;12345-678&quot;);</b>
+<b class="fc">&nbsp;        usuarioEditado.setSenha(&quot;123456UsuarioT3ST3!&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            this.usuarioController.editar(usuarioCriado.getId(), usuarioEditado);</b>
+&nbsp;
+&nbsp;        }
+<b class="nc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="nc">&nbsp;            assertEquals(409, e.getRawStatusCode());</b>
+<b class="nc">&nbsp;            assertEquals(&quot;email_em_uso&quot;, e.getReason());</b>
+&nbsp;        }
+&nbsp;        finally {
+<b class="fc">&nbsp;            this.usuarioRepository.deleteById(usuarioCriado.getId());</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarUsuarioDeletado() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuarioCriado = this.usuarioRepository.save(usuario);</b>
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuarioEditado = new Usuario();</b>
+&nbsp;
+<b class="fc">&nbsp;        usuarioEditado.setNome(&quot;Usuário Teste Editado&quot;);</b>
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;        this.usuarioController.remover(usuarioCriado.getId());</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            this.usuarioController.editar(usuarioCriado.getId(), usuarioEditado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(404, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;nao_encontrado&quot;, e.getReason());</b>
+&nbsp;        }
+&nbsp;        finally {
+<b class="fc">&nbsp;            this.usuarioRepository.deleteById(usuarioCriado.getId());</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarUsuarioComExcecaoNoSuchElement() throws Exception {
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            this.usuarioController.editar(1986, usuario);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(404, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;nao_encontrado&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /* -------------------------------------------------------------------------- */
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    /* -----------------------  ATUALIZAÇÃO DE USUÁRIOS  ------------------------ */
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarUsuarioComSucesso() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuarioCriado = this.usuarioRepository.save(usuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuarioAtualizado = new Usuario();</b>
+&nbsp;
+<b class="fc">&nbsp;        usuarioAtualizado.setNome(&quot;Usuário Atualizado&quot;);</b>
+<b class="fc">&nbsp;        usuarioAtualizado.setEmail(&quot;fulanoatualizado@email.com&quot;);</b>
+<b class="fc">&nbsp;        usuarioAtualizado.setLogradouro(&quot;Rua Teste Atualizado&quot;);</b>
+<b class="fc">&nbsp;        usuarioAtualizado.setNumero(22);</b>
+<b class="fc">&nbsp;        usuarioAtualizado.setComplemento(&quot;Casa Atualizado&quot;);</b>
+<b class="fc">&nbsp;        usuarioAtualizado.setBairro(&quot;Bairro Teste Atualizado&quot;);</b>
+<b class="fc">&nbsp;        usuarioAtualizado.setCidade(&quot;Cidade Teste Atualizado&quot;);</b>
+<b class="fc">&nbsp;        usuarioAtualizado.setUf(&quot;SP&quot;);</b>
+<b class="fc">&nbsp;        usuarioAtualizado.setCep(&quot;12345-678&quot;);</b>
+<b class="fc">&nbsp;        usuarioAtualizado.setSenha(&quot;123456UsuarioT3ST3!&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        ResponseUsuario responseUsuario = this.usuarioController.atualizar(usuarioCriado.getId(), usuarioAtualizado);</b>
+&nbsp;
+<b class="fc">&nbsp;        this.usuarioRepository.deleteById(usuarioCriado.getId());</b>
+&nbsp;
+<b class="fc">&nbsp;        assertNotNull(responseUsuario);</b>
+<b class="fc">&nbsp;        assertNotNull(responseUsuario.getId());</b>
+<b class="fc">&nbsp;        assertEquals(&quot;Usuário Atualizado&quot;, responseUsuario.getNome());</b>
+<b class="fc">&nbsp;        assertEquals(&quot;fulanoatualizado@email.com&quot;, responseUsuario.getEmail());</b>
+<b class="fc">&nbsp;        assertEquals(&quot;Rua Teste Atualizado&quot;, responseUsuario.getLogradouro());</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarUsuarioComCorpoNulo() throws Exception {
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            this.usuarioController.atualizar(1, null);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;corpo_nulo&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarUsuarioComIdFornecido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        usuario.setId(1);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            this.usuarioController.atualizar(1, usuario);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;id_fornecido&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarUsuarioComComplementoInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        usuario.setComplemento(&quot;Complemento Inválido!&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            this.usuarioController.atualizar(1, usuario);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;complemento_invalido&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarUsuarioComNomeInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        usuario.setNome(null);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            this.usuarioController.atualizar(1, usuario);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;nome_invalido&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarUsuarioComEmailInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        usuario.setEmail(null);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            this.usuarioController.atualizar(1, usuario);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;email_invalido&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarUsuarioComSenhaInvalida() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        usuario.setSenha(null);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            this.usuarioController.atualizar(1, usuario);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;senha_invalido&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarUsuarioComLogradouroInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        usuario.setLogradouro(null);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            this.usuarioController.atualizar(1, usuario);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;logradouro_invalido&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarUsuarioComNumeroInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        usuario.setNumero(0);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            this.usuarioController.atualizar(1, usuario);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;numero_invalido&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarUsuarioComBairroInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        usuario.setBairro(null);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            this.usuarioController.atualizar(1, usuario);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;bairro_invalido&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarUsuarioComCidadeInvalida() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        usuario.setCidade(null);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            this.usuarioController.atualizar(1, usuario);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;cidade_invalido&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarUsuarioComUfInvalida() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        usuario.setUf(null);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            this.usuarioController.atualizar(1, usuario);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;uf_invalido&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarUsuarioComCepInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        usuario.setCep(null);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            this.usuarioController.atualizar(1, usuario);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;cep_invalido&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarUsuarioComEmailExistente() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuarioCriado = this.usuarioRepository.save(usuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuarioComEmailIgual = this.usuarioRepository.save(this.usuarios.get(1));</b>
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuarioAtualizado = new Usuario();</b>
+&nbsp;
+<b class="fc">&nbsp;        usuarioAtualizado.setNome(&quot;Usuário Teste 2&quot;);</b>
+<b class="fc">&nbsp;        usuarioAtualizado.setEmail(usuarioComEmailIgual.getEmail());</b>
+<b class="fc">&nbsp;        usuarioAtualizado.setLogradouro(&quot;Rua Teste 2&quot;);</b>
+<b class="fc">&nbsp;        usuarioAtualizado.setNumero(123);</b>
+<b class="fc">&nbsp;        usuarioAtualizado.setComplemento(&quot;Casa&quot;);</b>
+<b class="fc">&nbsp;        usuarioAtualizado.setBairro(&quot;Bairro Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioAtualizado.setCidade(&quot;Cidade Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioAtualizado.setUf(&quot;SP&quot;);</b>
+<b class="fc">&nbsp;        usuarioAtualizado.setCep(&quot;12345-678&quot;);</b>
+<b class="fc">&nbsp;        usuarioAtualizado.setSenha(&quot;123456UsuarioT3ST3!&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            this.usuarioController.atualizar(usuarioCriado.getId(), usuarioAtualizado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(409, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;email_em_uso&quot;, e.getReason());</b>
+&nbsp;        }
+&nbsp;        finally {
+<b class="fc">&nbsp;            this.usuarioRepository.deleteById(usuarioCriado.getId());</b>
+<b class="fc">&nbsp;            this.usuarioRepository.deleteById(usuarioComEmailIgual.getId());</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarUsuarioDeletado() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuarioCriado = this.usuarioRepository.save(usuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        usuarioController.remover(usuarioCriado.getId());</b>
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuarioAtualizado = new Usuario();</b>
+&nbsp;
+<b class="fc">&nbsp;        usuarioAtualizado.setNome(&quot;Usuário Atualizado&quot;);</b>
+<b class="fc">&nbsp;        usuarioAtualizado.setEmail(&quot;usuario.atualizado@email.com&quot;);</b>
+<b class="fc">&nbsp;        usuarioAtualizado.setLogradouro(&quot;Rua Teste 2&quot;);</b>
+<b class="fc">&nbsp;        usuarioAtualizado.setNumero(123);</b>
+<b class="fc">&nbsp;        usuarioAtualizado.setComplemento(&quot;Casa&quot;);</b>
+<b class="fc">&nbsp;        usuarioAtualizado.setBairro(&quot;Bairro Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioAtualizado.setCidade(&quot;Cidade Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioAtualizado.setUf(&quot;SP&quot;);</b>
+<b class="fc">&nbsp;        usuarioAtualizado.setCep(&quot;12345-678&quot;);</b>
+<b class="fc">&nbsp;        usuarioAtualizado.setSenha(&quot;123456UsuarioT3ST3!&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            this.usuarioController.atualizar(usuarioCriado.getId(), usuarioAtualizado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(404, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;usuario_nao_encontrado&quot;, e.getReason());</b>
+&nbsp;        }
+&nbsp;        finally {
+<b class="fc">&nbsp;            this.usuarioRepository.deleteById(usuarioCriado.getId());</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /* -------------------------------------------------------------------------- */
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    /* -------------------------  DELEÇÃO DE USUÁRIOS  -------------------------- */
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void removerUsuarioComSucesso() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuarioCriado = this.usuarioRepository.save(usuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        this.usuarioController.remover(usuarioCriado.getId());</b>
+&nbsp;
+<b class="fc">&nbsp;        assertEquals(&quot;&quot;, this.usuarioRepository.findById(usuarioCriado.getId()).get().getEmail());</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void removerUsuarioDeletado() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuarioCriado = this.usuarioRepository.save(usuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        this.usuarioController.remover(usuarioCriado.getId());</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            this.usuarioController.remover(usuarioCriado.getId());</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(404, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;usuario_nao_encontrado&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /* -------------------------------------------------------------------------- */
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-25 03:05</div>
+</div>
+</body>
+</html>

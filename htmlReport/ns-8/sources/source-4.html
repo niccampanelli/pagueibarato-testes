@@ -1,0 +1,1757 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > MercadoControllerIntegrationTest</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.pagueibaratoapi.pagueibaratoapi.integration</a>
+</div>
+
+<h1>Coverage Summary for Class: MercadoControllerIntegrationTest (com.pagueibaratoapi.pagueibaratoapi.integration)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MercadoControllerIntegrationTest</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (76/76)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    91,5%
+  </span>
+  <span class="absValue">
+    (606/662)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.pagueibaratoapi.pagueibaratoapi.integration;
+&nbsp;
+&nbsp;import static org.junit.Assert.assertEquals;
+&nbsp;import static org.junit.Assert.assertTrue;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;import org.junit.Before;
+&nbsp;import org.junit.Test;
+&nbsp;import org.junit.runner.RunWith;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.test.context.junit4.SpringRunner;
+&nbsp;import org.springframework.web.server.ResponseStatusException;
+&nbsp;
+&nbsp;import com.pagueibaratoapi.controllers.MercadoController;
+&nbsp;import com.pagueibaratoapi.models.requests.Mercado;
+&nbsp;import com.pagueibaratoapi.models.requests.Ramo;
+&nbsp;import com.pagueibaratoapi.models.requests.Usuario;
+&nbsp;import com.pagueibaratoapi.models.responses.ResponseMercado;
+&nbsp;import com.pagueibaratoapi.pagueibaratoapi.PagueiBaratoApiApplicationTests;
+&nbsp;import com.pagueibaratoapi.repository.MercadoRepository;
+&nbsp;import com.pagueibaratoapi.repository.RamoRepository;
+&nbsp;import com.pagueibaratoapi.repository.UsuarioRepository;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;@RunWith(SpringRunner.class)
+<b class="fc">&nbsp;public class MercadoControllerIntegrationTest extends PagueiBaratoApiApplicationTests {</b>
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private MercadoController mercadoController;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private UsuarioRepository usuarioRepository;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private MercadoRepository mercadoRepository;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private RamoRepository ramoRepository;
+&nbsp;
+&nbsp;    private Usuario usuario;
+&nbsp;
+&nbsp;    private Ramo ramo;
+&nbsp;
+&nbsp;    private Mercado mercado;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    @Before
+&nbsp;    public void setUp() {
+<b class="fc">&nbsp;        usuarioRepository.deleteAll();</b>
+<b class="fc">&nbsp;        mercadoRepository.deleteAll();</b>
+<b class="fc">&nbsp;        ramoRepository.deleteAll();</b>
+&nbsp;
+<b class="fc">&nbsp;        this.inicializarUsuario();</b>
+<b class="fc">&nbsp;        this.inicializarRamo();</b>
+<b class="fc">&nbsp;        this.inicializarMercado();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private void inicializarUsuario() {
+&nbsp;
+<b class="fc">&nbsp;        this.usuario = new Usuario();</b>
+&nbsp;
+<b class="fc">&nbsp;        this.usuario.setLogradouro(&quot;Rua Teste&quot;);</b>
+<b class="fc">&nbsp;        this.usuario.setNumero(12);</b>
+<b class="fc">&nbsp;        this.usuario.setBairro(&quot;Bairro Teste&quot;);</b>
+<b class="fc">&nbsp;        this.usuario.setCidade(&quot;Cidade Teste&quot;);</b>
+<b class="fc">&nbsp;        this.usuario.setUf(&quot;SP&quot;);</b>
+<b class="fc">&nbsp;        this.usuario.setCep(&quot;12345-678&quot;);</b>
+<b class="fc">&nbsp;        this.usuario.setComplemento(&quot;Complemento Teste&quot;);</b>
+<b class="fc">&nbsp;        this.usuario.setEmail(&quot;teste@email.com&quot;);</b>
+<b class="fc">&nbsp;        this.usuario.setSenha(&quot;123456UsuarioT3ST3!&quot;);</b>
+<b class="fc">&nbsp;        this.usuario.setNome(&quot;Usuario Teste&quot;);</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    private void inicializarRamo() {
+&nbsp;
+<b class="fc">&nbsp;        this.ramo = new Ramo();</b>
+&nbsp;
+<b class="fc">&nbsp;        ramo.setNome(&quot;Ramo Teste&quot;);</b>
+<b class="fc">&nbsp;        ramo.setDescricao(&quot;Descrição Teste&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private void inicializarMercado() {
+&nbsp;        
+<b class="fc">&nbsp;        this.mercado = new Mercado();</b>
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setNome(&quot;Mercado Teste&quot;);</b>
+<b class="fc">&nbsp;        this.mercado.setLogradouro(&quot;Rua Teste&quot;);</b>
+<b class="fc">&nbsp;        this.mercado.setNumero(12);</b>
+<b class="fc">&nbsp;        this.mercado.setBairro(&quot;Bairro Teste&quot;);</b>
+<b class="fc">&nbsp;        this.mercado.setCidade(&quot;Cidade Teste&quot;);</b>
+<b class="fc">&nbsp;        this.mercado.setUf(&quot;SP&quot;);</b>
+<b class="fc">&nbsp;        this.mercado.setCep(&quot;12345-678&quot;);</b>
+<b class="fc">&nbsp;        this.mercado.setComplemento(&quot;Complemento Teste&quot;);</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    /* --------------------------  CRIAÇÃO DE MERCADO  -------------------------- */
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarMercadoComSucesso() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        Usuario novoUsuario = usuarioRepository.save(this.usuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        Ramo novoRamo = ramoRepository.save(this.ramo);</b>
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setCriadoPor(novoUsuario.getId());</b>
+<b class="fc">&nbsp;        this.mercado.setRamoId(novoRamo.getId());</b>
+&nbsp;
+<b class="fc">&nbsp;        ResponseMercado responseMercado = mercadoController.criar(this.mercado);</b>
+&nbsp;
+<b class="fc">&nbsp;        mercadoRepository.deleteById(responseMercado.getId());</b>
+&nbsp;
+<b class="fc">&nbsp;        assertEquals(responseMercado.getNome(), this.mercado.getNome());</b>
+<b class="fc">&nbsp;        assertEquals(responseMercado.getLogradouro(), this.mercado.getLogradouro());</b>
+<b class="fc">&nbsp;        assertEquals(responseMercado.getNumero(), this.mercado.getNumero());</b>
+<b class="fc">&nbsp;        assertEquals(responseMercado.getBairro(), this.mercado.getBairro());</b>
+<b class="fc">&nbsp;        assertEquals(responseMercado.getCidade(), this.mercado.getCidade());</b>
+<b class="fc">&nbsp;        assertEquals(responseMercado.getUf(), this.mercado.getUf());</b>
+<b class="fc">&nbsp;        assertEquals(responseMercado.getCep(), this.mercado.getCep());</b>
+<b class="fc">&nbsp;        assertEquals(responseMercado.getRamoId(), this.mercado.getRamoId());</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarMercadoComCorpoNulo() throws Exception {
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.criar(null);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;corpo_nulo&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarMercadoComIdFornecido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setId(1);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.criar(this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;id_fornecido&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarMercadoComComplementoInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setComplemento(&quot;Complemento Teste Complemento Teste Complemento Teste&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.criar(this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;complemento_invalido&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarMercadoComNomeInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setNome(&quot;Mercado teste Mercado teste Mercado teste Mercado teste Mercado teste&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.criar(this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;nome_invalido&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarMercadoComLogradouroInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setLogradouro(&quot;Rua&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.criar(this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;logradouro_invalido&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarMercadoComNumeroInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setNumero(0);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.criar(this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;numero_invalido&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarMercadoComBairroInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setBairro(&quot;Test&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.criar(this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;bairro_invalido&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarMercadoComCidadeInvalida() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setCidade(&quot;Sã&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.criar(this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;cidade_invalido&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarMercadoComUfInvalida() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setUf(&quot;S&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.criar(this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;uf_invalido&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarMercadoComCepInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setCep(&quot;123456789&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.criar(this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;cep_invalido&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarMercadoComUsuarioInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setCriadoPor(0);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.criar(this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;usuario_invalido&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarMercadoComRamoInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        Usuario novoUsuario = usuarioRepository.save(this.usuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setCriadoPor(novoUsuario.getId());</b>
+<b class="fc">&nbsp;        this.mercado.setRamoId(0);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.criar(this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;ramo_invalido&quot;);</b>
+&nbsp;        }
+&nbsp;        finally {
+<b class="fc">&nbsp;            usuarioRepository.deleteById(novoUsuario.getId());</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarMercadoComUsuarioInexistente() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setCriadoPor(1986);</b>
+<b class="fc">&nbsp;        this.mercado.setRamoId(1);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.criar(this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;usuario_nao_encontrado&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarMercadoComUsuarioDeletado() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuarioDeletado = new Usuario();</b>
+&nbsp;
+<b class="fc">&nbsp;        usuarioDeletado.setNome(&quot;&quot;);</b>
+<b class="fc">&nbsp;        usuarioDeletado.setEmail(&quot;&quot;);</b>
+<b class="fc">&nbsp;        usuarioDeletado.setSenha(&quot;&quot;);</b>
+<b class="fc">&nbsp;        usuarioDeletado.setLogradouro(&quot;&quot;);</b>
+<b class="fc">&nbsp;        usuarioDeletado.setNumero(-1);</b>
+<b class="fc">&nbsp;        usuarioDeletado.setComplemento(null);</b>
+<b class="fc">&nbsp;        usuarioDeletado.setBairro(&quot;&quot;);</b>
+<b class="fc">&nbsp;        usuarioDeletado.setCidade(&quot;&quot;);</b>
+<b class="fc">&nbsp;        usuarioDeletado.setUf(&quot;--&quot;);</b>
+<b class="fc">&nbsp;        usuarioDeletado.setCep(&quot;00000-000&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        Usuario novoUsuario = usuarioRepository.save(usuarioDeletado);</b>
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setCriadoPor(novoUsuario.getId());</b>
+<b class="fc">&nbsp;        this.mercado.setRamoId(1);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.criar(this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(404, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;usuario_nao_encontrado&quot;);</b>
+&nbsp;        }
+&nbsp;        finally {
+<b class="fc">&nbsp;            usuarioRepository.deleteById(novoUsuario.getId());</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarMercadoComRamoInexistente() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        Usuario novoUsuario = usuarioRepository.save(this.usuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setCriadoPor(novoUsuario.getId());</b>
+<b class="fc">&nbsp;        this.mercado.setRamoId(1986);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.criar(this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;ramo_nao_encontrado&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarMercadoComNomeExistente() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        Usuario novoUsuario = usuarioRepository.save(this.usuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        Ramo novoRamo = ramoRepository.save(this.ramo);</b>
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setCriadoPor(novoUsuario.getId());</b>
+<b class="fc">&nbsp;        this.mercado.setRamoId(novoRamo.getId());</b>
+&nbsp;
+<b class="fc">&nbsp;        Mercado mercadoIgual = new Mercado();</b>
+&nbsp;
+<b class="fc">&nbsp;        mercadoIgual.setNome(&quot;Mercado Teste&quot;);</b>
+<b class="fc">&nbsp;        mercadoIgual.setLogradouro(&quot;Rua Teste&quot;);</b>
+<b class="fc">&nbsp;        mercadoIgual.setNumero(12);</b>
+<b class="fc">&nbsp;        mercadoIgual.setBairro(&quot;Bairro Teste&quot;);</b>
+<b class="fc">&nbsp;        mercadoIgual.setCidade(&quot;Cidade Teste&quot;);</b>
+<b class="fc">&nbsp;        mercadoIgual.setUf(&quot;SP&quot;);</b>
+<b class="fc">&nbsp;        mercadoIgual.setCep(&quot;12345-678&quot;);</b>
+<b class="fc">&nbsp;        mercadoIgual.setComplemento(&quot;Complemento Teste&quot;);</b>
+<b class="fc">&nbsp;        mercadoIgual.setCriadoPor(novoUsuario.getId());</b>
+<b class="fc">&nbsp;        mercadoIgual.setRamoId(novoRamo.getId());</b>
+&nbsp;
+<b class="fc">&nbsp;        Mercado mercadoExistente = mercadoRepository.save(mercadoIgual);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.criar(this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(409, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;mercado_existente&quot;);</b>
+&nbsp;        }
+&nbsp;        finally {
+<b class="fc">&nbsp;            mercadoRepository.deleteById(mercadoExistente.getId());</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarMercadoComEnderecoExistente() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        Usuario novoUsuario = usuarioRepository.save(this.usuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        Ramo novoRamo = ramoRepository.save(this.ramo);</b>
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setCriadoPor(novoUsuario.getId());</b>
+<b class="fc">&nbsp;        this.mercado.setRamoId(novoRamo.getId());</b>
+&nbsp;
+<b class="fc">&nbsp;        Mercado mercadoIgual = new Mercado();</b>
+&nbsp;
+<b class="fc">&nbsp;        mercadoIgual.setNome(&quot;Mercado igual&quot;);</b>
+<b class="fc">&nbsp;        mercadoIgual.setLogradouro(&quot;Rua Teste&quot;);</b>
+<b class="fc">&nbsp;        mercadoIgual.setNumero(12);</b>
+<b class="fc">&nbsp;        mercadoIgual.setBairro(&quot;Bairro Teste&quot;);</b>
+<b class="fc">&nbsp;        mercadoIgual.setCidade(&quot;Cidade Teste&quot;);</b>
+<b class="fc">&nbsp;        mercadoIgual.setUf(&quot;SP&quot;);</b>
+<b class="fc">&nbsp;        mercadoIgual.setCep(&quot;12345-678&quot;);</b>
+<b class="fc">&nbsp;        mercadoIgual.setComplemento(&quot;Complemento Teste&quot;);</b>
+<b class="fc">&nbsp;        mercadoIgual.setCriadoPor(novoUsuario.getId());</b>
+<b class="fc">&nbsp;        mercadoIgual.setRamoId(novoRamo.getId());</b>
+&nbsp;
+<b class="fc">&nbsp;        Mercado mercadoExistente = mercadoRepository.save(mercadoIgual);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.criar(this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(409, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;mercado_existente&quot;);</b>
+&nbsp;        }
+&nbsp;        finally {
+<b class="fc">&nbsp;            mercadoRepository.deleteById(mercadoExistente.getId());</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /* -------------------------------------------------------------------------- */
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    /* ----------------------  LEITURA DE MERCADO POR ID  ----------------------- */
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void lerMercadoPorIdComSucesso() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        Usuario novoUsuario = usuarioRepository.save(this.usuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        Ramo novoRamo = ramoRepository.save(this.ramo);</b>
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setCriadoPor(novoUsuario.getId());</b>
+<b class="fc">&nbsp;        this.mercado.setRamoId(novoRamo.getId());</b>
+&nbsp;
+<b class="fc">&nbsp;        Mercado novoMercado = mercadoRepository.save(this.mercado);</b>
+&nbsp;
+<b class="fc">&nbsp;        ResponseMercado responseMercado = mercadoController.ler(novoMercado.getId());</b>
+&nbsp;
+<b class="fc">&nbsp;        mercadoRepository.deleteById(novoMercado.getId());</b>
+&nbsp;
+<b class="fc">&nbsp;        assertEquals(responseMercado.getNome(), this.mercado.getNome());</b>
+<b class="fc">&nbsp;        assertEquals(responseMercado.getLogradouro(), this.mercado.getLogradouro());</b>
+<b class="fc">&nbsp;        assertEquals(responseMercado.getNumero(), this.mercado.getNumero());</b>
+<b class="fc">&nbsp;        assertEquals(responseMercado.getBairro(), this.mercado.getBairro());</b>
+<b class="fc">&nbsp;        assertEquals(responseMercado.getCidade(), this.mercado.getCidade());</b>
+<b class="fc">&nbsp;        assertEquals(responseMercado.getUf(), this.mercado.getUf());</b>
+<b class="fc">&nbsp;        assertEquals(responseMercado.getCep(), this.mercado.getCep());</b>
+<b class="fc">&nbsp;        assertEquals(responseMercado.getRamoId(), this.mercado.getRamoId());</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void lerMercadoComExcecaoNoSuchElement() throws Exception {
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.ler(1986);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(404, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;nao_encontrado&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;    
+&nbsp;    @Test
+&nbsp;    public void lerMercadoComExcecao() throws Exception {
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.ler(null);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(500, e.getRawStatusCode());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /* -------------------------------------------------------------------------- */
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    /* -------------------------  LISTAGEM DE MERCADOS  ------------------------- */
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarMercadosComSucesso() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        Usuario novoUsuario = usuarioRepository.save(this.usuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        Ramo novoRamo = ramoRepository.save(this.ramo);</b>
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setCriadoPor(novoUsuario.getId());</b>
+<b class="fc">&nbsp;        this.mercado.setRamoId(novoRamo.getId());</b>
+&nbsp;
+<b class="fc">&nbsp;        Mercado novoMercado = mercadoRepository.save(this.mercado);</b>
+&nbsp;
+<b class="fc">&nbsp;        Mercado mercado2 = new Mercado();</b>
+&nbsp;
+<b class="fc">&nbsp;        mercado2.setNome(&quot;Mercado Teste 2&quot;);</b>
+<b class="fc">&nbsp;        mercado2.setLogradouro(&quot;Rua Teste 2&quot;);</b>
+<b class="fc">&nbsp;        mercado2.setNumero(12);</b>
+<b class="fc">&nbsp;        mercado2.setBairro(&quot;Bairro Teste&quot;);</b>
+<b class="fc">&nbsp;        mercado2.setCidade(&quot;Cidade Teste&quot;);</b>
+<b class="fc">&nbsp;        mercado2.setUf(&quot;SP&quot;);</b>
+<b class="fc">&nbsp;        mercado2.setCep(&quot;12345-678&quot;);</b>
+<b class="fc">&nbsp;        mercado2.setComplemento(&quot;Complemento Teste&quot;);</b>
+<b class="fc">&nbsp;        mercado2.setCriadoPor(novoUsuario.getId());</b>
+<b class="fc">&nbsp;        mercado2.setRamoId(novoRamo.getId());</b>
+&nbsp;
+<b class="fc">&nbsp;        Mercado novoMercado2 = mercadoRepository.save(mercado2);</b>
+&nbsp;
+<b class="fc">&nbsp;        List&lt;ResponseMercado&gt; responseMercados = mercadoController.listar(new Mercado());</b>
+&nbsp;
+<b class="fc">&nbsp;        mercadoRepository.deleteById(novoMercado.getId());</b>
+<b class="fc">&nbsp;        mercadoRepository.deleteById(novoMercado2.getId());</b>
+&nbsp;
+<b class="fc">&nbsp;        assertEquals(responseMercados.size(), 2);</b>
+<b class="fc">&nbsp;        assertEquals(responseMercados.get(0).getLogradouro(), this.mercado.getLogradouro());</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarMercadosComCorpoNulo() throws Exception {
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.listar(null);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;corpo_nulo&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarMercadosComIdFornecido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setId(1);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.listar(this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;id_fornecido&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarMercadosComComplementoInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setComplemento(&quot;Complemento Teste Complemento Teste Complemento Teste&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.listar(this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;complemento_invalido&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarMercadosComNomeInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setNome(&quot;Mercado teste Mercado teste Mercado teste Mercado teste Mercado teste&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.listar(this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;nome_invalido&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarMercadosComLogradouroInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setLogradouro(&quot;Rua&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.listar(this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;logradouro_invalido&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarMercadosComNumeroInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setNumero(-1);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.listar(this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;numero_invalido&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarMercadosComBairroInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setBairro(&quot;Test&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.listar(this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;bairro_invalido&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarMercadosComCidadeInvalida() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setCidade(&quot;Sã&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.listar(this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;cidade_invalido&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarMercadosComUfInvalida() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setUf(&quot;S&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.listar(this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;uf_invalido&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarMercadosComCepInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setCep(&quot;123456789&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.listar(this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;cep_invalido&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarMercadosComUsuarioInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setCriadoPor(0);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.listar(this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;usuario_invalido&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarMercadosComRamoInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        Usuario novoUsuario = usuarioRepository.save(this.usuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setCriadoPor(novoUsuario.getId());</b>
+<b class="fc">&nbsp;        this.mercado.setRamoId(0);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.listar(this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;ramo_invalido&quot;);</b>
+&nbsp;        }
+&nbsp;        finally {
+<b class="fc">&nbsp;            usuarioRepository.deleteById(novoUsuario.getId());</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /* -------------------------------------------------------------------------- */
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    /* --------------------------  EDIÇÃO DE MERCADOS  -------------------------- */
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarMercadoComSucesso() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        Usuario novoUsuario = usuarioRepository.save(this.usuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        Ramo novoRamo = ramoRepository.save(this.ramo);</b>
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setCriadoPor(novoUsuario.getId());</b>
+<b class="fc">&nbsp;        this.mercado.setRamoId(novoRamo.getId());</b>
+&nbsp;
+<b class="fc">&nbsp;        Mercado novoMercado = mercadoRepository.save(this.mercado);</b>
+&nbsp;
+<b class="fc">&nbsp;        Mercado mercadoEditado = new Mercado();</b>
+&nbsp;
+<b class="fc">&nbsp;        mercadoEditado.setNome(&quot;Mercado Editado&quot;);</b>
+<b class="fc">&nbsp;        mercadoEditado.setLogradouro(&quot;Rua Editada&quot;);</b>
+<b class="fc">&nbsp;        mercadoEditado.setNumero(13);</b>
+<b class="fc">&nbsp;        mercadoEditado.setBairro(&quot;Bairro Editado&quot;);</b>
+<b class="fc">&nbsp;        mercadoEditado.setCidade(&quot;Cidade Editada&quot;);</b>
+<b class="fc">&nbsp;        mercadoEditado.setUf(&quot;RJ&quot;);</b>
+<b class="fc">&nbsp;        mercadoEditado.setCep(&quot;98765-432&quot;);</b>
+<b class="fc">&nbsp;        mercadoEditado.setComplemento(&quot;Complemento Editado&quot;);</b>
+<b class="fc">&nbsp;        mercadoEditado.setCriadoPor(novoUsuario.getId());</b>
+<b class="fc">&nbsp;        mercadoEditado.setRamoId(novoRamo.getId());</b>
+&nbsp;
+<b class="fc">&nbsp;        ResponseMercado responseMercado = mercadoController.editar(novoMercado.getId(), mercadoEditado);</b>
+&nbsp;
+<b class="fc">&nbsp;        mercadoRepository.deleteById(novoMercado.getId());</b>
+&nbsp;
+<b class="fc">&nbsp;        assertEquals(responseMercado.getId(), novoMercado.getId());</b>
+<b class="fc">&nbsp;        assertEquals(responseMercado.getNome(), mercadoEditado.getNome());</b>
+<b class="fc">&nbsp;        assertEquals(responseMercado.getLogradouro(), mercadoEditado.getLogradouro());</b>
+<b class="fc">&nbsp;        assertEquals(responseMercado.getNumero(), mercadoEditado.getNumero());</b>
+<b class="fc">&nbsp;        assertEquals(responseMercado.getBairro(), mercadoEditado.getBairro());</b>
+<b class="fc">&nbsp;        assertEquals(responseMercado.getCidade(), mercadoEditado.getCidade());</b>
+<b class="fc">&nbsp;        assertEquals(responseMercado.getUf(), mercadoEditado.getUf());</b>
+<b class="fc">&nbsp;        assertEquals(responseMercado.getCep(), mercadoEditado.getCep());</b>
+<b class="fc">&nbsp;        assertEquals(responseMercado.getRamoId(), mercadoEditado.getRamoId());</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarMercadoComCorpoNulo() throws Exception {
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.editar(1, null);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;corpo_nulo&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarMercadoComIdFornecido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setId(1);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.editar(1, this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;id_fornecido&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarMercadoComComplementoInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setComplemento(&quot;Complemento Teste Complemento Teste Complemento Teste&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.editar(1, this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;complemento_invalido&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarMercadoComNomeInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setNome(&quot;Mercado teste Mercado teste Mercado teste Mercado teste Mercado teste&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.editar(1, this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;nome_invalido&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarMercadoComLogradouroInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setLogradouro(&quot;Rua&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.editar(1, this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;logradouro_invalido&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarMercadoComNumeroInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setNumero(-1);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.editar(1, this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;numero_invalido&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarMercadoComBairroInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setBairro(&quot;Test&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.editar(1, this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;bairro_invalido&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarMercadoComCidadeInvalida() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setCidade(&quot;Sã&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.editar(1, this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;cidade_invalido&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarMercadoComUfInvalida() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setUf(&quot;S&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.editar(1, this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;uf_invalido&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarMercadoComCepInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setCep(&quot;123456789&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.editar(1, this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;cep_invalido&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarMercadoComUsuarioInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setCriadoPor(0);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.editar(1, this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;usuario_invalido&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarMercadoComRamoInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        Usuario novoUsuario = usuarioRepository.save(this.usuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setCriadoPor(novoUsuario.getId());</b>
+<b class="fc">&nbsp;        this.mercado.setRamoId(0);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.editar(1, this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;ramo_invalido&quot;);</b>
+&nbsp;        }
+&nbsp;        finally {
+<b class="fc">&nbsp;            usuarioRepository.deleteById(novoUsuario.getId());</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarMercadoComEnderecoExistente() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        Usuario novoUsuario = usuarioRepository.save(this.usuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        Ramo novoRamo = ramoRepository.save(this.ramo);</b>
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setCriadoPor(novoUsuario.getId());</b>
+<b class="fc">&nbsp;        this.mercado.setRamoId(novoRamo.getId());</b>
+&nbsp;
+<b class="fc">&nbsp;        Mercado novoMercado = mercadoRepository.save(this.mercado);</b>
+&nbsp;
+<b class="fc">&nbsp;        Mercado mercadoEditado = new Mercado();</b>
+&nbsp;
+<b class="fc">&nbsp;        mercadoEditado.setNome(&quot;Mercado Editado&quot;);</b>
+<b class="fc">&nbsp;        mercadoEditado.setLogradouro(&quot;Rua Teste&quot;);</b>
+<b class="fc">&nbsp;        mercadoEditado.setNumero(12);</b>
+<b class="fc">&nbsp;        mercadoEditado.setBairro(&quot;Bairro Teste&quot;);</b>
+<b class="fc">&nbsp;        mercadoEditado.setCidade(&quot;Cidade Teste&quot;);</b>
+<b class="fc">&nbsp;        mercadoEditado.setUf(&quot;SP&quot;);</b>
+<b class="fc">&nbsp;        mercadoEditado.setCep(&quot;12345-678&quot;);</b>
+<b class="fc">&nbsp;        mercadoEditado.setComplemento(&quot;Complemento Teste&quot;);</b>
+<b class="fc">&nbsp;        mercadoEditado.setCriadoPor(novoUsuario.getId());</b>
+<b class="fc">&nbsp;        mercadoEditado.setRamoId(novoRamo.getId());</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.editar(novoMercado.getId(), mercadoEditado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(409, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;mercado_existente&quot;);</b>
+&nbsp;        }
+&nbsp;        finally {
+<b class="fc">&nbsp;            mercadoRepository.deleteById(novoMercado.getId());</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarMercadoComRamoInexistente() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        Usuario novoUsuario = usuarioRepository.save(this.usuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        Ramo novoRamo = ramoRepository.save(this.ramo);</b>
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setCriadoPor(novoUsuario.getId());</b>
+<b class="fc">&nbsp;        this.mercado.setRamoId(novoRamo.getId());</b>
+&nbsp;
+<b class="fc">&nbsp;        Mercado novoMercado = mercadoRepository.save(this.mercado);</b>
+&nbsp;
+<b class="fc">&nbsp;        Mercado mercadoEditado = new Mercado();</b>
+&nbsp;
+<b class="fc">&nbsp;        mercadoEditado.setNome(&quot;Mercado Editado&quot;);</b>
+<b class="fc">&nbsp;        mercadoEditado.setRamoId(2023);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.editar(novoMercado.getId(), mercadoEditado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;ramo_nao_encontrado&quot;);</b>
+&nbsp;        }
+&nbsp;        finally {
+<b class="fc">&nbsp;            mercadoRepository.deleteById(novoMercado.getId());</b>
+<b class="fc">&nbsp;            ramoRepository.deleteById(novoRamo.getId());</b>
+<b class="fc">&nbsp;            usuarioRepository.deleteById(novoUsuario.getId());</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarMercadoComNomeExistente() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        Usuario novoUsuario = usuarioRepository.save(this.usuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        Ramo novoRamo = ramoRepository.save(this.ramo);</b>
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setCriadoPor(novoUsuario.getId());</b>
+<b class="fc">&nbsp;        this.mercado.setRamoId(novoRamo.getId());</b>
+&nbsp;
+<b class="fc">&nbsp;        Mercado novoMercado = mercadoRepository.save(this.mercado);</b>
+&nbsp;
+<b class="fc">&nbsp;        Mercado mercadoEditado = new Mercado();</b>
+&nbsp;
+<b class="fc">&nbsp;        mercadoEditado.setNome(&quot;Mercado Editado&quot;);</b>
+<b class="fc">&nbsp;        mercadoEditado.setLogradouro(&quot;Rua Editada 2&quot;);</b>
+<b class="fc">&nbsp;        mercadoEditado.setNumero(13);</b>
+<b class="fc">&nbsp;        mercadoEditado.setBairro(&quot;Bairro Editado&quot;);</b>
+<b class="fc">&nbsp;        mercadoEditado.setCidade(&quot;Cidade Editada&quot;);</b>
+<b class="fc">&nbsp;        mercadoEditado.setUf(&quot;RJ&quot;);</b>
+<b class="fc">&nbsp;        mercadoEditado.setCep(&quot;98765-432&quot;);</b>
+<b class="fc">&nbsp;        mercadoEditado.setComplemento(&quot;Complemento Editado&quot;);</b>
+<b class="fc">&nbsp;        mercadoEditado.setCriadoPor(novoUsuario.getId());</b>
+<b class="fc">&nbsp;        mercadoEditado.setRamoId(novoRamo.getId());</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.editar(novoMercado.getId(), mercadoEditado);</b>
+&nbsp;
+&nbsp;        }
+<b class="nc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="nc">&nbsp;            assertEquals(409, e.getRawStatusCode());</b>
+<b class="nc">&nbsp;            assertEquals(e.getReason(), &quot;mercado_existente&quot;);</b>
+&nbsp;        }
+&nbsp;        finally {
+<b class="fc">&nbsp;            mercadoRepository.deleteById(novoMercado.getId());</b>
+<b class="fc">&nbsp;            ramoRepository.deleteById(novoRamo.getId());</b>
+<b class="fc">&nbsp;            usuarioRepository.deleteById(novoUsuario.getId());</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarMercadoComExcecaoNoSuchElement() throws Exception {
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.editar(1986, this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(404, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;nao_encontrado&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /* -------------------------------------------------------------------------- */
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    /* -----------------------  ATUALIZAÇÃO DE MERCADOS  ------------------------ */
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarMercadoComSucesso() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        Usuario novoUsuario = usuarioRepository.save(this.usuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        Ramo novoRamo = ramoRepository.save(this.ramo);</b>
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setCriadoPor(novoUsuario.getId());</b>
+<b class="fc">&nbsp;        this.mercado.setRamoId(novoRamo.getId());</b>
+&nbsp;
+<b class="fc">&nbsp;        Mercado mercadoCriado = mercadoRepository.save(this.mercado);</b>
+&nbsp;
+<b class="fc">&nbsp;        Mercado mercadoAtualizado = new Mercado();</b>
+&nbsp;
+<b class="fc">&nbsp;        mercadoAtualizado.setNome(&quot;Mercado Atualizado&quot;);</b>
+<b class="fc">&nbsp;        mercadoAtualizado.setLogradouro(&quot;Rua Atualizada&quot;);</b>
+<b class="fc">&nbsp;        mercadoAtualizado.setNumero(13);</b>
+<b class="fc">&nbsp;        mercadoAtualizado.setBairro(&quot;Bairro Atualizado&quot;);</b>
+<b class="fc">&nbsp;        mercadoAtualizado.setCidade(&quot;Cidade Atualizada&quot;);</b>
+<b class="fc">&nbsp;        mercadoAtualizado.setUf(&quot;RJ&quot;);</b>
+<b class="fc">&nbsp;        mercadoAtualizado.setCep(&quot;98765-432&quot;);</b>
+<b class="fc">&nbsp;        mercadoAtualizado.setComplemento(&quot;Comp. Atualizado&quot;);</b>
+<b class="fc">&nbsp;        mercadoAtualizado.setCriadoPor(novoUsuario.getId());</b>
+<b class="fc">&nbsp;        mercadoAtualizado.setRamoId(novoRamo.getId());</b>
+&nbsp;
+<b class="fc">&nbsp;        ResponseMercado responseMercado = mercadoController.atualizar(mercadoCriado.getId(), mercadoAtualizado);</b>
+&nbsp;
+<b class="fc">&nbsp;        mercadoRepository.deleteById(mercadoCriado.getId());</b>
+<b class="fc">&nbsp;        usuarioRepository.deleteById(novoUsuario.getId());</b>
+<b class="fc">&nbsp;        ramoRepository.deleteById(novoRamo.getId());</b>
+&nbsp;
+<b class="fc">&nbsp;        assertEquals(responseMercado.getId(), mercadoCriado.getId());</b>
+<b class="fc">&nbsp;        assertEquals(responseMercado.getNome(), mercadoAtualizado.getNome());</b>
+<b class="fc">&nbsp;        assertEquals(responseMercado.getLogradouro(), mercadoAtualizado.getLogradouro());</b>
+<b class="fc">&nbsp;        assertEquals(responseMercado.getNumero(), mercadoAtualizado.getNumero());</b>
+<b class="fc">&nbsp;        assertEquals(responseMercado.getBairro(), mercadoAtualizado.getBairro());</b>
+<b class="fc">&nbsp;        assertEquals(responseMercado.getCidade(), mercadoAtualizado.getCidade());</b>
+<b class="fc">&nbsp;        assertEquals(responseMercado.getUf(), mercadoAtualizado.getUf());</b>
+<b class="fc">&nbsp;        assertEquals(responseMercado.getCep(), mercadoAtualizado.getCep());</b>
+<b class="fc">&nbsp;        assertEquals(responseMercado.getRamoId(), mercadoAtualizado.getRamoId());</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarMercadoComCorpoNulo() throws Exception {
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.atualizar(1, null);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;corpo_nulo&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarMercadoComIdFornecido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setId(1);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.atualizar(1, this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;id_fornecido&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarMercadoComComplementoInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setComplemento(&quot;Complemento Teste Complemento Teste Complemento Teste&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.atualizar(1, this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;complemento_invalido&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarMercadoComNomeInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setNome(&quot;Mercado teste Mercado teste Mercado teste Mercado teste Mercado teste&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.atualizar(1, this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;nome_invalido&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarMercadoComLogradouroInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setLogradouro(&quot;Rua&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.atualizar(1, this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;logradouro_invalido&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarMercadoComNumeroInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setNumero(-1);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.atualizar(1, this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;numero_invalido&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarMercadoComBairroInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setBairro(&quot;Test&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.atualizar(1, this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;bairro_invalido&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarMercadoComCidadeInvalida() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setCidade(&quot;Sã&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.atualizar(1, this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;cidade_invalido&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarMercadoComUfInvalida() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setUf(&quot;S&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.atualizar(1, this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;uf_invalido&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarMercadoComCepInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setCep(&quot;123456789&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.atualizar(1, this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;cep_invalido&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarMercadoComUsuarioInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setCriadoPor(0);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.atualizar(1, this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;usuario_invalido&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarMercadoComRamoInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        Usuario novoUsuario = usuarioRepository.save(this.usuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setCriadoPor(novoUsuario.getId());</b>
+<b class="fc">&nbsp;        this.mercado.setRamoId(0);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.atualizar(1, this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;ramo_invalido&quot;);</b>
+&nbsp;        }
+&nbsp;        finally {
+<b class="fc">&nbsp;            usuarioRepository.deleteById(novoUsuario.getId());</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarMercadoComExcecaoNoSuchElement() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        Usuario novoUsuario = usuarioRepository.save(this.usuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        Ramo novoRamo = ramoRepository.save(this.ramo);</b>
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setCriadoPor(novoUsuario.getId());</b>
+<b class="fc">&nbsp;        this.mercado.setRamoId(novoRamo.getId());</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.atualizar(1986, this.mercado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(404, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;nao_encontrado&quot;);</b>
+&nbsp;        }
+&nbsp;        finally {
+<b class="fc">&nbsp;            ramoRepository.deleteById(novoRamo.getId());</b>
+<b class="fc">&nbsp;            usuarioRepository.deleteById(novoUsuario.getId());</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarMercadoComUsuarioInexistente() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        Usuario novoUsuario = usuarioRepository.save(this.usuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        Ramo novoRamo = ramoRepository.save(this.ramo);</b>
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setCriadoPor(novoUsuario.getId());</b>
+<b class="fc">&nbsp;        this.mercado.setRamoId(novoRamo.getId());</b>
+&nbsp;
+<b class="fc">&nbsp;        Mercado mercadoCriado = mercadoRepository.save(this.mercado);</b>
+&nbsp;
+<b class="fc">&nbsp;        Mercado mercadoAtualizado = new Mercado();</b>
+&nbsp;
+<b class="fc">&nbsp;        mercadoAtualizado.setNome(&quot;Mercado Atualizado&quot;);</b>
+<b class="fc">&nbsp;        mercadoAtualizado.setLogradouro(&quot;Rua Atualizada&quot;);</b>
+<b class="fc">&nbsp;        mercadoAtualizado.setNumero(12);</b>
+<b class="fc">&nbsp;        mercadoAtualizado.setBairro(&quot;Bairro Atualizado&quot;);</b>
+<b class="fc">&nbsp;        mercadoAtualizado.setCidade(&quot;Cidade Atualizada&quot;);</b>
+<b class="fc">&nbsp;        mercadoAtualizado.setUf(&quot;RJ&quot;);</b>
+<b class="fc">&nbsp;        mercadoAtualizado.setCep(&quot;98765-432&quot;);</b>
+<b class="fc">&nbsp;        mercadoAtualizado.setComplemento(&quot;Comp. Atualizado&quot;);</b>
+<b class="fc">&nbsp;        mercadoAtualizado.setCriadoPor(1986);</b>
+<b class="fc">&nbsp;        mercadoAtualizado.setRamoId(novoRamo.getId());</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.atualizar(mercadoCriado.getId(), mercadoAtualizado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;usuario_nao_encontrado&quot;);</b>
+&nbsp;        }
+&nbsp;        finally {
+<b class="fc">&nbsp;            mercadoRepository.deleteById(mercadoCriado.getId());</b>
+<b class="fc">&nbsp;            ramoRepository.deleteById(novoRamo.getId());</b>
+<b class="fc">&nbsp;            usuarioRepository.deleteById(novoUsuario.getId());</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarMercadoComRamoInexistente() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        Usuario novoUsuario = usuarioRepository.save(this.usuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        Ramo novoRamo = ramoRepository.save(this.ramo);</b>
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setCriadoPor(novoUsuario.getId());</b>
+<b class="fc">&nbsp;        this.mercado.setRamoId(novoRamo.getId());</b>
+&nbsp;
+<b class="fc">&nbsp;        Mercado mercadoCriado = mercadoRepository.save(this.mercado);</b>
+&nbsp;
+<b class="fc">&nbsp;        Mercado mercadoAtualizado = new Mercado();</b>
+&nbsp;
+<b class="fc">&nbsp;        mercadoAtualizado.setNome(&quot;Mercado Atualizado&quot;);</b>
+<b class="fc">&nbsp;        mercadoAtualizado.setLogradouro(&quot;Rua Atualizada&quot;);</b>
+<b class="fc">&nbsp;        mercadoAtualizado.setNumero(12);</b>
+<b class="fc">&nbsp;        mercadoAtualizado.setBairro(&quot;Bairro Atualizado&quot;);</b>
+<b class="fc">&nbsp;        mercadoAtualizado.setCidade(&quot;Cidade Atualizada&quot;);</b>
+<b class="fc">&nbsp;        mercadoAtualizado.setUf(&quot;RJ&quot;);</b>
+<b class="fc">&nbsp;        mercadoAtualizado.setCep(&quot;98765-432&quot;);</b>
+<b class="fc">&nbsp;        mercadoAtualizado.setComplemento(&quot;Comp. Atualizado&quot;);</b>
+<b class="fc">&nbsp;        mercadoAtualizado.setCriadoPor(novoUsuario.getId());</b>
+<b class="fc">&nbsp;        mercadoAtualizado.setRamoId(1986);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.atualizar(mercadoCriado.getId(), mercadoAtualizado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;ramo_nao_encontrado&quot;);</b>
+&nbsp;        }
+&nbsp;        finally {
+<b class="fc">&nbsp;            mercadoRepository.deleteById(mercadoCriado.getId());</b>
+<b class="fc">&nbsp;            usuarioRepository.deleteById(novoUsuario.getId());</b>
+<b class="fc">&nbsp;            ramoRepository.deleteById(novoRamo.getId());</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarMercadoComNomeExistente() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        Usuario novoUsuario = usuarioRepository.save(this.usuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        Ramo novoRamo = ramoRepository.save(this.ramo);</b>
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setCriadoPor(novoUsuario.getId());</b>
+<b class="fc">&nbsp;        this.mercado.setRamoId(novoRamo.getId());</b>
+&nbsp;
+<b class="fc">&nbsp;        Mercado mercadoCriado = mercadoRepository.save(this.mercado);</b>
+&nbsp;
+<b class="fc">&nbsp;        Mercado mercadoAtualizado = new Mercado();</b>
+&nbsp;
+<b class="fc">&nbsp;        mercadoAtualizado.setNome(&quot;Mercado Teste&quot;);</b>
+<b class="fc">&nbsp;        mercadoAtualizado.setLogradouro(&quot;Rua Atualizada&quot;);</b>
+<b class="fc">&nbsp;        mercadoAtualizado.setNumero(12);</b>
+<b class="fc">&nbsp;        mercadoAtualizado.setBairro(&quot;Bairro Atualizado&quot;);</b>
+<b class="fc">&nbsp;        mercadoAtualizado.setCidade(&quot;Cidade Atualizada&quot;);</b>
+<b class="fc">&nbsp;        mercadoAtualizado.setUf(&quot;RJ&quot;);</b>
+<b class="fc">&nbsp;        mercadoAtualizado.setCep(&quot;98765-432&quot;);</b>
+<b class="fc">&nbsp;        mercadoAtualizado.setComplemento(&quot;Comp. Atualizado&quot;);</b>
+<b class="fc">&nbsp;        mercadoAtualizado.setCriadoPor(novoUsuario.getId());</b>
+<b class="fc">&nbsp;        mercadoAtualizado.setRamoId(novoRamo.getId());</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.atualizar(mercadoCriado.getId(), mercadoAtualizado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(409, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;mercado_existente&quot;);</b>
+&nbsp;        }
+&nbsp;        finally {
+<b class="fc">&nbsp;            mercadoRepository.deleteById(mercadoCriado.getId());</b>
+<b class="fc">&nbsp;            ramoRepository.deleteById(novoRamo.getId());</b>
+<b class="fc">&nbsp;            usuarioRepository.deleteById(novoUsuario.getId());</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarMercadoComEnderecoExistente() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        Usuario novoUsuario = usuarioRepository.save(this.usuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        Ramo novoRamo = ramoRepository.save(this.ramo);</b>
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setCriadoPor(novoUsuario.getId());</b>
+<b class="fc">&nbsp;        this.mercado.setRamoId(novoRamo.getId());</b>
+&nbsp;
+<b class="fc">&nbsp;        Mercado mercadoCriado = mercadoRepository.save(this.mercado);</b>
+&nbsp;
+<b class="fc">&nbsp;        Mercado mercadoAtualizado = new Mercado();</b>
+&nbsp;
+<b class="fc">&nbsp;        mercadoAtualizado.setNome(&quot;Mercado Atualizado&quot;);</b>
+<b class="fc">&nbsp;        mercadoAtualizado.setLogradouro(&quot;Rua Teste&quot;);</b>
+<b class="fc">&nbsp;        mercadoAtualizado.setNumero(12);</b>
+<b class="fc">&nbsp;        mercadoAtualizado.setBairro(&quot;Bairro Teste&quot;);</b>
+<b class="fc">&nbsp;        mercadoAtualizado.setCidade(&quot;Cidade Teste&quot;);</b>
+<b class="fc">&nbsp;        mercadoAtualizado.setUf(&quot;SP&quot;);</b>
+<b class="fc">&nbsp;        mercadoAtualizado.setCep(&quot;12345-678&quot;);</b>
+<b class="fc">&nbsp;        mercadoAtualizado.setComplemento(&quot;Comp. Atualizado&quot;);</b>
+<b class="fc">&nbsp;        mercadoAtualizado.setCriadoPor(novoUsuario.getId());</b>
+<b class="fc">&nbsp;        mercadoAtualizado.setRamoId(novoRamo.getId());</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.atualizar(mercadoCriado.getId(), mercadoAtualizado);</b>
+&nbsp;
+&nbsp;        }
+<b class="nc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="nc">&nbsp;            assertEquals(409, e.getRawStatusCode());</b>
+<b class="nc">&nbsp;            assertEquals(e.getReason(), &quot;mercado_existente&quot;);</b>
+&nbsp;        }
+&nbsp;        finally {
+<b class="fc">&nbsp;            mercadoRepository.deleteById(mercadoCriado.getId());</b>
+<b class="fc">&nbsp;            ramoRepository.deleteById(novoRamo.getId());</b>
+<b class="fc">&nbsp;            usuarioRepository.deleteById(novoUsuario.getId());</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /* -------------------------------------------------------------------------- */
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    /* -------------------------  DELEÇÃO DE MERCADOS  -------------------------- */
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void deletarMercadoComSucesso() {
+&nbsp;
+<b class="fc">&nbsp;        Usuario novoUsuario = usuarioRepository.save(this.usuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        Ramo novoRamo = ramoRepository.save(this.ramo);</b>
+&nbsp;
+<b class="fc">&nbsp;        this.mercado.setCriadoPor(novoUsuario.getId());</b>
+<b class="fc">&nbsp;        this.mercado.setRamoId(novoRamo.getId());</b>
+&nbsp;
+<b class="fc">&nbsp;        Mercado mercadoCriado = mercadoRepository.save(this.mercado);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.remover(mercadoCriado.getId());</b>
+&nbsp;
+<b class="fc">&nbsp;            assertTrue(mercadoRepository.findById(mercadoCriado.getId()).isEmpty());</b>
+&nbsp;
+&nbsp;        }
+&nbsp;        finally {
+<b class="fc">&nbsp;            ramoRepository.deleteById(novoRamo.getId());</b>
+<b class="fc">&nbsp;            usuarioRepository.deleteById(novoUsuario.getId());</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void deletarMercadoComExcecaoNoSuchElement() throws Exception {
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            mercadoController.remover(1986);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(404, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(e.getReason(), &quot;nao_encontrado&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /* -------------------------------------------------------------------------- */
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-25 03:05</div>
+</div>
+</body>
+</html>

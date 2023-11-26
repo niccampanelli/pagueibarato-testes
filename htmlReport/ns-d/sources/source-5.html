@@ -1,0 +1,142 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > PatchSugestao</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.pagueibaratoapi.utils.patches</a>
+</div>
+
+<h1>Coverage Summary for Class: PatchSugestao (com.pagueibaratoapi.utils.patches)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PatchSugestao</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (1/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (1/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    75%
+  </span>
+  <span class="absValue">
+    (3/4)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.pagueibaratoapi.utils.patches;
+&nbsp;
+&nbsp;import com.pagueibaratoapi.models.requests.Sugestao;
+&nbsp;
+&nbsp;/**
+&nbsp; * Classe resposável pelo patch da Sugestão
+&nbsp; */
+<b class="nc">&nbsp;public class PatchSugestao {</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Método responsável por adicionar os atributos atualizados ao estado atual do ramo.
+&nbsp;     * @param sugestaoAtual - Objeto da sugestão no estado atual do banco de dados.
+&nbsp;     * @param sugestaoEditada - Objeto da sugestão com os atributos que serão atualizados.
+&nbsp;     * @return Sugestao - Objeto da sugestão após a inserção dos atributos atualizados.
+&nbsp;     */
+&nbsp;    public static Sugestao edita(Sugestao sugestaoAtual, Sugestao sugestaoEditada) {
+&nbsp;        // Se o preço da sugestão não for nulo
+<b class="pc">&nbsp;        if(sugestaoEditada.getPreco() != null)</b>
+&nbsp;            // Atribui o preço ao atributo preço da sugestão atual multiplicando por 100 (para remover as casas decimais e
+&nbsp;            // salvar como inteiro).
+<b class="fc">&nbsp;            sugestaoAtual.setPreco(sugestaoEditada.getPreco() * 100);</b>
+&nbsp;        
+&nbsp;        // Retorna a sugestão com os atributos atualizados e os demais atributos no estado atual.
+<b class="fc">&nbsp;        return sugestaoAtual;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-25 03:05</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,120 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > EstoqueRepository</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.pagueibaratoapi.repository</a>
+</div>
+
+<h1>Coverage Summary for Class: EstoqueRepository (com.pagueibaratoapi.repository)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">EstoqueRepository$MockitoMock$CB5To1vu</td>
+  </tr>
+  <tr>
+    <td class="name">EstoqueRepository$MockitoMock$CB5To1vu$auxiliary$CQZO8fq4</td>
+  </tr>
+  <tr>
+    <td class="name">EstoqueRepository$MockitoMock$CB5To1vu$auxiliary$J9Ksj6au</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.pagueibaratoapi.repository;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;import org.springframework.data.jpa.repository.JpaRepository;
+&nbsp;
+&nbsp;import com.pagueibaratoapi.models.requests.Estoque;
+&nbsp;
+&nbsp;/*
+&nbsp; * Repositório de estoque.
+&nbsp; */
+&nbsp;public interface EstoqueRepository extends JpaRepository&lt;Estoque, Integer&gt; {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Verifica se o estoque existe com base no id.
+&nbsp;     * @param id - Id para verificar.
+&nbsp;     * @return &lt;b&gt;true&lt;/b&gt; se o id estiver cadastrado e &lt;b&gt;false&lt;/b&gt; se não estiver.
+&nbsp;     */
+&nbsp;    public boolean existsById(Integer id);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Busca estoques que possuem o id de produto informado.
+&nbsp;     * @param produtoId - Id do produto para buscar.
+&nbsp;     * @return Lista de estoques.
+&nbsp;     */
+&nbsp;    public List&lt;Estoque&gt; findByProdutoId(Integer produtoId);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Busca estoques que possuem o id de mercado informado.
+&nbsp;     * @param mercadoId - Id do mercado para buscar.
+&nbsp;     * @return Lista de estoques.
+&nbsp;     */
+&nbsp;    public List&lt;Estoque&gt; findByMercadoId(Integer mercadoId);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Busca estoques que possuem o id de produto e o id de estoque informados.
+&nbsp;     * @param produtoId - Id do produto para buscar.
+&nbsp;     * @param mercadoId - Id do mercado para buscar.
+&nbsp;     * @return Lista de estoques.
+&nbsp;     */
+&nbsp;    public Estoque findByProdutoIdAndMercadoId(Integer produtoId, Integer mercadoId);
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-25 03:05</div>
+</div>
+</body>
+</html>

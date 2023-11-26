@@ -1,0 +1,604 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > MercadoController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.pagueibaratoapi.controllers</a>
+</div>
+
+<h1>Coverage Summary for Class: MercadoController (com.pagueibaratoapi.controllers)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MercadoController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    97,2%
+  </span>
+  <span class="absValue">
+    (35/36)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    97,6%
+  </span>
+  <span class="absValue">
+    (163/167)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">MercadoController$$EnhancerBySpringCGLIB$$4e78837b</td>
+  </tr>
+  <tr>
+    <td class="name">MercadoController$$EnhancerBySpringCGLIB$$4e78837b$$FastClassBySpringCGLIB$$e27922d6</td>
+  </tr>
+  <tr>
+    <td class="name">MercadoController$$EnhancerBySpringCGLIB$$aee02078</td>
+  </tr>
+  <tr>
+    <td class="name">MercadoController$$FastClassBySpringCGLIB$$4be60c5b</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    97,2%
+  </span>
+  <span class="absValue">
+    (35/36)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    97,6%
+  </span>
+  <span class="absValue">
+    (163/167)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.pagueibaratoapi.controllers;
+&nbsp;
+&nbsp;import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+&nbsp;import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;import java.util.NoSuchElementException;
+&nbsp;
+&nbsp;import org.springframework.cache.annotation.CacheEvict;
+&nbsp;import org.springframework.cache.annotation.Cacheable;
+&nbsp;import org.springframework.dao.DataIntegrityViolationException;
+&nbsp;import org.springframework.data.domain.Example;
+&nbsp;import org.springframework.data.domain.ExampleMatcher;
+&nbsp;import org.springframework.web.bind.annotation.DeleteMapping;
+&nbsp;import org.springframework.web.bind.annotation.GetMapping;
+&nbsp;import org.springframework.web.bind.annotation.PatchMapping;
+&nbsp;import org.springframework.web.bind.annotation.PathVariable;
+&nbsp;import org.springframework.web.bind.annotation.PostMapping;
+&nbsp;import org.springframework.web.bind.annotation.PutMapping;
+&nbsp;import org.springframework.web.bind.annotation.RequestBody;
+&nbsp;import org.springframework.web.bind.annotation.RequestMapping;
+&nbsp;import org.springframework.web.bind.annotation.RestController;
+&nbsp;import org.springframework.web.server.ResponseStatusException;
+&nbsp;
+&nbsp;import com.pagueibaratoapi.models.exceptions.DadosConflitantesException;
+&nbsp;import com.pagueibaratoapi.models.exceptions.DadosInvalidosException;
+&nbsp;import com.pagueibaratoapi.models.requests.Mercado;
+&nbsp;import com.pagueibaratoapi.models.requests.Usuario;
+&nbsp;import com.pagueibaratoapi.models.responses.ResponseMercado;
+&nbsp;import com.pagueibaratoapi.repository.CategoriaRepository;
+&nbsp;import com.pagueibaratoapi.repository.EstoqueRepository;
+&nbsp;import com.pagueibaratoapi.repository.MercadoRepository;
+&nbsp;import com.pagueibaratoapi.repository.ProdutoRepository;
+&nbsp;import com.pagueibaratoapi.repository.RamoRepository;
+&nbsp;import com.pagueibaratoapi.repository.SugestaoRepository;
+&nbsp;import com.pagueibaratoapi.repository.UsuarioRepository;
+&nbsp;import com.pagueibaratoapi.utils.EditaRecurso;
+&nbsp;import com.pagueibaratoapi.utils.Tratamento;
+&nbsp;
+&nbsp;/**
+&nbsp;* Classe responsável por controlar as requisições de Mercado.
+&nbsp;*/
+&nbsp;@RestController
+&nbsp;@RequestMapping(&quot;/mercado&quot;)
+&nbsp;public class MercadoController {
+&nbsp;
+&nbsp;    // Iniciando as variáveis de instância dos repositórios.
+&nbsp;    private final MercadoRepository mercadoRepository;
+&nbsp;    private final RamoRepository ramoRepository;
+&nbsp;    private final UsuarioRepository usuarioRepository;
+&nbsp;
+&nbsp;    // Construtor do controller do estoque, que realiza a injeção de dependência dos repositórios.
+<b class="fc">&nbsp;    public MercadoController(</b>
+&nbsp;        CategoriaRepository categoriaRepository,
+&nbsp;        EstoqueRepository estoqueRepository,
+&nbsp;        MercadoRepository mercadoRepository,
+&nbsp;        ProdutoRepository produtoRepository,
+&nbsp;        RamoRepository ramoRepository,
+&nbsp;        SugestaoRepository sugestaoRepository,
+&nbsp;        UsuarioRepository usuarioRepository
+&nbsp;    ) {
+<b class="fc">&nbsp;        this.mercadoRepository = mercadoRepository;</b>
+<b class="fc">&nbsp;        this.ramoRepository = ramoRepository;</b>
+<b class="fc">&nbsp;        this.usuarioRepository = usuarioRepository;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Método responsável por criar um novo mercado.
+&nbsp;     * @param requestMercado - Objeto do tipo Mercado que contém os dados do novo mercado.
+&nbsp;     * @return ResponseMercado - Objeto do tipo ResponseMercado que contém os dados do novo mercado, já com o Id criado.
+&nbsp;     */
+&nbsp;    @PostMapping
+&nbsp;    @CacheEvict(value = &quot;mercados&quot;, allEntries = true)
+&nbsp;    public ResponseMercado criar(@RequestBody Mercado requestMercado) {
+&nbsp;        try {
+&nbsp;
+&nbsp;            // Validando os dados do mercado enviados pelo cliente.
+<b class="fc">&nbsp;            Tratamento.validarMercado(requestMercado, false);</b>
+&nbsp;
+&nbsp;            // Verificando se o usuário informado existe.
+<b class="fc">&nbsp;            if(!usuarioRepository.existsById(requestMercado.getCriadoPor()))</b>
+&nbsp;                // Se não existir, lança exceção com mensagem de erro.
+<b class="fc">&nbsp;                throw new DadosInvalidosException(&quot;usuario_nao_encontrado&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;            Usuario usuario = usuarioRepository.findById(requestMercado.getCriadoPor()).get();</b>
+&nbsp;
+&nbsp;            // Verificando se o usuário informado não foi deletado.
+<b class="fc">&nbsp;            if(!Tratamento.usuarioExiste(usuario))</b>
+&nbsp;                // Se o usuário foi deletado, lança exceção com mensagem de erro.
+<b class="fc">&nbsp;                throw new NoSuchElementException(&quot;usuario_nao_encontrado&quot;);</b>
+&nbsp;
+&nbsp;            // Verificando se o ramo informado existe.
+<b class="fc">&nbsp;            if(!ramoRepository.existsById(requestMercado.getRamoId()))</b>
+&nbsp;                // Se não existirm, lança exceção com mensagem de erro.
+<b class="fc">&nbsp;                throw new DadosInvalidosException(&quot;ramo_nao_encontrado&quot;);</b>
+&nbsp;
+&nbsp;            // Verificando se o nome do mercado informado já existe
+<b class="fc">&nbsp;            if(mercadoRepository.existsByNomeIgnoreCase(requestMercado.getNome()))</b>
+<b class="fc">&nbsp;                throw new DadosConflitantesException(&quot;mercado_existente&quot;);</b>
+&nbsp;
+&nbsp;            // Verificando se o endereço do mercado informado já existe
+<b class="fc">&nbsp;            if(mercadoRepository.findByEndereco(</b>
+<b class="fc">&nbsp;                requestMercado.getLogradouro(), </b>
+<b class="fc">&nbsp;                requestMercado.getNumero(),</b>
+<b class="fc">&nbsp;                requestMercado.getComplemento(), </b>
+<b class="fc">&nbsp;                requestMercado.getBairro(), </b>
+<b class="fc">&nbsp;                requestMercado.getCidade(),</b>
+<b class="fc">&nbsp;                requestMercado.getUf(), </b>
+<b class="fc">&nbsp;                requestMercado.getCep()) != null</b>
+&nbsp;            )
+&nbsp;                // Se já existir, lança exceção com mensagem de erro, 
+&nbsp;                // haja vista que não pode haver dois mercados no mesmo local.
+<b class="fc">&nbsp;                throw new DadosConflitantesException(&quot;mercado_existente&quot;);</b>
+&nbsp;
+&nbsp;            // Cria o mercado e armazena o retorno num objeto do tipo ResponseMercado.
+<b class="fc">&nbsp;            ResponseMercado responseMercado = new ResponseMercado(mercadoRepository.save(requestMercado));</b>
+&nbsp;
+&nbsp;            // Adiciona ao retorno um link para ler o mercado criado
+<b class="fc">&nbsp;            responseMercado.add(</b>
+<b class="fc">&nbsp;                linkTo(</b>
+<b class="fc">&nbsp;                    methodOn(MercadoController.class).ler(responseMercado.getId())</b>
+&nbsp;                )
+<b class="fc">&nbsp;                .withSelfRel()</b>
+&nbsp;            );
+&nbsp;
+&nbsp;            // Retorna o objeto do tipo ResponseMercado com o mercado criado e o link para sua leitura.
+<b class="fc">&nbsp;            return responseMercado;</b>
+&nbsp;
+<b class="fc">&nbsp;        } catch (DadosConflitantesException e) {</b>
+&nbsp;            // Lança uma exceção informando que os dados estão em conflito com outros dados no banco de dados.
+<b class="fc">&nbsp;            throw new ResponseStatusException(409, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch(NoSuchElementException e) {</b>
+&nbsp;            // Lança uma exceção informando que algum registro informado não existe.
+<b class="fc">&nbsp;            throw new ResponseStatusException(404, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (DadosInvalidosException e) {</b>
+&nbsp;            // Lança uma exceção informando que os dados enviados pelo cliente são inválidos.
+<b class="fc">&nbsp;            throw new ResponseStatusException(400, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (DataIntegrityViolationException e) {</b>
+&nbsp;            // Lança uma exceção informando que os dados enviados pelo cliente são inválidos.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_insercao&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (IllegalArgumentException e) {</b>
+&nbsp;            // Lança uma exceção informando que os dados enviados pelo cliente são inválidos.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+<b class="nc">&nbsp;        } catch (Exception e) {</b>
+&nbsp;            // Lança uma exceção informando que ocorreu um erro inesperado.
+<b class="nc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Método responsável por ler um mercado com o id informado.
+&nbsp;     * @param id - Id do mercado que será lido.
+&nbsp;     * @return ResponseMercado - Objeto do tipo ResponseMercado que contém os dados do mercado lido.
+&nbsp;     */
+&nbsp;    @GetMapping(&quot;/{id}&quot;)
+&nbsp;    public ResponseMercado ler(@PathVariable(&quot;id&quot;) Integer id) {
+&nbsp;        try {
+&nbsp;            // Busca o mercado com o id informado e armazena num objeto do tipo ResponseMercado.
+<b class="fc">&nbsp;            ResponseMercado responseMercado = new ResponseMercado(mercadoRepository.findById(id).get());</b>
+&nbsp;
+&nbsp;            // Se houver um mercado com o id informado
+<b class="pc">&nbsp;            if(responseMercado != null) {</b>
+&nbsp;
+&nbsp;                // Adiciona à resposta um link para listar todos os mercados
+<b class="fc">&nbsp;                responseMercado.add(</b>
+<b class="fc">&nbsp;                    linkTo(</b>
+<b class="fc">&nbsp;                        methodOn(MercadoController.class).listar(new Mercado())</b>
+&nbsp;                    )
+<b class="fc">&nbsp;                    .withRel(&quot;collection&quot;)</b>
+&nbsp;                );
+&nbsp;
+&nbsp;            }
+&nbsp;
+&nbsp;            // Retorna o objeto do tipo ResponseMercado com o mercado lido e o link para a listagem dos mercados
+<b class="fc">&nbsp;            return responseMercado;</b>
+&nbsp;
+<b class="fc">&nbsp;        } catch (NoSuchElementException e) {</b>
+&nbsp;            // Lança uma exceção informando que o mercado com o id informado não foi encontrado.
+<b class="fc">&nbsp;            throw new ResponseStatusException(404, &quot;nao_encontrado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+&nbsp;            // Lança uma exceção informando que ocorreu um erro inesperado.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Método responsável por listar todos os mercados.
+&nbsp;     * @param mercado - Objeto do tipo Mercado que será usado como parâmetro para filtrar os resultados.
+&nbsp;     * @return &lt;b&gt;List &lt; ResponseMercado &gt;&lt;/b&gt; - Lista de mercados.
+&nbsp;     */
+&nbsp;    @GetMapping
+&nbsp;    @Cacheable(&quot;mercados&quot;)
+&nbsp;    public List&lt;ResponseMercado&gt; listar(Mercado requestMercado) {
+&nbsp;        try {
+&nbsp;
+&nbsp;            // Validando o mercado enviado como parâmetro pelo cliente.
+<b class="fc">&nbsp;            Tratamento.validarMercado(requestMercado, true);</b>
+&nbsp;
+&nbsp;            // Buscando todos os mercados de acordo com o filtro enviado por parâmetro e salvando na lista de mercados
+<b class="fc">&nbsp;            List&lt;Mercado&gt; mercados = mercadoRepository.findAll(</b>
+<b class="fc">&nbsp;                Example.of(</b>
+<b class="fc">&nbsp;                    requestMercado, </b>
+&nbsp;                    ExampleMatcher
+<b class="fc">&nbsp;                        .matching()</b>
+<b class="fc">&nbsp;                        .withIgnoreCase()</b>
+<b class="fc">&nbsp;                        .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING)</b>
+&nbsp;                )
+&nbsp;            );
+&nbsp;
+&nbsp;            // Criando uma lista de respostas de mercados vazia.
+<b class="fc">&nbsp;            List&lt;ResponseMercado&gt; responseMercado = new ArrayList&lt;ResponseMercado&gt;();</b>
+&nbsp;
+&nbsp;            // Para cada mercado encontrado
+<b class="fc">&nbsp;            for(Mercado mercado : mercados) {</b>
+&nbsp;                // Cria um objeto do tipo ResponseMercado, convertendo o objeto Mercado para o objeto ResponseMercado
+<b class="fc">&nbsp;                responseMercado.add(new ResponseMercado(mercado));</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            // Se a lista de marcados a serem retornados não for vazia
+<b class="fc">&nbsp;            if(!responseMercado.isEmpty()) {</b>
+&nbsp;                // Para cada marcado da resposta
+<b class="fc">&nbsp;                for(ResponseMercado mercado : responseMercado) {</b>
+&nbsp;                    // Adiciona à resposta um link para a leitura do marcado em questão.
+<b class="fc">&nbsp;                    mercado.add(</b>
+<b class="fc">&nbsp;                        linkTo(</b>
+<b class="fc">&nbsp;                            methodOn(MercadoController.class).ler(mercado.getId())</b>
+&nbsp;                        )
+<b class="fc">&nbsp;                        .withSelfRel()</b>
+&nbsp;                    );
+&nbsp;                }
+&nbsp;            }
+&nbsp;
+&nbsp;            // Retorna a lista de marcados encontrados.
+<b class="fc">&nbsp;            return responseMercado;</b>
+&nbsp;
+<b class="fc">&nbsp;        } catch (DadosInvalidosException e) {</b>
+&nbsp;            // Lança uma exceção informando que os dados enviados pelo cliente são inválidos.
+<b class="fc">&nbsp;            throw new ResponseStatusException(400, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (NullPointerException e) {</b>
+&nbsp;            // Lança uma exceção caso algum registro seja nulo
+<b class="fc">&nbsp;            throw new ResponseStatusException(404, &quot;nao_encontrado&quot;, e);</b>
+<b class="nc">&nbsp;        } catch (UnsupportedOperationException e) {</b>
+&nbsp;            // Lança uma exceção caso ocorra algum erro inesperado.
+<b class="nc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+&nbsp;            // Lança uma exceção caso ocorra algum erro inesperado.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Método responsável por atualizar alguns atributos específicos de um mercado.
+&nbsp;     * @param id - Id do mercado que será atualizado.
+&nbsp;     * @param requestMercado - Parâmetros que serão atualizados no mercado.
+&nbsp;     * @return &lt;b&gt;ResponseMercado&lt;/b&gt; - Mercado atualizado.
+&nbsp;     */
+&nbsp;    @PatchMapping(&quot;/{id}&quot;)
+&nbsp;    public ResponseMercado editar(@PathVariable int id, @RequestBody Mercado requestMercado) {
+&nbsp;        try {
+&nbsp;
+&nbsp;            // Validando os parâmetros enviados pelo cliente.
+<b class="fc">&nbsp;            Tratamento.validarMercado(requestMercado, true);</b>
+&nbsp;
+&nbsp;            // Buscando um mercado que possua o mesmo endereço informado
+<b class="fc">&nbsp;            if(mercadoRepository.findByEndereco(</b>
+<b class="fc">&nbsp;                requestMercado.getLogradouro(), </b>
+<b class="fc">&nbsp;                requestMercado.getNumero(),</b>
+<b class="fc">&nbsp;                requestMercado.getComplemento(), </b>
+<b class="fc">&nbsp;                requestMercado.getBairro(), </b>
+<b class="fc">&nbsp;                requestMercado.getCidade(),</b>
+<b class="fc">&nbsp;                requestMercado.getUf(), </b>
+<b class="fc">&nbsp;                requestMercado.getCep()) != null</b>
+&nbsp;            )
+&nbsp;                // Lança uma exceção informando que o endereço já existe.
+<b class="fc">&nbsp;                throw new DadosConflitantesException(&quot;mercado_existente&quot;);</b>
+&nbsp;            
+&nbsp;            // Buscando o mercado que será atualizado e guardando seu estado atual.
+<b class="fc">&nbsp;            Mercado mercadoAtual = mercadoRepository.findById(id).get();</b>
+&nbsp;
+&nbsp;            // Se o ramo informado não existir
+<b class="fc">&nbsp;            if(!ramoRepository.existsById(requestMercado.getRamoId()))</b>
+&nbsp;                // Lança uma exceção informando que o ramo informado não existe.
+<b class="fc">&nbsp;                throw new DadosInvalidosException(&quot;ramo_nao_encontrado&quot;);</b>
+&nbsp;
+&nbsp;            // Se o nome do mercado já existir
+<b class="fc">&nbsp;            if(mercadoRepository.existsByNomeIgnoreCase(requestMercado.getNome()))</b>
+&nbsp;                // Lança uma exceção informando que o nome do mercado já existe.
+<b class="fc">&nbsp;                throw new DadosConflitantesException(&quot;mercado_existente&quot;);</b>
+&nbsp;
+&nbsp;            // Atualizando o mercado com os dados enviados pelo cliente.
+<b class="fc">&nbsp;            ResponseMercado responseMercado = new ResponseMercado(</b>
+<b class="fc">&nbsp;                mercadoRepository.save(</b>
+&nbsp;                    // Chamando método que retornará o mercado com os dados atualizados de acordo com os parâmetros recebidos.
+<b class="fc">&nbsp;                    EditaRecurso.editarMercado(</b>
+<b class="fc">&nbsp;                        mercadoAtual, </b>
+<b class="fc">&nbsp;                        requestMercado</b>
+&nbsp;                    )
+&nbsp;                )
+&nbsp;            );
+&nbsp;
+&nbsp;            // Adiciona à resposta um link para a leitura do mercado em questão.
+<b class="fc">&nbsp;            responseMercado.add(</b>
+<b class="fc">&nbsp;                linkTo(</b>
+<b class="fc">&nbsp;                    methodOn(MercadoController.class).ler(responseMercado.getId())</b>
+&nbsp;                )
+<b class="fc">&nbsp;                .withSelfRel()</b>
+&nbsp;            );
+&nbsp;
+&nbsp;            // Retorna o mercado atualizado.
+<b class="fc">&nbsp;            return responseMercado;</b>
+&nbsp;
+<b class="fc">&nbsp;        } catch (DadosConflitantesException e) {</b>
+&nbsp;            // Lança uma exceção informando que os dados enviados pelo cliente são conflitantes/já existem no banco de dados.
+<b class="fc">&nbsp;            throw new ResponseStatusException(409, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (DadosInvalidosException e) {</b>
+&nbsp;            // Lança uma exceção informando que os dados enviados pelo cliente são inválidos.
+<b class="fc">&nbsp;            throw new ResponseStatusException(400, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (DataIntegrityViolationException e) {</b>
+&nbsp;            // Lança uma exceção informando que ocorreu um erro de integridade de dados.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_insercao&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (IllegalArgumentException e) {</b>
+&nbsp;            // Lança uma exceção caso ocorra algum erro inesperado.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (NoSuchElementException e) {</b>
+&nbsp;            // Lança uma exceção caso algum registro não seja encontrado.
+<b class="fc">&nbsp;            throw new ResponseStatusException(404, &quot;nao_encontrado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+&nbsp;            // Lança uma exceção caso ocorra algum erro inesperado.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Método responsável por atualizar todos os atributos de um mercado.
+&nbsp;     * @param id - Id do mercado que será atualizado.
+&nbsp;     * @param requestMercado - Parâmetros que serão atualizados no mercado.
+&nbsp;     * @return &lt;b&gt;ResponseMercado&lt;/b&gt; - Mercado atualizado.
+&nbsp;     */
+&nbsp;    @PutMapping(&quot;/{id}&quot;)
+&nbsp;    public ResponseMercado atualizar(@PathVariable int id, @RequestBody Mercado requestMercado) {
+&nbsp;        try {
+&nbsp;
+&nbsp;            // Validando os parâmetros enviados pelo cliente.
+<b class="fc">&nbsp;            Tratamento.validarMercado(requestMercado, false);</b>
+&nbsp;
+&nbsp;            // Se o id do mercado informado não existir
+<b class="fc">&nbsp;            if(!mercadoRepository.existsById(id))</b>
+&nbsp;                // Lança uma exceção informando que o mercado não existe.
+<b class="fc">&nbsp;                throw new NoSuchElementException(&quot;nao_encontrado&quot;);</b>
+&nbsp;
+&nbsp;            // Se o id do usuário informado não existir
+<b class="fc">&nbsp;            if(!usuarioRepository.existsById(requestMercado.getCriadoPor()))</b>
+&nbsp;                // Lança uma exceção informando que o usuário não existe.
+<b class="fc">&nbsp;                throw new DadosInvalidosException(&quot;usuario_nao_encontrado&quot;);</b>
+&nbsp;
+&nbsp;            // Se o id do ramo informado não existir
+<b class="fc">&nbsp;            if(!ramoRepository.existsById(requestMercado.getRamoId()))</b>
+&nbsp;                // Lança uma exceção informando que o ramo informado não existe.
+<b class="fc">&nbsp;                throw new DadosInvalidosException(&quot;ramo_nao_encontrado&quot;);</b>
+&nbsp;
+&nbsp;            // Se o nome do mercado já existir no banco de dados
+<b class="fc">&nbsp;            if(mercadoRepository.existsByNomeIgnoreCase(requestMercado.getNome()))</b>
+&nbsp;                // Lança uma exceção informando que o nome do mercado já existe.
+<b class="fc">&nbsp;                throw new DadosConflitantesException(&quot;mercado_existente&quot;);</b>
+&nbsp;
+&nbsp;            // Se o endereço do mercado já existir no banco de dados
+<b class="fc">&nbsp;            if(mercadoRepository.findByEndereco(</b>
+<b class="fc">&nbsp;                requestMercado.getLogradouro(), </b>
+<b class="fc">&nbsp;                requestMercado.getNumero(),</b>
+<b class="fc">&nbsp;                requestMercado.getComplemento(), </b>
+<b class="fc">&nbsp;                requestMercado.getBairro(), </b>
+<b class="fc">&nbsp;                requestMercado.getCidade(),</b>
+<b class="fc">&nbsp;                requestMercado.getUf(), </b>
+<b class="fc">&nbsp;                requestMercado.getCep()) != null</b>
+&nbsp;            )
+&nbsp;                // Lança uma exceção informando que o endereço já existe.
+<b class="fc">&nbsp;                throw new DadosConflitantesException(&quot;mercado_existente&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;            Mercado mercado = mercadoRepository.findById(id).get();</b>
+&nbsp;
+&nbsp;            // Adiciona ao objeto da requisição o Id informado pelo cliente.
+<b class="fc">&nbsp;            requestMercado.setId(id);</b>
+&nbsp;
+&nbsp;            // Adiciona ao objeto da requisição o Id do usuário que criou o mercado.
+<b class="fc">&nbsp;            requestMercado.setCriadoPor(mercado.getCriadoPor());</b>
+&nbsp;
+&nbsp;            // Atualizando o mercado com os dados enviados pelo cliente e armazenando no objeto responseMercado.
+<b class="fc">&nbsp;            ResponseMercado responseMercado = new ResponseMercado(mercadoRepository.save(requestMercado));</b>
+&nbsp;
+&nbsp;            // Adiciona à resposta um link para a leitura do mercado em questão.
+<b class="fc">&nbsp;            responseMercado.add(</b>
+<b class="fc">&nbsp;                linkTo(</b>
+<b class="fc">&nbsp;                    methodOn(MercadoController.class).ler(responseMercado.getId())</b>
+&nbsp;                )
+<b class="fc">&nbsp;                .withSelfRel()</b>
+&nbsp;            );
+&nbsp;
+&nbsp;            // Retorna o mercado atualizado.
+<b class="fc">&nbsp;            return responseMercado;</b>
+&nbsp;
+<b class="fc">&nbsp;        } catch (DadosConflitantesException e) {</b>
+&nbsp;            // Lança uma exceção informando que os dados enviados pelo cliente são conflitantes/já existem no banco de dados.
+<b class="fc">&nbsp;            throw new ResponseStatusException(409, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (DadosInvalidosException e) {</b>
+&nbsp;            // Lança uma exceção informando que os dados enviados pelo cliente são inválidos.
+<b class="fc">&nbsp;            throw new ResponseStatusException(400, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (NoSuchElementException e) {</b>
+&nbsp;            // Lança uma exceção informando que algum registro não foi encontrado.
+<b class="fc">&nbsp;            throw new ResponseStatusException(404, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (DataIntegrityViolationException e) {</b>
+&nbsp;            // Lança uma exceção informando que ocorreu um erro de integridade de dados.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_insercao&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (IllegalArgumentException e) {</b>
+&nbsp;            // Lança uma exceção caso ocorra algum erro inesperado.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+&nbsp;            // Lança uma exceção caso ocorra algum erro inesperado.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Método responsável por deletar um mercado.
+&nbsp;     * @param id - Id do mercado que será deletado.
+&nbsp;     * @return Object - Link para a listagem de mercados.
+&nbsp;     */
+&nbsp;    @DeleteMapping(&quot;/{id}&quot;)
+&nbsp;    @CacheEvict(value = &quot;mercados&quot;, allEntries = true)
+&nbsp;    public Object remover(@PathVariable int id) {
+&nbsp;        try {
+&nbsp;
+&nbsp;            // Se o id do mercado informado não existir
+<b class="fc">&nbsp;            if(!mercadoRepository.existsById(id))</b>
+&nbsp;                // Lança uma exceção informando que o mercado não existe.
+<b class="fc">&nbsp;                throw new NoSuchElementException(&quot;nao_encontrado&quot;);</b>
+&nbsp;
+&nbsp;            // Deleta o mercado com o id informado.
+<b class="fc">&nbsp;            mercadoRepository.deleteById(id);</b>
+&nbsp;
+&nbsp;            // Retorna o link para a listagem de mercados.
+<b class="fc">&nbsp;            return linkTo(</b>
+<b class="fc">&nbsp;                        methodOn(MercadoController.class).listar(new Mercado())</b>
+&nbsp;                    )
+<b class="fc">&nbsp;                    .withRel(&quot;collection&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        } catch (NoSuchElementException e) {</b>
+&nbsp;            // Lança uma exceção informando que o mercado não existe.
+<b class="fc">&nbsp;            throw new ResponseStatusException(404, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (DataIntegrityViolationException e) {</b>
+&nbsp;            // Lança uma exceção informando que ocorreu um erro de integridade de dados.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_remocao&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (IllegalArgumentException e) {</b>
+&nbsp;            // Lança uma exceção caso ocorra algum erro inesperado.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+&nbsp;            // Lança uma exceção caso ocorra algum erro inesperado.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-25 03:05</div>
+</div>
+</body>
+</html>

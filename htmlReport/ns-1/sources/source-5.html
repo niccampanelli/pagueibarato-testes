@@ -61,21 +61,21 @@ Current scope:     <a href="../../index.html">all classes</a>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    97,5%
+    98,7%
   </span>
   <span class="absValue">
-    (157/161)
+    (156/158)
   </span>
 </td>
 </tr>
   <tr>
-    <td class="name">ProdutoController$$EnhancerBySpringCGLIB$$beeb19b1</td>
+    <td class="name">ProdutoController$$EnhancerBySpringCGLIB$$bae1d6fe</td>
   </tr>
   <tr>
-    <td class="name">ProdutoController$$EnhancerBySpringCGLIB$$cd400fe3</td>
+    <td class="name">ProdutoController$$EnhancerBySpringCGLIB$$bae1d6fe$$FastClassBySpringCGLIB$$c5fddcc4</td>
   </tr>
   <tr>
-    <td class="name">ProdutoController$$EnhancerBySpringCGLIB$$cd400fe3$$FastClassBySpringCGLIB$$78cf3e09</td>
+    <td class="name">ProdutoController$$EnhancerBySpringCGLIB$$ef12fc38</td>
   </tr>
   <tr>
     <td class="name">ProdutoController$$FastClassBySpringCGLIB$$a3ee4d91</td>
@@ -100,10 +100,10 @@ Current scope:     <a href="../../index.html">all classes</a>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    97,5%
+    98,7%
   </span>
   <span class="absValue">
-    (157/161)
+    (156/158)
   </span>
 </td>
 </tr>
@@ -128,9 +128,6 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;import org.springframework.dao.DataIntegrityViolationException;
 &nbsp;import org.springframework.data.domain.Example;
 &nbsp;import org.springframework.data.domain.ExampleMatcher;
-&nbsp;import org.springframework.data.domain.Page;
-&nbsp;import org.springframework.data.domain.PageRequest;
-&nbsp;import org.springframework.data.domain.Sort;
 &nbsp;import org.springframework.web.bind.annotation.DeleteMapping;
 &nbsp;import org.springframework.web.bind.annotation.GetMapping;
 &nbsp;import org.springframework.web.bind.annotation.PatchMapping;
@@ -139,7 +136,6 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;import org.springframework.web.bind.annotation.PutMapping;
 &nbsp;import org.springframework.web.bind.annotation.RequestBody;
 &nbsp;import org.springframework.web.bind.annotation.RequestMapping;
-&nbsp;import org.springframework.web.bind.annotation.RequestParam;
 &nbsp;import org.springframework.web.bind.annotation.RestController;
 &nbsp;import org.springframework.web.server.ResponseStatusException;
 &nbsp;
@@ -147,16 +143,11 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;import com.pagueibaratoapi.models.exceptions.DadosInvalidosException;
 &nbsp;import com.pagueibaratoapi.models.requests.Produto;
 &nbsp;import com.pagueibaratoapi.models.requests.Usuario;
-&nbsp;import com.pagueibaratoapi.models.responses.ResponsePagina;
 &nbsp;import com.pagueibaratoapi.models.responses.ResponseProduto;
 &nbsp;import com.pagueibaratoapi.repository.CategoriaRepository;
-&nbsp;import com.pagueibaratoapi.repository.EstoqueRepository;
-&nbsp;import com.pagueibaratoapi.repository.MercadoRepository;
 &nbsp;import com.pagueibaratoapi.repository.ProdutoRepository;
-&nbsp;import com.pagueibaratoapi.repository.SugestaoRepository;
 &nbsp;import com.pagueibaratoapi.repository.UsuarioRepository;
 &nbsp;import com.pagueibaratoapi.utils.EditaRecurso;
-&nbsp;import com.pagueibaratoapi.utils.PaginaUtils;
 &nbsp;import com.pagueibaratoapi.utils.Tratamento;
 &nbsp;
 &nbsp;/**
@@ -168,26 +159,17 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;
 &nbsp;    // Repositórios responsável pelos métodos JPA dp banco de dados.
 &nbsp;    private final CategoriaRepository categoriaRepository;
-&nbsp;    private final EstoqueRepository estoqueRepository;
-&nbsp;    private final MercadoRepository mercadoRepository;
 &nbsp;    private final ProdutoRepository produtoRepository;
-&nbsp;    private final SugestaoRepository sugestaoRepository;
 &nbsp;    private final UsuarioRepository usuarioRepository;
 &nbsp;
 &nbsp;    // Construtor
 &nbsp;    public ProdutoController(
 &nbsp;        CategoriaRepository categoriaRepository,
-&nbsp;        EstoqueRepository estoqueRepository,
-&nbsp;        MercadoRepository mercadoRepository,
 &nbsp;        ProdutoRepository produtoRepository,
-&nbsp;        SugestaoRepository sugestaoRepository,
 &nbsp;        UsuarioRepository usuarioRepository
 <b class="fc">&nbsp;    ) {</b>
 <b class="fc">&nbsp;        this.categoriaRepository = categoriaRepository;</b>
-<b class="fc">&nbsp;        this.estoqueRepository = estoqueRepository;</b>
-<b class="fc">&nbsp;        this.mercadoRepository = mercadoRepository;</b>
 <b class="fc">&nbsp;        this.produtoRepository = produtoRepository;</b>
-<b class="fc">&nbsp;        this.sugestaoRepository = sugestaoRepository;</b>
 <b class="fc">&nbsp;        this.usuarioRepository = usuarioRepository;</b>
 &nbsp;    }
 &nbsp;
@@ -514,8 +496,8 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_insercao&quot;, e);</b>
 <b class="fc">&nbsp;        } catch (IllegalArgumentException e) {</b>
 <b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
-<b class="nc">&nbsp;        } catch (Exception e) {</b>
-<b class="nc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
 &nbsp;        }
 &nbsp;    }
 &nbsp;
@@ -576,7 +558,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-11-23 21:20</div>
+    <div style="float:right;">generated on 2023-11-25 03:21</div>
 </div>
 </body>
 </html>

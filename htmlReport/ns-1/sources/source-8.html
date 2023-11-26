@@ -53,23 +53,23 @@ Current scope:     <a href="../../index.html">all classes</a>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    87,5%
+    91,7%
   </span>
   <span class="absValue">
-    (21/24)
+    (22/24)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    97,7%
+    98,5%
   </span>
   <span class="absValue">
-    (130/133)
+    (131/133)
   </span>
 </td>
 </tr>
   <tr>
-    <td class="name">UsuarioController$$EnhancerBySpringCGLIB$$320dcf9e</td>
+    <td class="name">UsuarioController$$EnhancerBySpringCGLIB$$6235b225</td>
   </tr>
 <tr>
   <td class="name"><strong>Total</strong></td>
@@ -83,18 +83,18 @@ Current scope:     <a href="../../index.html">all classes</a>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    87,5%
+    91,7%
   </span>
   <span class="absValue">
-    (21/24)
+    (22/24)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    97,7%
+    98,5%
   </span>
   <span class="absValue">
-    (130/133)
+    (131/133)
   </span>
 </td>
 </tr>
@@ -263,7 +263,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="pc">&nbsp;                if(Tratamento.usuarioExiste(usuario))</b>
 &nbsp;                    // Convertendo o usuário para um objeto de resposta ResponseUsuario e adicionando à lista de resposta.
 <b class="fc">&nbsp;                    responseUsuario.add(new ResponseUsuario(usuario));</b>
-<b class="fc">&nbsp;            }</b>
+&nbsp;            }
 &nbsp;
 &nbsp;            // Se a lista de resposta possuir algum usuário
 <b class="fc">&nbsp;            if(!responseUsuario.isEmpty()) {</b>
@@ -276,7 +276,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;                        )
 <b class="fc">&nbsp;                        .withSelfRel()</b>
 &nbsp;                    );
-<b class="fc">&nbsp;                }</b>
+&nbsp;                }
 &nbsp;            }
 &nbsp;
 &nbsp;            // Retornando a lista de resposta de usuários.
@@ -316,17 +316,17 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;            Usuario usuarioAtual = usuarioRepository.findById(id).get();</b>
 &nbsp;
 &nbsp;            // Verificando se o usuário encontrado foi removido.
-<b class="pc">&nbsp;            if(!Tratamento.usuarioExiste(usuarioAtual))</b>
+<b class="fc">&nbsp;            if(!Tratamento.usuarioExiste(usuarioAtual))</b>
 &nbsp;                // Lançando exceção informando que o usuário não existe.
-<b class="nc">&nbsp;                throw new NoSuchElementException(&quot;usuario_nao_encontrado&quot;);</b>
+<b class="fc">&nbsp;                throw new NoSuchElementException(&quot;usuario_nao_encontrado&quot;);</b>
 &nbsp;
 &nbsp;            // Atualizando o usuário e armazenando num objeto de resposta ResponseUsuario.
 <b class="fc">&nbsp;            ResponseUsuario responseUsuario = new ResponseUsuario(</b>
 <b class="fc">&nbsp;                usuarioRepository.save(</b>
 &nbsp;                    // Adicionando as alterações enviadas pelo cliente e mantendo as demais conforme o estado atual.
 <b class="fc">&nbsp;                    EditaRecurso.editarUsuario(</b>
-&nbsp;                        usuarioAtual, 
-&nbsp;                        requestUsuario
+<b class="fc">&nbsp;                        usuarioAtual, </b>
+<b class="fc">&nbsp;                        requestUsuario</b>
 &nbsp;                    )
 &nbsp;                )
 &nbsp;            );
@@ -508,7 +508,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-11-23 21:20</div>
+    <div style="float:right;">generated on 2023-11-25 03:21</div>
 </div>
 </body>
 </html>

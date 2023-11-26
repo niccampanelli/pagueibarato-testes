@@ -1,0 +1,245 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > Produto</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.pagueibaratoapi.models.requests</a>
+</div>
+
+<h1>Coverage Summary for Class: Produto (com.pagueibaratoapi.models.requests)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Produto</td>
+<td class="coverageStat">
+  <span class="percent">
+    81%
+  </span>
+  <span class="absValue">
+    (17/21)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    81,8%
+  </span>
+  <span class="absValue">
+    (18/22)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">Produto$HibernateProxy$2ai2z8yY</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    81%
+  </span>
+  <span class="absValue">
+    (17/21)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    81,8%
+  </span>
+  <span class="absValue">
+    (18/22)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.pagueibaratoapi.models.requests;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;import javax.persistence.Column;
+&nbsp;import javax.persistence.Entity;
+&nbsp;import javax.persistence.Table;
+&nbsp;
+&nbsp;import com.fasterxml.jackson.annotation.JsonIgnore;
+&nbsp;
+&nbsp;import javax.persistence.Id;
+&nbsp;import javax.persistence.JoinColumn;
+&nbsp;import javax.persistence.ManyToOne;
+&nbsp;import javax.persistence.OneToMany;
+&nbsp;import javax.persistence.GeneratedValue;
+&nbsp;import javax.persistence.GenerationType;
+&nbsp;
+&nbsp;@Entity
+&nbsp;@Table(name = &quot;produto&quot;)
+<b class="fc">&nbsp;public class Produto {</b>
+&nbsp;    
+&nbsp;    @Id
+&nbsp;    @GeneratedValue(strategy = GenerationType.IDENTITY)
+&nbsp;    private Integer id;
+&nbsp;
+&nbsp;    private String nome;
+&nbsp;    private String marca;
+&nbsp;    private String tamanho;
+&nbsp;    private String cor;
+&nbsp;
+&nbsp;    @Column(name = &quot;\&quot;criadoPor\&quot;&quot;)
+&nbsp;    private Integer criadoPor;
+&nbsp;
+&nbsp;    @Column(name = &quot;\&quot;categoriaId\&quot;&quot;)
+&nbsp;    private Integer categoriaId;
+&nbsp;
+&nbsp;    @JsonIgnore
+&nbsp;    @OneToMany(mappedBy = &quot;produto&quot;, orphanRemoval = true)
+<b class="fc">&nbsp;    private List&lt;Estoque&gt; estoques = new ArrayList&lt;Estoque&gt;();</b>
+&nbsp;
+&nbsp;    @JsonIgnore
+&nbsp;    @ManyToOne
+&nbsp;    @JoinColumn(name = &quot;\&quot;criadoPor\&quot;&quot;, updatable = false, insertable = false)
+&nbsp;    private Usuario usuario;
+&nbsp;
+&nbsp;    @JsonIgnore
+&nbsp;    @ManyToOne
+&nbsp;    @JoinColumn(name = &quot;\&quot;categoriaId\&quot;&quot;, updatable = false, insertable = false)
+&nbsp;    private Categoria categoria;
+&nbsp;
+&nbsp;    public Integer getId() {
+<b class="fc">&nbsp;        return id;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setId(Integer id) {
+<b class="fc">&nbsp;        this.id = id;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getNome() {
+<b class="fc">&nbsp;        return nome;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setNome(String nome) {
+<b class="fc">&nbsp;        this.nome = nome.trim();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getMarca() {
+<b class="fc">&nbsp;        return marca;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setMarca(String marca) {
+<b class="fc">&nbsp;        this.marca = marca.trim();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getTamanho() {
+<b class="fc">&nbsp;        return tamanho;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setTamanho(String tamanho) {
+<b class="fc">&nbsp;        this.tamanho = tamanho.trim();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getCor() {
+<b class="fc">&nbsp;        return cor;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setCor(String cor) {
+<b class="fc">&nbsp;        this.cor = cor.trim();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Integer getCriadoPor() {
+<b class="fc">&nbsp;        return criadoPor;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setCriadoPor(Integer criadoPor) {
+<b class="fc">&nbsp;        this.criadoPor = criadoPor;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Integer getCategoriaId() {
+<b class="fc">&nbsp;        return categoriaId;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setCategoriaId(Integer categoriaId) {
+<b class="fc">&nbsp;        this.categoriaId = categoriaId;</b>
+&nbsp;    }
+&nbsp;    
+&nbsp;    public List&lt;Estoque&gt; getEstoques() {
+<b class="nc">&nbsp;        return estoques;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setEstoques(List&lt;Estoque&gt; estoques) {
+<b class="nc">&nbsp;        this.estoques = estoques;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Usuario getUsuario() {
+<b class="fc">&nbsp;        return usuario;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setUsuario(Usuario usuario) {
+<b class="nc">&nbsp;        this.usuario = usuario;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Categoria getCategoria() {
+<b class="fc">&nbsp;        return categoria;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setCategoria(Categoria categoria) {
+<b class="nc">&nbsp;        this.categoria = categoria;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-25 03:05</div>
+</div>
+</body>
+</html>

@@ -61,21 +61,21 @@ Current scope:     <a href="../../index.html">all classes</a>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    96,5%
+    98,2%
   </span>
   <span class="absValue">
-    (109/113)
+    (112/114)
   </span>
 </td>
 </tr>
   <tr>
-    <td class="name">CategoriaController$$EnhancerBySpringCGLIB$$5d988451</td>
+    <td class="name">CategoriaController$$EnhancerBySpringCGLIB$$4b3a4b6c</td>
   </tr>
   <tr>
-    <td class="name">CategoriaController$$EnhancerBySpringCGLIB$$5d988451$$FastClassBySpringCGLIB$$93f7cb14</td>
+    <td class="name">CategoriaController$$EnhancerBySpringCGLIB$$4b3a4b6c$$FastClassBySpringCGLIB$$ba4db325</td>
   </tr>
   <tr>
-    <td class="name">CategoriaController$$EnhancerBySpringCGLIB$$618527db</td>
+    <td class="name">CategoriaController$$EnhancerBySpringCGLIB$$91ad0a62</td>
   </tr>
   <tr>
     <td class="name">CategoriaController$$FastClassBySpringCGLIB$$54e7484b</td>
@@ -100,10 +100,10 @@ Current scope:     <a href="../../index.html">all classes</a>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    96,5%
+    98,2%
   </span>
   <span class="absValue">
-    (109/113)
+    (112/114)
   </span>
 </td>
 </tr>
@@ -200,8 +200,8 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_insercao&quot;, e);</b>
 <b class="fc">&nbsp;        } catch (IllegalArgumentException e) {</b>
 <b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
-<b class="nc">&nbsp;        } catch (Exception e) {</b>
-<b class="nc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
 &nbsp;        }
 &nbsp;    }
 &nbsp;
@@ -253,9 +253,9 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;            // Para cada categoria, transforma os dados obtidos em modelo de resposta.
 <b class="fc">&nbsp;            for(Categoria categoria : categorias) {</b>
 <b class="fc">&nbsp;                responseCategoria.add(</b>
-&nbsp;                    new ResponseCategoria(categoria)
+<b class="fc">&nbsp;                    new ResponseCategoria(categoria)</b>
 &nbsp;                );
-<b class="fc">&nbsp;            }</b>
+&nbsp;            }
 &nbsp;
 &nbsp;            // Se a lista de resposta não estiver vazia,
 <b class="fc">&nbsp;            if(!responseCategoria.isEmpty()) {</b>
@@ -268,7 +268,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;                        )
 <b class="fc">&nbsp;                        .withSelfRel()</b>
 &nbsp;                    );
-<b class="fc">&nbsp;                }</b>
+&nbsp;                }
 &nbsp;            }
 &nbsp;
 &nbsp;            // Retorna a lista de categorias.
@@ -310,8 +310,8 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;            ResponseCategoria responseCategoria = new ResponseCategoria(</b>
 <b class="fc">&nbsp;                categoriaRepository.save(</b>
 <b class="fc">&nbsp;                    EditaRecurso.editarCategoria(</b>
-&nbsp;                        categoriaAtual,
-&nbsp;                        requestCategoria
+<b class="fc">&nbsp;                        categoriaAtual,</b>
+<b class="fc">&nbsp;                        requestCategoria</b>
 &nbsp;                    )
 &nbsp;                )
 &nbsp;            );
@@ -454,7 +454,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-11-23 21:20</div>
+    <div style="float:right;">generated on 2023-11-25 03:21</div>
 </div>
 </body>
 </html>

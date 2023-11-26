@@ -1,0 +1,515 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > SugestaoController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.pagueibaratoapi.controllers</a>
+</div>
+
+<h1>Coverage Summary for Class: SugestaoController (com.pagueibaratoapi.controllers)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">SugestaoController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    85%
+  </span>
+  <span class="absValue">
+    (17/20)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    96,9%
+  </span>
+  <span class="absValue">
+    (126/130)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">SugestaoController$$EnhancerBySpringCGLIB$$5f62cd6c</td>
+  </tr>
+  <tr>
+    <td class="name">SugestaoController$$EnhancerBySpringCGLIB$$d8b40d37</td>
+  </tr>
+  <tr>
+    <td class="name">SugestaoController$$EnhancerBySpringCGLIB$$d8b40d37$$FastClassBySpringCGLIB$$2060eea8</td>
+  </tr>
+  <tr>
+    <td class="name">SugestaoController$$FastClassBySpringCGLIB$$662a8b6f</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    85%
+  </span>
+  <span class="absValue">
+    (17/20)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    96,9%
+  </span>
+  <span class="absValue">
+    (126/130)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.pagueibaratoapi.controllers;
+&nbsp;
+&nbsp;import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+&nbsp;import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;import java.util.NoSuchElementException;
+&nbsp;
+&nbsp;import org.springframework.cache.annotation.CacheEvict;
+&nbsp;import org.springframework.cache.annotation.Cacheable;
+&nbsp;import org.springframework.dao.DataIntegrityViolationException;
+&nbsp;import org.springframework.data.domain.Example;
+&nbsp;import org.springframework.data.domain.ExampleMatcher;
+&nbsp;import org.springframework.web.bind.annotation.DeleteMapping;
+&nbsp;import org.springframework.web.bind.annotation.GetMapping;
+&nbsp;import org.springframework.web.bind.annotation.PatchMapping;
+&nbsp;import org.springframework.web.bind.annotation.PathVariable;
+&nbsp;import org.springframework.web.bind.annotation.PostMapping;
+&nbsp;import org.springframework.web.bind.annotation.PutMapping;
+&nbsp;import org.springframework.web.bind.annotation.RequestBody;
+&nbsp;import org.springframework.web.bind.annotation.RequestMapping;
+&nbsp;import org.springframework.web.bind.annotation.RestController;
+&nbsp;import org.springframework.web.server.ResponseStatusException;
+&nbsp;
+&nbsp;import com.pagueibaratoapi.models.exceptions.DadosInvalidosException;
+&nbsp;import com.pagueibaratoapi.models.requests.Sugestao;
+&nbsp;import com.pagueibaratoapi.models.requests.Usuario;
+&nbsp;import com.pagueibaratoapi.models.responses.ResponseSugestao;
+&nbsp;import com.pagueibaratoapi.repository.EstoqueRepository;
+&nbsp;import com.pagueibaratoapi.repository.SugestaoRepository;
+&nbsp;import com.pagueibaratoapi.repository.UsuarioRepository;
+&nbsp;import com.pagueibaratoapi.utils.EditaRecurso;
+&nbsp;import com.pagueibaratoapi.utils.Tratamento;
+&nbsp;
+&nbsp;/**
+&nbsp; * Classe responsável por controlar as requisições de sugestões.
+&nbsp; */
+&nbsp;@RestController
+&nbsp;@RequestMapping(&quot;/sugestao&quot;)
+&nbsp;public class SugestaoController {
+&nbsp;
+&nbsp;    // Repositórios responsáveis pelos métodos JPA do banco de dados.
+&nbsp;    private final EstoqueRepository estoqueRepository;
+&nbsp;    private final SugestaoRepository sugestaoRepository;
+&nbsp;    private final UsuarioRepository usuarioRepository;
+&nbsp;
+&nbsp;    // Construtor.
+&nbsp;    public SugestaoController(
+&nbsp;        EstoqueRepository estoqueRepository,
+&nbsp;        SugestaoRepository sugestaoRepository,
+&nbsp;        UsuarioRepository usuarioRepository
+<b class="fc">&nbsp;    ) {</b>
+<b class="fc">&nbsp;        this.estoqueRepository = estoqueRepository;</b>
+<b class="fc">&nbsp;        this.sugestaoRepository = sugestaoRepository;</b>
+<b class="fc">&nbsp;        this.usuarioRepository = usuarioRepository;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Método responsável por criar uma nova sugestão.
+&nbsp;     * @param sugestao - Dados da sugestão a ser criada.
+&nbsp;     * @return Dados e id da sugestão criada.
+&nbsp;     */
+&nbsp;    @PostMapping
+&nbsp;    @CacheEvict(value = &quot;sugestoes&quot;, allEntries = true)
+&nbsp;    public ResponseSugestao criar(@RequestBody Sugestao requestSugestao) {
+&nbsp;        try {
+&nbsp;
+&nbsp;            // Valida os dados fornecidos.
+<b class="fc">&nbsp;            Tratamento.validarSugestao(requestSugestao, false);</b>
+&nbsp;
+&nbsp;            // Se o estoque informado não existir,
+<b class="fc">&nbsp;            if(!estoqueRepository.existsById(requestSugestao.getEstoqueId()))</b>
+&nbsp;                // Retorna erro.
+<b class="fc">&nbsp;                throw new DadosInvalidosException(&quot;estoque_nao_encontrado&quot;);</b>
+&nbsp;
+&nbsp;            // Se o usuário informado não existir,
+<b class="fc">&nbsp;            if(!usuarioRepository.existsById(requestSugestao.getCriadoPor()))</b>
+&nbsp;                // Retorna erro.
+<b class="fc">&nbsp;                throw new DadosInvalidosException(&quot;usuario_nao_encontrado&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;            Usuario usuario = usuarioRepository.findById(requestSugestao.getCriadoPor()).get();</b>
+&nbsp;
+&nbsp;            // Validando se o usuário informado como criador já foi excluído.
+<b class="fc">&nbsp;            if(!Tratamento.usuarioExiste(usuario))</b>
+&nbsp;                // Retorna erro.
+<b class="fc">&nbsp;                throw new NoSuchElementException(&quot;usuario_nao_encontrado&quot;);</b>
+&nbsp;
+&nbsp;            // Elimina os decimais do preço multiplicando por 100.
+<b class="fc">&nbsp;            requestSugestao.setPreco(requestSugestao.getPreco() * 100);</b>
+&nbsp;            
+&nbsp;            // Insere a sugestão e transforma os dados obtidos em modelo de resposta.
+<b class="fc">&nbsp;            ResponseSugestao responseSugestao = new ResponseSugestao(sugestaoRepository.save(requestSugestao));</b>
+&nbsp;
+&nbsp;            // Adiciona o link para a sugestão.
+<b class="fc">&nbsp;            responseSugestao.add(</b>
+<b class="fc">&nbsp;                linkTo(</b>
+<b class="fc">&nbsp;                    methodOn(SugestaoController.class).ler(responseSugestao.getId())</b>
+&nbsp;                )
+<b class="fc">&nbsp;                .withSelfRel()</b>
+&nbsp;            );
+&nbsp;
+&nbsp;            // Divide o preço por 100 para obter os centavos.
+<b class="fc">&nbsp;            responseSugestao.setPreco(responseSugestao.getPreco() / 100);</b>
+&nbsp;
+&nbsp;            // Retorna a sugestão criada.
+<b class="fc">&nbsp;            return responseSugestao;</b>
+&nbsp;
+<b class="fc">&nbsp;        } catch (DadosInvalidosException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(400, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (NoSuchElementException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(404, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (DataIntegrityViolationException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_insercao&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (IllegalArgumentException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Método responsável por ler uma sugestão.
+&nbsp;     * @param id - Id da sugestão a ser lida.
+&nbsp;     * @return Dados da sugestão lida.
+&nbsp;     */
+&nbsp;    @GetMapping(&quot;/{id}&quot;)
+&nbsp;    public ResponseSugestao ler(@PathVariable(value = &quot;id&quot;) Integer id) {
+&nbsp;        try {
+&nbsp;
+&nbsp;            // Busca a sugestão no banco e transforma os dados obtidos em modelo de resposta.
+<b class="fc">&nbsp;            ResponseSugestao responseSugestao = new ResponseSugestao(sugestaoRepository.findById(id).get());</b>
+&nbsp;
+&nbsp;            // Adiciona o link para a rota de listagem de sugestões.
+<b class="pc">&nbsp;            if(responseSugestao != null) {</b>
+&nbsp;                // Divide o preço por 100 para obter os centavos.
+<b class="fc">&nbsp;                responseSugestao.setPreco(responseSugestao.getPreco() / 100);</b>
+<b class="fc">&nbsp;                responseSugestao.add(</b>
+<b class="fc">&nbsp;                    linkTo(</b>
+<b class="fc">&nbsp;                        methodOn(SugestaoController.class).listar(new Sugestao())</b>
+&nbsp;                    )
+<b class="fc">&nbsp;                    .withRel(&quot;collection&quot;)</b>
+&nbsp;                );
+&nbsp;            }
+&nbsp;
+&nbsp;            // Retorna a sugestão.
+<b class="fc">&nbsp;            return responseSugestao;</b>
+&nbsp;
+<b class="fc">&nbsp;        } catch (NoSuchElementException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(404, &quot;nao_encontrado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Método responsável por listar as sugestões.
+&nbsp;     * @param requestSugestao - Dados de pesquisa para filtragem.
+&nbsp;     * @return Lista de sugestões.
+&nbsp;     */
+&nbsp;    @GetMapping
+&nbsp;    @Cacheable(&quot;sugestoes&quot;)
+&nbsp;    public List&lt;ResponseSugestao&gt; listar(Sugestao requestSugestao) {
+&nbsp;        try {
+&nbsp;
+&nbsp;            // Valida os dados fornecidos.
+<b class="fc">&nbsp;            Tratamento.validarSugestao(requestSugestao, true);</b>
+&nbsp;
+&nbsp;            // Busca as sugestões no banco semelhantes aos dados de pesquisa.
+&nbsp;            // Se não houver dados de pesquisa, busca todas as sugestões.
+<b class="fc">&nbsp;            List&lt;Sugestao&gt; sugestoes = sugestaoRepository.findAll(</b>
+<b class="fc">&nbsp;                Example.of(</b>
+&nbsp;                    requestSugestao, 
+&nbsp;                    ExampleMatcher
+<b class="fc">&nbsp;                        .matching()</b>
+<b class="fc">&nbsp;                        .withIgnoreCase()</b>
+<b class="fc">&nbsp;                        .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING)</b>
+&nbsp;                )
+&nbsp;            );
+&nbsp;
+&nbsp;            // Lista de sugestões que será retornada.
+<b class="fc">&nbsp;            List&lt;ResponseSugestao&gt; responseSugestao = new ArrayList&lt;ResponseSugestao&gt;();</b>
+&nbsp;
+&nbsp;            // Adiciona as sugestões a lista de sugestões.
+<b class="fc">&nbsp;            for(Sugestao sugestao : sugestoes) {</b>
+<b class="fc">&nbsp;                responseSugestao.add(new ResponseSugestao(sugestao));</b>
+<b class="fc">&nbsp;            }</b>
+&nbsp;
+&nbsp;            // Se houver sugestões,
+<b class="fc">&nbsp;            if(!responseSugestao.isEmpty()) {</b>
+&nbsp;                // Percorre as sugestões,
+<b class="fc">&nbsp;                for(ResponseSugestao sugestao : responseSugestao) {</b>
+&nbsp;                    // Divide o preço da sugestão atual por 100 para obter os centavos.
+<b class="fc">&nbsp;                    sugestao.setPreco(sugestao.getPreco() / 100);</b>
+&nbsp;                    // Adiciona o link para detalhamento da sugestão.
+<b class="fc">&nbsp;                    sugestao.add(</b>
+<b class="fc">&nbsp;                        linkTo(</b>
+<b class="fc">&nbsp;                            methodOn(SugestaoController.class).ler(sugestao.getId())</b>
+&nbsp;                        )
+<b class="fc">&nbsp;                        .withSelfRel()</b>
+&nbsp;                    );
+<b class="fc">&nbsp;                }</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            // Retorna as sugestões.
+<b class="fc">&nbsp;            return responseSugestao;</b>
+&nbsp;
+<b class="fc">&nbsp;        } catch (DadosInvalidosException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(400, e.getMessage(), e);</b>
+<b class="nc">&nbsp;        } catch (NullPointerException e) {</b>
+<b class="nc">&nbsp;            throw new ResponseStatusException(404, &quot;nao_encontrado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (UnsupportedOperationException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Rota responsável por editar uma sugestão.
+&nbsp;     * @param id - Id da sugestão a ser editada.
+&nbsp;     * @param requestSugestao - Dados modificados da sugestão.
+&nbsp;     * @return Dados novos da sugestão editada.
+&nbsp;     */
+&nbsp;    @PatchMapping(&quot;/{id}&quot;)
+&nbsp;    public ResponseSugestao editar(@PathVariable int id, @RequestBody Sugestao requestSugestao) {
+&nbsp;        try {
+&nbsp;
+&nbsp;            // Valida os dados fornecidos.
+<b class="fc">&nbsp;            Tratamento.validarSugestao(requestSugestao, true);</b>
+&nbsp;
+&nbsp;            // Obtém a sugestão a ser editada.
+<b class="fc">&nbsp;            Sugestao sugestaoAtual = sugestaoRepository.findById(id).get();</b>
+&nbsp;    
+&nbsp;            // Chama o recurso de tratamento para editar a sugestão.
+&nbsp;            // Insere os dados modificados no banco.
+&nbsp;            // Transforma os dados obtidos em modelo de resposta.
+<b class="fc">&nbsp;            ResponseSugestao responseSugestao = new ResponseSugestao(</b>
+<b class="fc">&nbsp;                sugestaoRepository.save(</b>
+<b class="fc">&nbsp;                    EditaRecurso.editarSugestao(</b>
+&nbsp;                        sugestaoAtual, 
+&nbsp;                        requestSugestao
+&nbsp;                    )
+&nbsp;                )
+&nbsp;            );
+&nbsp;
+&nbsp;            // Adiciona o link para detalhamento da sugestão.
+<b class="fc">&nbsp;            responseSugestao.add(</b>
+<b class="fc">&nbsp;                linkTo(</b>
+<b class="fc">&nbsp;                    methodOn(SugestaoController.class).ler(responseSugestao.getId())</b>
+&nbsp;                )
+<b class="fc">&nbsp;                .withSelfRel()</b>
+&nbsp;            );
+&nbsp;
+&nbsp;            // Divide o preço por 100 para obter os centavos.
+<b class="fc">&nbsp;            responseSugestao.setPreco(responseSugestao.getPreco() / 100);</b>
+&nbsp;
+&nbsp;            // Retorna a sugestão editada.
+<b class="fc">&nbsp;            return responseSugestao;</b>
+&nbsp;
+<b class="fc">&nbsp;        } catch (DadosInvalidosException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(400, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (DataIntegrityViolationException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_insercao&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (IllegalArgumentException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (NoSuchElementException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(404, &quot;nao_encontrado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Rota responsável por substituir uma sugestão.
+&nbsp;     * @param id - Id da sugestão a ser substituída.
+&nbsp;     * @param requestSugestao - Dados da nova sugestão.
+&nbsp;     * @return Dados da nova sugestão.
+&nbsp;     */
+&nbsp;    @PutMapping(&quot;/{id}&quot;)
+&nbsp;    public ResponseSugestao atualizar(@PathVariable int id, @RequestBody Sugestao requestSugestao) {
+&nbsp;        try {
+&nbsp;
+&nbsp;            // Valida os dados fornecidos.
+<b class="fc">&nbsp;            Tratamento.validarSugestao(requestSugestao, true);</b>
+&nbsp;
+&nbsp;            // Se o estoque fornecido não existir.
+<b class="pc">&nbsp;            if(!estoqueRepository.existsById(requestSugestao.getEstoqueId()))</b>
+&nbsp;                // Retorna erro.
+<b class="nc">&nbsp;                throw new DadosInvalidosException(&quot;estoque_nao_encontrado&quot;);</b>
+&nbsp;
+&nbsp;            // Se o usuário fornecido não existir.
+<b class="pc">&nbsp;            if(!usuarioRepository.existsById(requestSugestao.getCriadoPor()))</b>
+&nbsp;            // Retorna erro.
+<b class="nc">&nbsp;                throw new DadosInvalidosException(&quot;usuario_nao_encontrado&quot;);</b>
+&nbsp;
+&nbsp;            // Sugestão a ser substituída.
+<b class="fc">&nbsp;            Sugestao sugestao = sugestaoRepository.findById(id).get();</b>
+&nbsp;
+&nbsp;            // Define o id da sugestão a ser substituída.
+<b class="fc">&nbsp;            requestSugestao.setId(id);</b>
+&nbsp;
+&nbsp;            // Definindo o usuário que criou a sugestão como o usuário que está no banco, haja vista que não pode ser alterado.
+<b class="fc">&nbsp;            requestSugestao.setCriadoPor(sugestao.getCriadoPor());</b>
+&nbsp;
+&nbsp;            // Multiplica o preço por 100 para eliminar o decimal.
+<b class="fc">&nbsp;            requestSugestao.setPreco(requestSugestao.getPreco() * 100);</b>
+&nbsp;
+&nbsp;            // Insere a nova sugestão no banco e transforma os dados obtidos em modelo de resposta.
+<b class="fc">&nbsp;            ResponseSugestao responseSugestao = new ResponseSugestao(sugestaoRepository.save(requestSugestao));</b>
+&nbsp;
+&nbsp;            // Adiciona o link para detalhamento da sugestão.
+<b class="fc">&nbsp;            responseSugestao.add(</b>
+<b class="fc">&nbsp;                linkTo(</b>
+<b class="fc">&nbsp;                    methodOn(SugestaoController.class).ler(responseSugestao.getId())</b>
+&nbsp;                )
+<b class="fc">&nbsp;                .withSelfRel()</b>
+&nbsp;            );
+&nbsp;
+&nbsp;            // Divide o preço por 100 para obter os centavos.
+<b class="fc">&nbsp;            responseSugestao.setPreco(responseSugestao.getPreco() / 100);</b>
+&nbsp;
+&nbsp;            // Retorna a nova sugestão.
+<b class="fc">&nbsp;            return responseSugestao;</b>
+&nbsp;
+<b class="fc">&nbsp;        } catch (DadosInvalidosException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(400, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (NoSuchElementException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(404, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (DataIntegrityViolationException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_insercao&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (IllegalArgumentException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Rota responsável por excluir uma sugestão.
+&nbsp;     * @param id - Id da sugestão a ser excluída.
+&nbsp;     */
+&nbsp;    @DeleteMapping(&quot;/{id}&quot;)
+&nbsp;    @CacheEvict(value = &quot;sugestoes&quot;, allEntries = true)
+&nbsp;    public Object remover(@PathVariable int id) {
+&nbsp;        try {
+&nbsp;
+&nbsp;            // Se a sugestão fornecida não existir.
+<b class="fc">&nbsp;            if(!sugestaoRepository.existsById(id))</b>
+&nbsp;            // Retorna erro.
+<b class="fc">&nbsp;                throw new NoSuchElementException(&quot;nao_encontrado&quot;);</b>
+&nbsp;
+&nbsp;            // Exclui a sugestão do banco.
+<b class="fc">&nbsp;            sugestaoRepository.deleteById(id);</b>
+&nbsp;
+&nbsp;            // Retorna o link para listagem de sugestões.
+<b class="fc">&nbsp;            return linkTo(</b>
+<b class="fc">&nbsp;                        methodOn(SugestaoController.class).listar(new Sugestao())</b>
+&nbsp;                    )
+<b class="fc">&nbsp;                    .withRel(&quot;collection&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        } catch (NoSuchElementException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(404, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (DataIntegrityViolationException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_remocao&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (IllegalArgumentException e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-25 03:05</div>
+</div>
+</body>
+</html>

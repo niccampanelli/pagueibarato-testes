@@ -1,0 +1,189 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ResponseProduto</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.pagueibaratoapi.models.responses</a>
+</div>
+
+<h1>Coverage Summary for Class: ResponseProduto (com.pagueibaratoapi.models.responses)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ResponseProduto</td>
+<td class="coverageStat">
+  <span class="percent">
+    15,4%
+  </span>
+  <span class="absValue">
+    (2/13)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    42,1%
+  </span>
+  <span class="absValue">
+    (8/19)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">ResponseProduto$$EnhancerBySpringCGLIB$$e59b652</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    15,4%
+  </span>
+  <span class="absValue">
+    (2/13)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    42,1%
+  </span>
+  <span class="absValue">
+    (8/19)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.pagueibaratoapi.models.responses;
+&nbsp;
+&nbsp;import org.springframework.hateoas.RepresentationModel;
+&nbsp;
+&nbsp;import com.pagueibaratoapi.models.requests.Produto;
+&nbsp;
+&nbsp;public class ResponseProduto extends RepresentationModel&lt;ResponseProduto&gt; {
+&nbsp;    
+&nbsp;    private Integer id;
+&nbsp;    
+&nbsp;    private String nome;
+&nbsp;    private String marca;
+&nbsp;    private String tamanho;
+&nbsp;    private String cor;
+&nbsp;
+&nbsp;    private Integer categoriaId;
+&nbsp;
+<b class="fc">&nbsp;    public ResponseProduto(Produto produto) {</b>
+<b class="fc">&nbsp;        this.id = produto.getId();</b>
+<b class="fc">&nbsp;        this.nome = produto.getNome();</b>
+<b class="fc">&nbsp;        this.marca = produto.getMarca();</b>
+<b class="fc">&nbsp;        this.tamanho = produto.getTamanho();</b>
+<b class="fc">&nbsp;        this.cor = produto.getCor();</b>
+<b class="fc">&nbsp;        this.categoriaId = produto.getCategoriaId();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Integer getId() {
+<b class="fc">&nbsp;        return id;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setId(Integer id) {
+<b class="nc">&nbsp;        this.id = id;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getNome() {
+&nbsp;       
+<b class="nc">&nbsp;        return nome;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setNome(String nome) {
+<b class="nc">&nbsp;        this.nome = nome.trim();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getMarca() {
+<b class="nc">&nbsp;        return marca;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setMarca(String marca) {
+<b class="nc">&nbsp;        this.marca = marca.trim();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getTamanho() {
+<b class="nc">&nbsp;        return tamanho;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setTamanho(String tamanho) {
+<b class="nc">&nbsp;        this.tamanho = tamanho.trim();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getCor() {
+<b class="nc">&nbsp;        return cor;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setCor(String cor) {
+<b class="nc">&nbsp;        this.cor = cor.trim();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Integer getCategoriaId() {
+<b class="nc">&nbsp;        return categoriaId;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setCategoriaId(Integer categoriaId) {
+<b class="nc">&nbsp;        this.categoriaId = categoriaId;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-25 03:04</div>
+</div>
+</body>
+</html>

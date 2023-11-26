@@ -1,0 +1,679 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > EstoqueControllerIntegrationTest</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.pagueibaratoapi.pagueibaratoapi.integration</a>
+</div>
+
+<h1>Coverage Summary for Class: EstoqueControllerIntegrationTest (com.pagueibaratoapi.pagueibaratoapi.integration)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">EstoqueControllerIntegrationTest</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (16/16)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (13/26)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    97,1%
+  </span>
+  <span class="absValue">
+    (331/341)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.pagueibaratoapi.pagueibaratoapi.integration;
+&nbsp;
+&nbsp;import static org.junit.Assert.assertTrue;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;import org.junit.Before;
+&nbsp;import org.junit.Test;
+&nbsp;import org.junit.runner.RunWith;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.test.context.junit4.SpringRunner;
+&nbsp;import org.springframework.web.server.ResponseStatusException;
+&nbsp;
+&nbsp;import com.pagueibaratoapi.controllers.EstoqueController;
+&nbsp;import com.pagueibaratoapi.models.requests.Categoria;
+&nbsp;import com.pagueibaratoapi.models.requests.Estoque;
+&nbsp;import com.pagueibaratoapi.models.requests.Mercado;
+&nbsp;import com.pagueibaratoapi.models.requests.Produto;
+&nbsp;import com.pagueibaratoapi.models.requests.Ramo;
+&nbsp;import com.pagueibaratoapi.models.requests.Usuario;
+&nbsp;import com.pagueibaratoapi.models.responses.ResponseEstoque;
+&nbsp;import com.pagueibaratoapi.pagueibaratoapi.PagueiBaratoApiApplicationTests;
+&nbsp;import com.pagueibaratoapi.repository.CategoriaRepository;
+&nbsp;import com.pagueibaratoapi.repository.EstoqueRepository;
+&nbsp;import com.pagueibaratoapi.repository.MercadoRepository;
+&nbsp;import com.pagueibaratoapi.repository.ProdutoRepository;
+&nbsp;import com.pagueibaratoapi.repository.RamoRepository;
+&nbsp;import com.pagueibaratoapi.repository.UsuarioRepository;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;@RunWith(SpringRunner.class)
+<b class="fc">&nbsp;public class EstoqueControllerIntegrationTest extends PagueiBaratoApiApplicationTests {</b>
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private EstoqueController estoqueController;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private EstoqueRepository estoqueRepository;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private UsuarioRepository usuarioRepository;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private ProdutoRepository produtoRepository;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private MercadoRepository mercadoRepository;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private RamoRepository ramoRepository;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private CategoriaRepository categoriaRepository;
+&nbsp;
+&nbsp;    @Before
+&nbsp;    public void setUp() throws Exception {
+<b class="fc">&nbsp;        estoqueRepository.deleteAll();</b>
+<b class="fc">&nbsp;        estoqueRepository.deleteAll();</b>
+<b class="fc">&nbsp;        usuarioRepository.deleteAll();</b>
+<b class="fc">&nbsp;        produtoRepository.deleteAll();</b>
+<b class="fc">&nbsp;        mercadoRepository.deleteAll();</b>
+<b class="fc">&nbsp;        ramoRepository.deleteAll();</b>
+<b class="fc">&nbsp;        categoriaRepository.deleteAll();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarEstoqueComSucesso() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuarioCriar = new Usuario();</b>
+<b class="fc">&nbsp;        usuarioCriar.setNome(&quot;Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setEmail(&quot;teste@teste.com&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setSenha(&quot;Senha!123456&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setLogradouro(&quot;Rua Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setNumero(123);</b>
+<b class="fc">&nbsp;        usuarioCriar.setBairro(&quot;Bairro Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setCidade(&quot;Cidade Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setUf(&quot;SP&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setCep(&quot;00000-000&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idUsuario = usuarioRepository.save(usuarioCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Ramo ramoCriar = new Ramo();</b>
+<b class="fc">&nbsp;        ramoCriar.setNome(&quot;Ramo Teste&quot;);</b>
+<b class="fc">&nbsp;        ramoCriar.setDescricao(&quot;Descrição Teste&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idRamo = ramoRepository.save(ramoCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Mercado mercadoCriar = new Mercado();</b>
+<b class="fc">&nbsp;        mercadoCriar.setNome(&quot;Mercado Teste&quot;);</b>
+<b class="fc">&nbsp;        mercadoCriar.setRamoId(idRamo);</b>
+<b class="fc">&nbsp;        mercadoCriar.setLogradouro(&quot;Rua Teste&quot;);</b>
+<b class="fc">&nbsp;        mercadoCriar.setNumero(123);</b>
+<b class="fc">&nbsp;        mercadoCriar.setBairro(&quot;Bairro Teste&quot;);</b>
+<b class="fc">&nbsp;        mercadoCriar.setCidade(&quot;Cidade Teste&quot;);</b>
+<b class="fc">&nbsp;        mercadoCriar.setUf(&quot;SP&quot;);</b>
+<b class="fc">&nbsp;        mercadoCriar.setCep(&quot;00000-000&quot;);</b>
+<b class="fc">&nbsp;        mercadoCriar.setCriadoPor(idUsuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idMercado = mercadoRepository.save(mercadoCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Categoria categoriaCriar = new Categoria();</b>
+<b class="fc">&nbsp;        categoriaCriar.setNome(&quot;Categoria Teste&quot;);</b>
+<b class="fc">&nbsp;        categoriaCriar.setDescricao(&quot;Descrição Teste&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idCategoria = categoriaRepository.save(categoriaCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoCriar = new Produto();</b>
+<b class="fc">&nbsp;        produtoCriar.setNome(&quot;Produto Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setMarca(&quot;Marca Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setCategoriaId(idCategoria);</b>
+<b class="fc">&nbsp;        produtoCriar.setTamanho(&quot;Tamanho Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setCor(&quot;Cor Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setCriadoPor(idUsuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idProduto = produtoRepository.save(produtoCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Estoque estoqueCriar = new Estoque();</b>
+<b class="fc">&nbsp;        estoqueCriar.setCriadoPor(idUsuario);</b>
+<b class="fc">&nbsp;        estoqueCriar.setMercadoId(idMercado);</b>
+<b class="fc">&nbsp;        estoqueCriar.setProdutoId(idProduto);</b>
+&nbsp;
+<b class="fc">&nbsp;        ResponseEstoque response = estoqueController.criar(estoqueCriar);</b>
+&nbsp;
+<b class="fc">&nbsp;        estoqueRepository.delete(estoqueCriar);</b>
+&nbsp;
+<b class="pc">&nbsp;        assertTrue(response.getId() != null &amp;&amp; response.getId() &gt; 0);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarEstoqueComExcecaoDadosInvalidos() {
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            estoqueController.criar(null);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="pc">&nbsp;            assertTrue(e.getStatus().value() == 400);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarEstoqueComUsuarioInvalido() {
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            Estoque estoqueCriar = new Estoque();</b>
+<b class="fc">&nbsp;            estoqueCriar.setCriadoPor(0);</b>
+<b class="fc">&nbsp;            estoqueCriar.setMercadoId(1);</b>
+<b class="fc">&nbsp;            estoqueCriar.setProdutoId(1);</b>
+&nbsp;
+<b class="fc">&nbsp;            estoqueController.criar(estoqueCriar);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;usuario_invalido&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarEstoqueComUsuarioInexistente() {
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuarioCriar = new Usuario();</b>
+<b class="fc">&nbsp;        usuarioCriar.setNome(&quot;Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setEmail(&quot;&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setSenha(&quot;Senha!123456&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setLogradouro(&quot;Rua Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setNumero(123);</b>
+<b class="fc">&nbsp;        usuarioCriar.setBairro(&quot;Bairro Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setCidade(&quot;Cidade Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setUf(&quot;SP&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setCep(&quot;00000-000&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idUsuario = usuarioRepository.save(usuarioCriar).getId();</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            Estoque estoqueCriar = new Estoque();</b>
+<b class="fc">&nbsp;            estoqueCriar.setCriadoPor(idUsuario);</b>
+<b class="fc">&nbsp;            estoqueCriar.setMercadoId(1);</b>
+<b class="fc">&nbsp;            estoqueCriar.setProdutoId(1);</b>
+&nbsp;
+<b class="fc">&nbsp;            estoqueController.criar(estoqueCriar);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;usuario_invalido&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarEstoqueComProdutoInvalido() {
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuarioCriar = new Usuario();</b>
+<b class="fc">&nbsp;        usuarioCriar.setNome(&quot;Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setEmail(&quot;teste@teste.com&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setSenha(&quot;Senha!123456&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setLogradouro(&quot;Rua Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setNumero(123);</b>
+<b class="fc">&nbsp;        usuarioCriar.setBairro(&quot;Bairro Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setCidade(&quot;Cidade Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setUf(&quot;SP&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setCep(&quot;00000-000&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idUsuario = usuarioRepository.save(usuarioCriar).getId();</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            Estoque estoqueCriar = new Estoque();</b>
+<b class="fc">&nbsp;            estoqueCriar.setCriadoPor(idUsuario);</b>
+<b class="fc">&nbsp;            estoqueCriar.setMercadoId(1);</b>
+<b class="fc">&nbsp;            estoqueCriar.setProdutoId(1);</b>
+&nbsp;
+<b class="fc">&nbsp;            estoqueController.criar(estoqueCriar);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;produto_invalido&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarEstoqueComMercadoInvalido() {
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuarioCriar = new Usuario();</b>
+<b class="fc">&nbsp;        usuarioCriar.setNome(&quot;Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setEmail(&quot;teste@teste.com&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setSenha(&quot;Senha!123456&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setLogradouro(&quot;Rua Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setNumero(123);</b>
+<b class="fc">&nbsp;        usuarioCriar.setBairro(&quot;Bairro Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setCidade(&quot;Cidade Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setUf(&quot;SP&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setCep(&quot;00000-000&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idUsuario = usuarioRepository.save(usuarioCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Categoria categoriaCriar = new Categoria();</b>
+<b class="fc">&nbsp;        categoriaCriar.setNome(&quot;Categoria Teste&quot;);</b>
+<b class="fc">&nbsp;        categoriaCriar.setDescricao(&quot;Descrição Teste&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idCategoria = categoriaRepository.save(categoriaCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoCriar = new Produto();</b>
+<b class="fc">&nbsp;        produtoCriar.setNome(&quot;Produto Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setMarca(&quot;Marca Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setCategoriaId(idCategoria);</b>
+<b class="fc">&nbsp;        produtoCriar.setTamanho(&quot;Tamanho Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setCor(&quot;Cor Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setCriadoPor(idUsuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idProduto = produtoRepository.save(produtoCriar).getId();</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            Estoque estoqueCriar = new Estoque();</b>
+<b class="fc">&nbsp;            estoqueCriar.setCriadoPor(idUsuario);</b>
+<b class="fc">&nbsp;            estoqueCriar.setMercadoId(1);</b>
+<b class="fc">&nbsp;            estoqueCriar.setProdutoId(idProduto);</b>
+&nbsp;
+<b class="fc">&nbsp;            estoqueController.criar(estoqueCriar);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;mercado_invalido&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarEstoqueComEstoqueExistente() {
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuarioCriar = new Usuario();</b>
+<b class="fc">&nbsp;        usuarioCriar.setNome(&quot;Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setEmail(&quot;teste@teste.com&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setSenha(&quot;Senha!123456&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setLogradouro(&quot;Rua Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setNumero(123);</b>
+<b class="fc">&nbsp;        usuarioCriar.setBairro(&quot;Bairro Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setCidade(&quot;Cidade Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setUf(&quot;SP&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setCep(&quot;00000-000&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idUsuario = usuarioRepository.save(usuarioCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Ramo ramoCriar = new Ramo();</b>
+<b class="fc">&nbsp;        ramoCriar.setNome(&quot;Ramo Teste&quot;);</b>
+<b class="fc">&nbsp;        ramoCriar.setDescricao(&quot;Descrição Teste&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idRamo = ramoRepository.save(ramoCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Mercado mercadoCriar = new Mercado();</b>
+<b class="fc">&nbsp;        mercadoCriar.setNome(&quot;Mercado Teste&quot;);</b>
+<b class="fc">&nbsp;        mercadoCriar.setRamoId(idRamo);</b>
+<b class="fc">&nbsp;        mercadoCriar.setLogradouro(&quot;Rua Teste&quot;);</b>
+<b class="fc">&nbsp;        mercadoCriar.setNumero(123);</b>
+<b class="fc">&nbsp;        mercadoCriar.setBairro(&quot;Bairro Teste&quot;);</b>
+<b class="fc">&nbsp;        mercadoCriar.setCidade(&quot;Cidade Teste&quot;);</b>
+<b class="fc">&nbsp;        mercadoCriar.setUf(&quot;SP&quot;);</b>
+<b class="fc">&nbsp;        mercadoCriar.setCep(&quot;00000-000&quot;);</b>
+<b class="fc">&nbsp;        mercadoCriar.setCriadoPor(idUsuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idMercado = mercadoRepository.save(mercadoCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Categoria categoriaCriar = new Categoria();</b>
+<b class="fc">&nbsp;        categoriaCriar.setNome(&quot;Categoria Teste&quot;);</b>
+<b class="fc">&nbsp;        categoriaCriar.setDescricao(&quot;Descrição Teste&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idCategoria = categoriaRepository.save(categoriaCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoCriar = new Produto();</b>
+<b class="fc">&nbsp;        produtoCriar.setNome(&quot;Produto Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setMarca(&quot;Marca Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setCategoriaId(idCategoria);</b>
+<b class="fc">&nbsp;        produtoCriar.setTamanho(&quot;Tamanho Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setCor(&quot;Cor Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setCriadoPor(idUsuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idProduto = produtoRepository.save(produtoCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Estoque estoqueCriar = new Estoque();</b>
+<b class="fc">&nbsp;        estoqueCriar.setCriadoPor(idUsuario);</b>
+<b class="fc">&nbsp;        estoqueCriar.setMercadoId(idMercado);</b>
+<b class="fc">&nbsp;        estoqueCriar.setProdutoId(idProduto);</b>
+&nbsp;
+<b class="fc">&nbsp;        estoqueRepository.save(estoqueCriar);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            estoqueCriar.setId(null);</b>
+&nbsp;
+<b class="fc">&nbsp;            estoqueController.criar(estoqueCriar);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            System.out.println(e.getCause().getMessage());</b>
+<b class="fc">&nbsp;            assertTrue(e.getCause().getMessage().equals(&quot;estoque_existente&quot;));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+<b class="fc">&nbsp;        estoqueRepository.delete(estoqueCriar);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void lerEstoqueComSucesso() {
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuarioCriar = new Usuario();</b>
+<b class="fc">&nbsp;        usuarioCriar.setNome(&quot;Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setEmail(&quot;teste@teste.com&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setSenha(&quot;Senha!123456&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setLogradouro(&quot;Rua Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setNumero(123);</b>
+<b class="fc">&nbsp;        usuarioCriar.setBairro(&quot;Bairro Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setCidade(&quot;Cidade Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setUf(&quot;SP&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setCep(&quot;00000-000&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idUsuario = usuarioRepository.save(usuarioCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Ramo ramoCriar = new Ramo();</b>
+<b class="fc">&nbsp;        ramoCriar.setNome(&quot;Ramo Teste&quot;);</b>
+<b class="fc">&nbsp;        ramoCriar.setDescricao(&quot;Descrição Teste&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idRamo = ramoRepository.save(ramoCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Mercado mercadoCriar = new Mercado();</b>
+<b class="fc">&nbsp;        mercadoCriar.setNome(&quot;Mercado Teste&quot;);</b>
+<b class="fc">&nbsp;        mercadoCriar.setRamoId(idRamo);</b>
+<b class="fc">&nbsp;        mercadoCriar.setLogradouro(&quot;Rua Teste&quot;);</b>
+<b class="fc">&nbsp;        mercadoCriar.setNumero(123);</b>
+<b class="fc">&nbsp;        mercadoCriar.setBairro(&quot;Bairro Teste&quot;);</b>
+<b class="fc">&nbsp;        mercadoCriar.setCidade(&quot;Cidade Teste&quot;);</b>
+<b class="fc">&nbsp;        mercadoCriar.setUf(&quot;SP&quot;);</b>
+<b class="fc">&nbsp;        mercadoCriar.setCep(&quot;00000-000&quot;);</b>
+<b class="fc">&nbsp;        mercadoCriar.setCriadoPor(idUsuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idMercado = mercadoRepository.save(mercadoCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Categoria categoriaCriar = new Categoria();</b>
+<b class="fc">&nbsp;        categoriaCriar.setNome(&quot;Categoria Teste&quot;);</b>
+<b class="fc">&nbsp;        categoriaCriar.setDescricao(&quot;Descrição Teste&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idCategoria = categoriaRepository.save(categoriaCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoCriar = new Produto();</b>
+<b class="fc">&nbsp;        produtoCriar.setNome(&quot;Produto Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setMarca(&quot;Marca Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setCategoriaId(idCategoria);</b>
+<b class="fc">&nbsp;        produtoCriar.setTamanho(&quot;Tamanho Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setCor(&quot;Cor Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setCriadoPor(idUsuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idProduto = produtoRepository.save(produtoCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Estoque estoqueCriar = new Estoque();</b>
+<b class="fc">&nbsp;        estoqueCriar.setCriadoPor(idUsuario);</b>
+<b class="fc">&nbsp;        estoqueCriar.setMercadoId(idMercado);</b>
+<b class="fc">&nbsp;        estoqueCriar.setProdutoId(idProduto);</b>
+&nbsp;
+<b class="fc">&nbsp;        estoqueRepository.save(estoqueCriar);</b>
+&nbsp;
+<b class="fc">&nbsp;        ResponseEstoque response = estoqueController.ler(estoqueCriar.getId());</b>
+&nbsp;
+<b class="pc">&nbsp;        assertTrue(response != null &amp;&amp; response.getId() != null &amp;&amp; response.getId() &gt; 0);</b>
+&nbsp;
+<b class="fc">&nbsp;        estoqueRepository.delete(estoqueCriar);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void lerEstoqueComExcecaoNoSuchElement() {
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            estoqueController.ler(1534);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="pc">&nbsp;            assertTrue(e.getStatus().value() == 404);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void lerEstoqueComExcecao() {
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            estoqueController.ler(null);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="pc">&nbsp;            assertTrue(e.getStatus().value() == 500);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarEstoqueComSucesso() {
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuarioCriar = new Usuario();</b>
+<b class="fc">&nbsp;        usuarioCriar.setNome(&quot;Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setEmail(&quot;teste@teste.com&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setSenha(&quot;Senha!123456&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setLogradouro(&quot;Rua Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setNumero(123);</b>
+<b class="fc">&nbsp;        usuarioCriar.setBairro(&quot;Bairro Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setCidade(&quot;Cidade Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setUf(&quot;SP&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setCep(&quot;00000-000&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idUsuario = usuarioRepository.save(usuarioCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Ramo ramoCriar = new Ramo();</b>
+<b class="fc">&nbsp;        ramoCriar.setNome(&quot;Ramo Teste&quot;);</b>
+<b class="fc">&nbsp;        ramoCriar.setDescricao(&quot;Descrição Teste&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idRamo = ramoRepository.save(ramoCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Mercado mercadoCriar = new Mercado();</b>
+<b class="fc">&nbsp;        mercadoCriar.setNome(&quot;Mercado Teste&quot;);</b>
+<b class="fc">&nbsp;        mercadoCriar.setRamoId(idRamo);</b>
+<b class="fc">&nbsp;        mercadoCriar.setLogradouro(&quot;Rua Teste&quot;);</b>
+<b class="fc">&nbsp;        mercadoCriar.setNumero(123);</b>
+<b class="fc">&nbsp;        mercadoCriar.setBairro(&quot;Bairro Teste&quot;);</b>
+<b class="fc">&nbsp;        mercadoCriar.setCidade(&quot;Cidade Teste&quot;);</b>
+<b class="fc">&nbsp;        mercadoCriar.setUf(&quot;SP&quot;);</b>
+<b class="fc">&nbsp;        mercadoCriar.setCep(&quot;00000-000&quot;);</b>
+<b class="fc">&nbsp;        mercadoCriar.setCriadoPor(idUsuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idMercado = mercadoRepository.save(mercadoCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Categoria categoriaCriar = new Categoria();</b>
+<b class="fc">&nbsp;        categoriaCriar.setNome(&quot;Categoria Teste&quot;);</b>
+<b class="fc">&nbsp;        categoriaCriar.setDescricao(&quot;Descrição Teste&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idCategoria = categoriaRepository.save(categoriaCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoCriar = new Produto();</b>
+<b class="fc">&nbsp;        produtoCriar.setNome(&quot;Produto Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setMarca(&quot;Marca Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setCategoriaId(idCategoria);</b>
+<b class="fc">&nbsp;        produtoCriar.setTamanho(&quot;Tamanho Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setCor(&quot;Cor Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setCriadoPor(idUsuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idProduto = produtoRepository.save(produtoCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Estoque estoqueCriar = new Estoque();</b>
+<b class="fc">&nbsp;        estoqueCriar.setCriadoPor(idUsuario);</b>
+<b class="fc">&nbsp;        estoqueCriar.setMercadoId(idMercado);</b>
+<b class="fc">&nbsp;        estoqueCriar.setProdutoId(idProduto);</b>
+&nbsp;
+<b class="fc">&nbsp;        estoqueRepository.save(estoqueCriar);</b>
+&nbsp;
+<b class="fc">&nbsp;        List&lt;ResponseEstoque&gt; response = estoqueController.listar(new Estoque());</b>
+&nbsp;
+<b class="pc">&nbsp;        assertTrue(response != null &amp;&amp; response.size() &gt; 0);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarEstoqueComExcecaoDadosInvalidos() {
+&nbsp;
+<b class="fc">&nbsp;        Estoque estoque = new Estoque();</b>
+<b class="fc">&nbsp;        estoque.setId(1);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            estoqueController.listar(estoque);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="pc">&nbsp;            assertTrue(e.getStatus().value() == 400);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;    
+&nbsp;    @Test
+&nbsp;    public void removerEstoqueComSucesso() {
+&nbsp;
+<b class="fc">&nbsp;        Usuario usuarioCriar = new Usuario();</b>
+<b class="fc">&nbsp;        usuarioCriar.setNome(&quot;Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setEmail(&quot;teste@teste.com&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setSenha(&quot;Senha!123456&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setLogradouro(&quot;Rua Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setNumero(123);</b>
+<b class="fc">&nbsp;        usuarioCriar.setBairro(&quot;Bairro Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setCidade(&quot;Cidade Teste&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setUf(&quot;SP&quot;);</b>
+<b class="fc">&nbsp;        usuarioCriar.setCep(&quot;00000-000&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idUsuario = usuarioRepository.save(usuarioCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Ramo ramoCriar = new Ramo();</b>
+<b class="fc">&nbsp;        ramoCriar.setNome(&quot;Ramo Teste&quot;);</b>
+<b class="fc">&nbsp;        ramoCriar.setDescricao(&quot;Descrição Teste&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idRamo = ramoRepository.save(ramoCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Mercado mercadoCriar = new Mercado();</b>
+<b class="fc">&nbsp;        mercadoCriar.setNome(&quot;Mercado Teste&quot;);</b>
+<b class="fc">&nbsp;        mercadoCriar.setRamoId(idRamo);</b>
+<b class="fc">&nbsp;        mercadoCriar.setLogradouro(&quot;Rua Teste&quot;);</b>
+<b class="fc">&nbsp;        mercadoCriar.setNumero(123);</b>
+<b class="fc">&nbsp;        mercadoCriar.setBairro(&quot;Bairro Teste&quot;);</b>
+<b class="fc">&nbsp;        mercadoCriar.setCidade(&quot;Cidade Teste&quot;);</b>
+<b class="fc">&nbsp;        mercadoCriar.setUf(&quot;SP&quot;);</b>
+<b class="fc">&nbsp;        mercadoCriar.setCep(&quot;00000-000&quot;);</b>
+<b class="fc">&nbsp;        mercadoCriar.setCriadoPor(idUsuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idMercado = mercadoRepository.save(mercadoCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Categoria categoriaCriar = new Categoria();</b>
+<b class="fc">&nbsp;        categoriaCriar.setNome(&quot;Categoria Teste&quot;);</b>
+<b class="fc">&nbsp;        categoriaCriar.setDescricao(&quot;Descrição Teste&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idCategoria = categoriaRepository.save(categoriaCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Produto produtoCriar = new Produto();</b>
+<b class="fc">&nbsp;        produtoCriar.setNome(&quot;Produto Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setMarca(&quot;Marca Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setCategoriaId(idCategoria);</b>
+<b class="fc">&nbsp;        produtoCriar.setTamanho(&quot;Tamanho Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setCor(&quot;Cor Teste&quot;);</b>
+<b class="fc">&nbsp;        produtoCriar.setCriadoPor(idUsuario);</b>
+&nbsp;
+<b class="fc">&nbsp;        int idProduto = produtoRepository.save(produtoCriar).getId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Estoque estoqueCriar = new Estoque();</b>
+<b class="fc">&nbsp;        estoqueCriar.setCriadoPor(idUsuario);</b>
+<b class="fc">&nbsp;        estoqueCriar.setMercadoId(idMercado);</b>
+<b class="fc">&nbsp;        estoqueCriar.setProdutoId(idProduto);</b>
+&nbsp;
+<b class="fc">&nbsp;        estoqueRepository.save(estoqueCriar);</b>
+&nbsp;
+<b class="fc">&nbsp;        int quantidadeEstoqueAntes = estoqueRepository.findAll().size();</b>
+&nbsp;
+<b class="fc">&nbsp;        estoqueController.remover(estoqueCriar.getId());</b>
+&nbsp;
+<b class="fc">&nbsp;        int quantidadeEstoqueDepois = estoqueRepository.findAll().size();</b>
+&nbsp;
+<b class="pc">&nbsp;        assertTrue(quantidadeEstoqueAntes == quantidadeEstoqueDepois + 1);</b>
+&nbsp;    }
+&nbsp;    
+&nbsp;    @Test
+&nbsp;    public void removerEstoqueComExcecaoNoSuchElement() {
+&nbsp;        
+&nbsp;        try {
+<b class="fc">&nbsp;            estoqueController.remover(1534);</b>
+<b class="fc">&nbsp;        } catch (ResponseStatusException e) {</b>
+<b class="pc">&nbsp;            assertTrue(e.getStatus().value() == 404);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-25 03:05</div>
+</div>
+</body>
+</html>

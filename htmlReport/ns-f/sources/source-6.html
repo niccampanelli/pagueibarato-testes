@@ -1,0 +1,113 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ProdutoRepository</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.pagueibaratoapi.repository</a>
+</div>
+
+<h1>Coverage Summary for Class: ProdutoRepository (com.pagueibaratoapi.repository)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">ProdutoRepository$MockitoMock$ZJ1uWNjf</td>
+  </tr>
+  <tr>
+    <td class="name">ProdutoRepository$MockitoMock$ZJ1uWNjf$auxiliary$IjzQqPyl</td>
+  </tr>
+  <tr>
+    <td class="name">ProdutoRepository$MockitoMock$ZJ1uWNjf$auxiliary$zngKN0z4</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.pagueibaratoapi.repository;
+&nbsp;
+&nbsp;import org.springframework.data.jpa.repository.JpaRepository;
+&nbsp;import org.springframework.data.jpa.repository.Query;
+&nbsp;import org.springframework.data.repository.query.Param;
+&nbsp;
+&nbsp;import com.pagueibaratoapi.models.requests.Produto;
+&nbsp;
+&nbsp;/**
+&nbsp; * Repositório de produtos.
+&nbsp; */
+&nbsp;public interface ProdutoRepository extends JpaRepository&lt;Produto, Integer&gt; {
+&nbsp;    
+&nbsp;    /**
+&nbsp;     * Verifica se o produto existe com base no id.
+&nbsp;     * @param id - Id para verificar.
+&nbsp;     * @return &lt;b&gt;true&lt;/b&gt; se o id estiver cadastrado e &lt;b&gt;false&lt;/b&gt; se não estiver.
+&nbsp;     */
+&nbsp;    public boolean existsById(Integer id);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Busca produtos que possuem as mesmas características do produto informado.
+&nbsp;     * @param nome - Nome do produto para buscar.
+&nbsp;     * @param marca - Marca do produto para buscar.
+&nbsp;     * @param tamanho - Tamanho do produto para buscar.
+&nbsp;     * @param cor - Cor opcional do produto para buscar.
+&nbsp;     * @return Produto encontrado ou null.
+&nbsp;     */
+&nbsp;    @Query(&quot;SELECT p FROM Produto p WHERE UPPER(p.nome) = UPPER(:nome) AND UPPER(p.marca) = UPPER(:marca) AND UPPER(p.tamanho) LIKE UPPER(CONCAT(&#39;%&#39;,:tamanho,&#39;%&#39;)) AND (p.cor IS NULL OR UPPER(p.cor) = UPPER(:cor))&quot;)
+&nbsp;    public Produto findByCaracteristicas(
+&nbsp;        @Param(&quot;nome&quot;) String nome, 
+&nbsp;        @Param(&quot;marca&quot;) String marca, 
+&nbsp;        @Param(&quot;tamanho&quot;) String tamanho, 
+&nbsp;        @Param(&quot;cor&quot;) String cor
+&nbsp;    );
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-25 03:05</div>
+</div>
+</body>
+</html>

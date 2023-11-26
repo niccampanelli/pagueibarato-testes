@@ -1,0 +1,184 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > EditaRecurso</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.pagueibaratoapi.utils</a>
+</div>
+
+<h1>Coverage Summary for Class: EditaRecurso (com.pagueibaratoapi.utils)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">EditaRecurso</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    85,7%
+  </span>
+  <span class="absValue">
+    (6/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    85,7%
+  </span>
+  <span class="absValue">
+    (6/7)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.pagueibaratoapi.utils;
+&nbsp;
+&nbsp;import com.pagueibaratoapi.models.requests.Categoria;
+&nbsp;import com.pagueibaratoapi.models.requests.Mercado;
+&nbsp;import com.pagueibaratoapi.models.requests.Produto;
+&nbsp;import com.pagueibaratoapi.models.requests.Ramo;
+&nbsp;import com.pagueibaratoapi.models.requests.Sugestao;
+&nbsp;import com.pagueibaratoapi.models.requests.Usuario;
+&nbsp;import com.pagueibaratoapi.utils.patches.PatchCategoria;
+&nbsp;import com.pagueibaratoapi.utils.patches.PatchMercado;
+&nbsp;import com.pagueibaratoapi.utils.patches.PatchProduto;
+&nbsp;import com.pagueibaratoapi.utils.patches.PatchRamo;
+&nbsp;import com.pagueibaratoapi.utils.patches.PatchSugestao;
+&nbsp;import com.pagueibaratoapi.utils.patches.PatchUsuario;
+&nbsp;
+&nbsp;/**
+&nbsp; * Classe utilitária para realização do PATCH (alteração parcial) nos recursos.
+&nbsp; */
+<b class="nc">&nbsp;public class EditaRecurso {</b>
+&nbsp;    
+&nbsp;    /**
+&nbsp;     * Método para atribuir novos dados a uma categoria a fim de editá-la.
+&nbsp;     * @param categoriaAtual - Categoria que será editada, com os dados originais.
+&nbsp;     * @param categoriaEditada - Objeto de categoria com os dados novos.
+&nbsp;     * @return Categoria - Objeto de categoria com os dados atualizados.
+&nbsp;     */
+&nbsp;    public static Categoria editarCategoria(Categoria categoriaAtual, Categoria categoriaEditada) {
+<b class="fc">&nbsp;        return PatchCategoria.edita(categoriaAtual, categoriaEditada);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Método para atribuir novos dados a um mercado a fim de editá-lo.
+&nbsp;     * @param mercadoAtual - Mercado que será editado, com os dados originais.
+&nbsp;     * @param mercadoEditado - Objeto de mercado com os dados novos.
+&nbsp;     * @return Mercado - Objeto de mercado com os dados atualizados.
+&nbsp;     */
+&nbsp;    public static Mercado editarMercado(Mercado mercadoAtual, Mercado mercadoEditado) {
+<b class="fc">&nbsp;        return PatchMercado.edita(mercadoAtual, mercadoEditado);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Método para atribuir novos dados a um produto a fim de editá-lo.
+&nbsp;     * @param produtoAtual - Produto que será editado, com os dados originais.
+&nbsp;     * @param produtoEditado - Objeto de produto com os dados novos.
+&nbsp;     * @return Produto - Objeto de produto com os dados atualizados.
+&nbsp;     */
+&nbsp;    public static Produto editarProduto(Produto produtoAtual, Produto produtoEditado) {
+<b class="fc">&nbsp;        return PatchProduto.edita(produtoAtual, produtoEditado);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Método para atribuir novos dados a um ramo a fim de editá-lo.
+&nbsp;     * @param ramoAtual - Ramo que será editado, com os dados originais.
+&nbsp;     * @param ramoEditado - Objeto de ramo com os dados novos.
+&nbsp;     * @return Ramo - Objeto de ramo com os dados atualizados.
+&nbsp;     */
+&nbsp;    public static Ramo editarRamo(Ramo ramoAtual, Ramo ramoEditado) {
+<b class="fc">&nbsp;        return PatchRamo.edita(ramoAtual, ramoEditado);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Método para atribuir novos dados a uma sugestão a fim de editá-la.
+&nbsp;     * @param sugestaoAtual - Sugestão que será editada, com os dados originais.
+&nbsp;     * @param sugestaoEditada - Objeto de sugestão com os dados novos.
+&nbsp;     * @return Sugestao - Objeto de sugestão com os dados atualizados.
+&nbsp;     */
+&nbsp;    public static Sugestao editarSugestao(Sugestao sugestaoAtual, Sugestao sugestaoEditada) {
+<b class="fc">&nbsp;        return PatchSugestao.edita(sugestaoAtual, sugestaoEditada);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Método para atribuir novos dados a um usuário a fim de editá-lo.
+&nbsp;     * @param usuarioAtual - Usuário que será editado, com os dados originais.
+&nbsp;     * @param usuarioEditado - Objeto de usuário com os dados novos.
+&nbsp;     * @return Usuário - Objeto de usuário com os dados atualizados.
+&nbsp;     */
+&nbsp;    public static Usuario editarUsuario(Usuario usuarioAtual, Usuario usuarioEditado) {
+<b class="fc">&nbsp;        return PatchUsuario.edita(usuarioAtual, usuarioEditado);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-25 03:05</div>
+</div>
+</body>
+</html>

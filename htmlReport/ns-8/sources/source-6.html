@@ -1,0 +1,722 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > RamoControllerIntegrationTest</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.pagueibaratoapi.pagueibaratoapi.integration</a>
+</div>
+
+<h1>Coverage Summary for Class: RamoControllerIntegrationTest (com.pagueibaratoapi.pagueibaratoapi.integration)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">RamoControllerIntegrationTest</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (33/33)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    86,9%
+  </span>
+  <span class="absValue">
+    (173/199)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.pagueibaratoapi.pagueibaratoapi.integration;
+&nbsp;
+&nbsp;import static org.junit.Assert.assertEquals;
+&nbsp;import static org.junit.Assert.assertNotNull;
+&nbsp;import static org.junit.Assert.assertNull;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;import org.junit.Before;
+&nbsp;import org.junit.Test;
+&nbsp;import org.junit.runner.RunWith;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.test.context.junit4.SpringRunner;
+&nbsp;import org.springframework.web.server.ResponseStatusException;
+&nbsp;
+&nbsp;import com.pagueibaratoapi.controllers.RamoController;
+&nbsp;import com.pagueibaratoapi.models.requests.Ramo;
+&nbsp;import com.pagueibaratoapi.models.responses.ResponseRamo;
+&nbsp;import com.pagueibaratoapi.pagueibaratoapi.PagueiBaratoApiApplicationTests;
+&nbsp;import com.pagueibaratoapi.repository.RamoRepository;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;@RunWith(SpringRunner.class)
+<b class="fc">&nbsp;public class RamoControllerIntegrationTest extends PagueiBaratoApiApplicationTests {</b>
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private RamoController ramoController;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private RamoRepository ramoRepository;
+&nbsp;
+&nbsp;    private Ramo ramo;
+&nbsp;
+&nbsp;    private List&lt;Ramo&gt; ramos;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    @Before
+&nbsp;    public void setUp() {
+<b class="fc">&nbsp;        this.ramoRepository.deleteAll();</b>
+&nbsp;
+<b class="fc">&nbsp;        this.inicializarRamo();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private void inicializarRamo() {
+<b class="fc">&nbsp;        this.ramo = new Ramo();</b>
+&nbsp;
+<b class="fc">&nbsp;        this.ramo.setNome(&quot;Ramo Teste&quot;);</b>
+<b class="fc">&nbsp;        this.ramo.setDescricao(&quot;Descrição do ramo teste&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        Ramo ramo2 = new Ramo();</b>
+&nbsp;
+<b class="fc">&nbsp;        ramo2.setNome(&quot;Ramo Teste 2&quot;);</b>
+<b class="fc">&nbsp;        ramo2.setDescricao(&quot;Descrição do ramo teste 2&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        this.ramos = List.of(this.ramo, ramo2);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    /* ----------------------------  CRIAÇÃO DE RAMO  --------------------------- */
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarRamoComSucesso() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        ResponseRamo responseRamo = ramoController.criar(this.ramo);</b>
+&nbsp;
+<b class="fc">&nbsp;        ramoRepository.deleteById(responseRamo.getId());</b>
+&nbsp;
+<b class="fc">&nbsp;        assertNotNull(responseRamo);</b>
+<b class="fc">&nbsp;        assertEquals(this.ramo.getNome(), responseRamo.getNome());</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarRamoComCorpoNulo() throws Exception {
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            ramoController.criar(null);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;corpo_nulo&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarRamoComIdFornecido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.ramo.setId(1);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            ramoController.criar(this.ramo);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;id_fornecido&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarRamoComNomeInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.ramo.setNome(&quot;ma&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            ramoController.criar(this.ramo);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;nome_invalido&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarRamoComDescricaoInvalida() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.ramo.setDescricao(&quot;teste&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            ramoController.criar(this.ramo);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;descricao_invalido&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void criarRamoComNomeExistente() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        Ramo ramoCriado = ramoRepository.save(this.ramo);</b>
+&nbsp;
+<b class="fc">&nbsp;        Ramo ramoComNomeIgual = new Ramo();</b>
+&nbsp;
+<b class="fc">&nbsp;        ramoComNomeIgual.setNome(ramoCriado.getNome());</b>
+<b class="fc">&nbsp;        ramoComNomeIgual.setDescricao(&quot;Descrição do ramo teste 2&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            ramoController.criar(ramoComNomeIgual);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(409, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;ramo_existente&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /* -------------------------------------------------------------------------- */
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    /* ------------------------  LEITURA DE RAMO POR ID  ------------------------ */
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void lerRamoPorIdComSucesso() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        Ramo ramoCriado = ramoRepository.save(this.ramo);</b>
+&nbsp;
+<b class="fc">&nbsp;        ResponseRamo responseRamo = ramoController.ler(ramoCriado.getId());</b>
+&nbsp;
+<b class="fc">&nbsp;        ramoRepository.deleteById(responseRamo.getId());</b>
+&nbsp;
+<b class="fc">&nbsp;        assertNotNull(responseRamo);</b>
+<b class="fc">&nbsp;        assertEquals(ramoCriado.getId(), responseRamo.getId());</b>
+<b class="fc">&nbsp;        assertEquals(ramoCriado.getNome(), responseRamo.getNome());</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void lerRamoPorIdComExcecaoNoSuchElement() throws Exception {
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            ramoController.ler(2023);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(404, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;nao_encontrado&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void lerRamoPorIdComExcecao() throws Exception {
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            ramoController.ler(null);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(500, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;erro_inesperado&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /* -------------------------------------------------------------------------- */
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    /* ---------------------------  LISTAGEM DE RAMOS  -------------------------- */
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarRamosComSucesso() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        ramoRepository.saveAll(this.ramos);</b>
+&nbsp;
+<b class="fc">&nbsp;        List&lt;ResponseRamo&gt; responseRamos = ramoController.listar(new Ramo());</b>
+&nbsp;
+<b class="fc">&nbsp;        ramoRepository.deleteAll();</b>
+&nbsp;
+<b class="fc">&nbsp;        assertNotNull(responseRamos);</b>
+<b class="fc">&nbsp;        assertEquals(2, responseRamos.size());</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarRamosComCorpoNulo() throws Exception {
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            ramoController.listar(null);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;corpo_nulo&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarRamosComIdFornecido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.ramo.setId(1);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            ramoController.listar(this.ramo);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;id_fornecido&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarRamosComNomeInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.ramo.setNome(&quot;ma&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            ramoController.listar(this.ramo);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;nome_invalido&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void listarRamosComDescricaoInvalida() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.ramo.setDescricao(&quot;teste&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            ramoController.listar(this.ramo);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;descricao_invalido&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /* -------------------------------------------------------------------------- */
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    /* ----------------------------  EDIÇÃO DE RAMOS  --------------------------- */
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarRamoComSucesso() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        Ramo ramoCriado = ramoRepository.save(this.ramo);</b>
+&nbsp;
+<b class="fc">&nbsp;        Ramo ramoEditado = new Ramo();</b>
+&nbsp;
+<b class="fc">&nbsp;        ramoEditado.setNome(&quot;Ramo Teste Editado&quot;);</b>
+<b class="fc">&nbsp;        ramoEditado.setDescricao(&quot;Descrição do ramo teste editado&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        ResponseRamo responseRamo = ramoController.editar(ramoCriado.getId(), ramoEditado);</b>
+&nbsp;
+<b class="fc">&nbsp;        ramoRepository.deleteById(responseRamo.getId());</b>
+&nbsp;
+<b class="fc">&nbsp;        assertNotNull(responseRamo);</b>
+<b class="fc">&nbsp;        assertEquals(ramoCriado.getId(), responseRamo.getId());</b>
+<b class="fc">&nbsp;        assertEquals(&quot;Ramo Teste Editado&quot;, responseRamo.getNome());</b>
+<b class="fc">&nbsp;        assertEquals(&quot;Descrição do ramo teste editado&quot;, responseRamo.getDescricao());</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarRamoComCorpoNulo() throws Exception {
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            ramoController.editar(1, null);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;corpo_nulo&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarRamoComIdFornecido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.ramo.setId(1);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            ramoController.editar(1, this.ramo);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;id_fornecido&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarRamoComNomeInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.ramo.setNome(&quot;ma&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            ramoController.editar(1, this.ramo);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;nome_invalido&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarRamoComDescricaoInvalida() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.ramo.setDescricao(&quot;teste&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            ramoController.editar(1, this.ramo);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;descricao_invalido&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarRamoComNomeExistente() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        Ramo ramoCriado = ramoRepository.save(this.ramo);</b>
+&nbsp;
+<b class="fc">&nbsp;        Ramo ramoComNomeIgual = new Ramo();</b>
+&nbsp;
+<b class="fc">&nbsp;        ramoComNomeIgual.setNome(&quot;Ramo Teste 2&quot;);</b>
+<b class="fc">&nbsp;        ramoComNomeIgual.setDescricao(&quot;Descrição do ramo teste 2&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        ramoRepository.save(ramoComNomeIgual);</b>
+&nbsp;
+<b class="fc">&nbsp;        Ramo ramoEditado = new Ramo();</b>
+&nbsp;
+<b class="fc">&nbsp;        ramoEditado.setNome(ramoComNomeIgual.getNome());</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            ramoController.editar(ramoCriado.getId(), ramoEditado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(409, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;ramo_existente&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void editarRamoComExcecaoNoSuchElement() throws Exception {
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            ramoController.editar(2023, this.ramo);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(404, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;nao_encontrado&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /* -------------------------------------------------------------------------- */
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    /* -------------------------  ATUALIZAÇÃO DE RAMOS  ------------------------- */
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarRamoComSucesso() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        Ramo ramoCriado = ramoRepository.save(this.ramo);</b>
+&nbsp;
+<b class="fc">&nbsp;        Ramo ramoAtualizado = new Ramo();</b>
+&nbsp;
+<b class="fc">&nbsp;        ramoAtualizado.setNome(&quot;Ramo Teste Atualizado&quot;);</b>
+<b class="fc">&nbsp;        ramoAtualizado.setDescricao(&quot;Descrição do ramo teste atualizado&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        ResponseRamo responseRamo = ramoController.atualizar(ramoCriado.getId(), ramoAtualizado);</b>
+&nbsp;
+<b class="fc">&nbsp;        ramoRepository.deleteById(responseRamo.getId());</b>
+&nbsp;
+<b class="fc">&nbsp;        assertNotNull(responseRamo);</b>
+<b class="fc">&nbsp;        assertEquals(ramoCriado.getId(), responseRamo.getId());</b>
+<b class="fc">&nbsp;        assertEquals(&quot;Ramo Teste Atualizado&quot;, responseRamo.getNome());</b>
+<b class="fc">&nbsp;        assertEquals(&quot;Descrição do ramo teste atualizado&quot;, responseRamo.getDescricao());</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarRamoComCorpoNulo() throws Exception {
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            ramoController.atualizar(1, null);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;corpo_nulo&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarRamoComIdFornecido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.ramo.setId(1);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            ramoController.atualizar(1, this.ramo);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;id_fornecido&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarRamoComNomeInvalido() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.ramo.setNome(&quot;ma&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            ramoController.atualizar(1, this.ramo);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;nome_invalido&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarRamoComDescricaoInvalida() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        this.ramo.setDescricao(&quot;teste&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            ramoController.atualizar(1, this.ramo);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(400, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;descricao_invalido&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarRamoComNomeExistente() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        Ramo ramoCriado = ramoRepository.save(this.ramo);</b>
+&nbsp;
+<b class="fc">&nbsp;        Ramo ramoComNomeIgual = new Ramo();</b>
+&nbsp;
+<b class="fc">&nbsp;        ramoComNomeIgual.setNome(&quot;Ramo Teste 2&quot;);</b>
+<b class="fc">&nbsp;        ramoComNomeIgual.setDescricao(&quot;Descrição do ramo teste 2&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        ramoRepository.save(ramoComNomeIgual);</b>
+&nbsp;
+<b class="fc">&nbsp;        Ramo ramoAtualizado = new Ramo();</b>
+&nbsp;
+<b class="fc">&nbsp;        ramoAtualizado.setNome(ramoComNomeIgual.getNome());</b>
+<b class="fc">&nbsp;        ramoAtualizado.setDescricao(&quot;Descrição do ramo teste atualizado&quot;);</b>
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            ramoController.atualizar(ramoCriado.getId(), ramoAtualizado);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(409, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;ramo_existente&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void atualizarRamoComExcecaoNoSuchElement() throws Exception {
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            ramoController.atualizar(2023, this.ramo);</b>
+&nbsp;
+&nbsp;        }
+<b class="nc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="nc">&nbsp;            assertEquals(404, e.getRawStatusCode());</b>
+<b class="nc">&nbsp;            assertEquals(&quot;nao_encontrado&quot;, e.getReason());</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /* -------------------------------------------------------------------------- */
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    /* ---------------------------  DELEÇÃO DE RAMOS  --------------------------- */
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void deletarRamoComSucesso() throws Exception {
+&nbsp;
+<b class="fc">&nbsp;        Ramo ramoCriado = ramoRepository.save(this.ramo);</b>
+&nbsp;
+<b class="fc">&nbsp;        ramoController.remover(ramoCriado.getId());</b>
+&nbsp;
+<b class="fc">&nbsp;        assertNull(ramoRepository.findById(ramoCriado.getId()).orElse(null));</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void deletarRamoComExcecaoNoSuchElement() throws Exception {
+&nbsp;
+&nbsp;        try {
+&nbsp;
+<b class="fc">&nbsp;            ramoController.remover(2023);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        catch (ResponseStatusException e) {</b>
+<b class="fc">&nbsp;            assertEquals(404, e.getRawStatusCode());</b>
+<b class="fc">&nbsp;            assertEquals(&quot;nao_encontrado&quot;, e.getReason());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /* -------------------------------------------------------------------------- */
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-25 03:05</div>
+</div>
+</body>
+</html>

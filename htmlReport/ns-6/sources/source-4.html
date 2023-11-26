@@ -1,0 +1,169 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ResponseLevantamentoProduto</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.pagueibaratoapi.models.responses</a>
+</div>
+
+<h1>Coverage Summary for Class: ResponseLevantamentoProduto (com.pagueibaratoapi.models.responses)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ResponseLevantamentoProduto</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/15)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.pagueibaratoapi.models.responses;
+&nbsp;
+&nbsp;import java.util.Calendar;
+&nbsp;
+&nbsp;import com.pagueibaratoapi.models.requests.Produto;
+&nbsp;
+&nbsp;public class ResponseLevantamentoProduto extends ResponseProduto {
+&nbsp;
+&nbsp;    private float precoMedio;
+&nbsp;    private float menorPreco;
+&nbsp;    private float maiorPreco;
+&nbsp;    private int quantidadeSugestoes;
+&nbsp;    private Calendar dataUltimaSugestao;
+&nbsp;
+&nbsp;    public ResponseLevantamentoProduto(Produto produto, float precoMedio, float menorPreco, float maiorPreco) {
+<b class="nc">&nbsp;        super(produto);</b>
+<b class="nc">&nbsp;        this.precoMedio = precoMedio;</b>
+<b class="nc">&nbsp;        this.menorPreco = menorPreco;</b>
+<b class="nc">&nbsp;        this.maiorPreco = maiorPreco;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public ResponseLevantamentoProduto(Produto produto) {
+<b class="nc">&nbsp;        super(produto);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public float getPrecoMedio() {
+<b class="nc">&nbsp;        return precoMedio;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setPrecoMedio(float precoMedio) {
+<b class="nc">&nbsp;        this.precoMedio = precoMedio;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public float getMenorPreco() {
+<b class="nc">&nbsp;        return menorPreco;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setMenorPreco(float menorPreco) {
+<b class="nc">&nbsp;        this.menorPreco = menorPreco;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public float getMaiorPreco() {
+<b class="nc">&nbsp;        return maiorPreco;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setMaiorPreco(float maiorPreco) {
+<b class="nc">&nbsp;        this.maiorPreco = maiorPreco;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public int getQuantidadeSugestoes() {
+<b class="nc">&nbsp;        return quantidadeSugestoes;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setQuantidadeSugestoes(int quantidadeSugestoes) {
+<b class="nc">&nbsp;        this.quantidadeSugestoes = quantidadeSugestoes;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Calendar getDataUltimaSugestao() {
+<b class="nc">&nbsp;        return dataUltimaSugestao;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setDataUltimaSugestao(Calendar dataUltimaSugestao) {
+<b class="nc">&nbsp;        this.dataUltimaSugestao = dataUltimaSugestao;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-25 03:04</div>
+</div>
+</body>
+</html>

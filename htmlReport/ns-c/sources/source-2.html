@@ -1,0 +1,168 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > PaginaUtils</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.pagueibaratoapi.utils</a>
+</div>
+
+<h1>Coverage Summary for Class: PaginaUtils (com.pagueibaratoapi.utils)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PaginaUtils</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/17)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.pagueibaratoapi.utils;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;import org.springframework.data.domain.Page;
+&nbsp;
+&nbsp;import com.pagueibaratoapi.models.responses.ResponsePagina;
+&nbsp;
+&nbsp;/**
+&nbsp; * Classe utilitária para paginação de dados.
+&nbsp; */
+<b class="nc">&nbsp;public class PaginaUtils {</b>
+&nbsp;    
+&nbsp;    /**
+&nbsp;     * Método responsável por criar um objeto ResponsePagina com os dados da páginação
+&nbsp;     * @param numeroPagina - Número da página que será retornada.
+&nbsp;     * @param limite - Quantidade de itens por página.
+&nbsp;     * @param pagina - Objeto de iteração retornado pelo JPA contendo os registros da pesquisa.
+&nbsp;     * @param itens - Itens que serão enviados nessa página.
+&nbsp;     * @return ResponsePagina - Objeto com os dados da página.
+&nbsp;     */
+&nbsp;    public static ResponsePagina criarResposta(Integer numeroPagina, Integer limite, Page&lt;?&gt; pagina, List&lt;?&gt; itens) {
+&nbsp;
+&nbsp;        // Cria o objeto de resposta.
+<b class="nc">&nbsp;        ResponsePagina responsePagina = new ResponsePagina();</b>
+&nbsp;        
+&nbsp;        // Define os dados recebidos.
+<b class="nc">&nbsp;        responsePagina.setContagem((limite * (numeroPagina + 1)) - (limite - 1));</b>
+<b class="nc">&nbsp;        responsePagina.setItensPorPagina(limite);</b>
+<b class="nc">&nbsp;        responsePagina.setPaginaAtual(numeroPagina);</b>
+<b class="nc">&nbsp;        responsePagina.setTotalPaginas(pagina.getTotalPages());</b>
+<b class="nc">&nbsp;        responsePagina.setTotalRegistros(pagina.getTotalElements());</b>
+<b class="nc">&nbsp;        responsePagina.setItens(itens);</b>
+&nbsp;
+&nbsp;        // Retorna a página.
+<b class="nc">&nbsp;        return responsePagina;</b>
+&nbsp;    }
+&nbsp;    
+&nbsp;    /**
+&nbsp;     * Sobrecarga do método responsável por criar um objeto ResponsePagina com os dados da páginação, sem o objeto de paginação do JPA.
+&nbsp;     * @param numeroPagina - Número da página que será retornada.
+&nbsp;     * @param limite - Quantidade de itens por página.
+&nbsp;     * @param totalPaginas - Total de páginas da pesquisa.
+&nbsp;     * @param totalRegistros - Total de registros da pesquisa.
+&nbsp;     * @param itens - Itens que serão enviados nessa página.
+&nbsp;     * @return ResponsePagina - Objeto com os dados da página.
+&nbsp;     */
+&nbsp;    public static ResponsePagina criarResposta(Integer numeroPagina, Integer limite, Integer totalPaginas, Integer totalRegistros, List&lt;?&gt; itens) {
+&nbsp;
+&nbsp;        // Cria o objeto de resposta.
+<b class="nc">&nbsp;        ResponsePagina responsePagina = new ResponsePagina();</b>
+&nbsp;        
+&nbsp;        // Define os dados recebidos.
+<b class="nc">&nbsp;        responsePagina.setContagem((limite * (numeroPagina + 1)) - (limite - 1));</b>
+<b class="nc">&nbsp;        responsePagina.setItensPorPagina(limite);</b>
+<b class="nc">&nbsp;        responsePagina.setPaginaAtual(numeroPagina);</b>
+<b class="nc">&nbsp;        responsePagina.setTotalPaginas(totalPaginas);</b>
+<b class="nc">&nbsp;        responsePagina.setTotalRegistros(Long.valueOf(totalRegistros));</b>
+<b class="nc">&nbsp;        responsePagina.setItens(itens);</b>
+&nbsp;
+&nbsp;        // Retorna a página.
+<b class="nc">&nbsp;        return responsePagina;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-25 03:05</div>
+</div>
+</body>
+</html>

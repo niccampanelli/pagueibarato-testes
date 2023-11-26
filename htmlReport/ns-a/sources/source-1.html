@@ -1,0 +1,211 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > JWTAuthenticationFilter</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.pagueibaratoapi.security</a>
+</div>
+
+<h1>Coverage Summary for Class: JWTAuthenticationFilter (com.pagueibaratoapi.security)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">JWTAuthenticationFilter</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    33,3%
+  </span>
+  <span class="absValue">
+    (1/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    14,8%
+  </span>
+  <span class="absValue">
+    (4/27)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.pagueibaratoapi.security;
+&nbsp;
+&nbsp;import java.io.IOException;
+&nbsp;import java.util.Date;
+&nbsp;
+&nbsp;import javax.servlet.FilterChain;
+&nbsp;import javax.servlet.ServletException;
+&nbsp;import javax.servlet.http.HttpServletRequest;
+&nbsp;import javax.servlet.http.HttpServletResponse;
+&nbsp;
+&nbsp;import org.springframework.beans.factory.annotation.Value;
+&nbsp;import org.springframework.security.authentication.AuthenticationManager;
+&nbsp;import org.springframework.security.authentication.BadCredentialsException;
+&nbsp;import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+&nbsp;import org.springframework.security.core.Authentication;
+&nbsp;import org.springframework.security.core.AuthenticationException;
+&nbsp;import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+&nbsp;
+&nbsp;import com.auth0.jwt.JWT;
+&nbsp;import com.auth0.jwt.algorithms.Algorithm;
+&nbsp;import com.fasterxml.jackson.core.exc.StreamReadException;
+&nbsp;import com.fasterxml.jackson.databind.DatabindException;
+&nbsp;import com.fasterxml.jackson.databind.ObjectMapper;
+&nbsp;import com.pagueibaratoapi.data.UsuarioService;
+&nbsp;import com.pagueibaratoapi.models.requests.Usuario;
+&nbsp;import com.pagueibaratoapi.utils.Senha;
+&nbsp;
+&nbsp;/**
+&nbsp; * Filtro de autenticação para o JWT.
+&nbsp; */
+&nbsp;public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+&nbsp;
+&nbsp;    // Tempo de expiração do token.
+&nbsp;    private final long EXPIRA_EM;
+&nbsp;
+&nbsp;    // Chave secreta para gerar o token.
+&nbsp;    private final String SEGREDO;
+&nbsp;
+&nbsp;    // Gerenciador de autenticação.
+&nbsp;    private final AuthenticationManager authenticationManager;
+&nbsp;
+&nbsp;    // Construtor.
+<b class="fc">&nbsp;    public JWTAuthenticationFilter(</b>
+&nbsp;        @Value(&quot;${pagueibarato.config.token.expiration}&quot;) long expiraEm,
+&nbsp;        @Value(&quot;${pagueibarato.config.token.secret.key}&quot;) String segredo,
+&nbsp;        AuthenticationManager authenticationManager
+&nbsp;    ) {
+<b class="fc">&nbsp;        this.EXPIRA_EM = expiraEm;</b>
+<b class="fc">&nbsp;        this.SEGREDO = segredo;</b>
+<b class="fc">&nbsp;        this.authenticationManager = authenticationManager;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // Método chamado para realizar autenticação ao acessar a rota /login.
+&nbsp;    @Override
+&nbsp;    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+&nbsp;        try {
+&nbsp;
+&nbsp;            // Lê o corpo da requisição e transforma em modelo de usuário.
+<b class="nc">&nbsp;            Usuario usuario = new ObjectMapper().readValue(request.getInputStream(), Usuario.class);</b>
+&nbsp;
+&nbsp;            // Realiza o tempeiro da senha,
+&nbsp;            // Cria um token com a senha tempeirada e email do usuário,
+&nbsp;            // Tenta realizar autenticação com o token por meio do authenticationManager.
+<b class="nc">&nbsp;            return authenticationManager.authenticate(</b>
+<b class="nc">&nbsp;                new UsernamePasswordAuthenticationToken(</b>
+<b class="nc">&nbsp;                    usuario.getEmail(),</b>
+<b class="nc">&nbsp;                    Senha.salgar(usuario.getSenha())</b>
+&nbsp;                )
+&nbsp;            );
+&nbsp;
+<b class="nc">&nbsp;        } catch (BadCredentialsException e) {</b>
+<b class="nc">&nbsp;            throw new RuntimeException(&quot;Senha inválida.&quot;);</b>
+<b class="nc">&nbsp;        } catch (StreamReadException e) {</b>
+<b class="nc">&nbsp;            e.printStackTrace();</b>
+<b class="nc">&nbsp;            throw new RuntimeException(&quot;Falha ao autenticar o usuário: &quot;);</b>
+<b class="nc">&nbsp;        } catch (DatabindException e) {</b>
+<b class="nc">&nbsp;            e.printStackTrace();</b>
+<b class="nc">&nbsp;            throw new RuntimeException(&quot;Falha ao autenticar o usuário&quot;);</b>
+<b class="nc">&nbsp;        } catch (IOException e) {</b>
+<b class="nc">&nbsp;            e.printStackTrace();</b>
+<b class="nc">&nbsp;            throw new RuntimeException(&quot;Falha ao autenticar o usuário&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    // Método chamado quando a autenticação é bem-sucedida.
+&nbsp;    @Override
+&nbsp;    protected void successfulAuthentication(
+&nbsp;        HttpServletRequest request,
+&nbsp;        HttpServletResponse response,
+&nbsp;        FilterChain filter,
+&nbsp;        Authentication authResult
+&nbsp;    ) throws IOException, ServletException {
+&nbsp;
+&nbsp;        // Obtém o objeto com as credenciais do usuário autenticado e converte para o serviço do usuário.
+<b class="nc">&nbsp;        UsuarioService usuarioService = (UsuarioService) authResult.getPrincipal();</b>
+&nbsp;
+&nbsp;        // Gera um token JWT com o email do usuário e o tempo de expiração.
+<b class="nc">&nbsp;        String token = JWT.create()</b>
+<b class="nc">&nbsp;            .withSubject(usuarioService.getUsername())</b>
+<b class="nc">&nbsp;            .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRA_EM))</b>
+<b class="nc">&nbsp;            .sign(Algorithm.HMAC512(SEGREDO));</b>
+&nbsp;
+&nbsp;        // Escreve o token na resposta e envia.
+<b class="nc">&nbsp;        response.getWriter().write(token);</b>
+<b class="nc">&nbsp;        response.getWriter().flush();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-25 03:05</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,165 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > PatchProduto</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.pagueibaratoapi.utils.patches</a>
+</div>
+
+<h1>Coverage Summary for Class: PatchProduto (com.pagueibaratoapi.utils.patches)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PatchProduto</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (1/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    75%
+  </span>
+  <span class="absValue">
+    (9/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    85,7%
+  </span>
+  <span class="absValue">
+    (12/14)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.pagueibaratoapi.utils.patches;
+&nbsp;
+&nbsp;import com.pagueibaratoapi.models.requests.Produto;
+&nbsp;
+&nbsp;/** Classe responsável pelo patch do Produto */
+<b class="nc">&nbsp;public class PatchProduto {</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Método responsável por adicionar os atributos atualizados ao estado atual do produto.
+&nbsp;     * @param produtoAtual - Objeto do produto no estado atual do banco de dados.
+&nbsp;     * @param produtoEditado - Objeto do produto com os atributos que serão atualizados.
+&nbsp;     * @return Produto - Objeto do produto após a inserção dos atributos atualizados.
+&nbsp;     */
+&nbsp;    public static Produto edita(Produto produtoAtual, Produto produtoEditado) {
+&nbsp;        // Se o atributo nome não for nulo
+<b class="pc">&nbsp;        if(produtoEditado.getNome() != null)</b>
+&nbsp;            // Atribui o nome ao atributo nome do produto atual
+<b class="fc">&nbsp;            produtoAtual.setNome(produtoEditado.getNome());</b>
+&nbsp;        
+&nbsp;        // Se o atributo marca não for nulo
+<b class="fc">&nbsp;        if(produtoEditado.getMarca() != null)</b>
+&nbsp;            // Atribui a marca ao atributo marca do produto atual
+<b class="fc">&nbsp;            produtoAtual.setMarca(produtoEditado.getMarca());</b>
+&nbsp;        
+&nbsp;        // Se o atributo tamanho não for nulo
+<b class="fc">&nbsp;        if(produtoEditado.getTamanho() != null)</b>
+&nbsp;            // Atribui o tamanho ao atributo tamanho do produto atual
+<b class="fc">&nbsp;            produtoAtual.setTamanho(produtoEditado.getTamanho());</b>
+&nbsp;
+&nbsp;        // Se o atributo cor não for nulo
+<b class="fc">&nbsp;        if(produtoEditado.getCor() != null) {</b>
+&nbsp;            // Se o atributo cor enviado for vazio (aspas vazias)
+<b class="pc">&nbsp;            if(produtoEditado.getCor() == &quot;&quot;)</b>
+&nbsp;                // Atribui null ao atributo cor do produto atual, haja vista que a cor pode ser nula no banco dados
+<b class="nc">&nbsp;                produtoAtual.setCor(null);</b>
+&nbsp;            else
+&nbsp;                // Atribui a cor ao atributo cor do produto atual
+<b class="fc">&nbsp;                produtoAtual.setCor(produtoEditado.getCor());</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        // Se o atributo do id da categoria não for nulo
+<b class="pc">&nbsp;        if(produtoEditado.getCategoriaId() != null)</b>
+&nbsp;            // Atribui o id da categoria ao atributo do id da categoria do produto atual
+<b class="fc">&nbsp;            produtoAtual.setCategoriaId(produtoEditado.getCategoriaId());</b>
+&nbsp;
+&nbsp;        // Retorna o produto com os atributos atualizados e os demais atributos no estado atual.
+<b class="fc">&nbsp;        return produtoAtual;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-25 03:05</div>
+</div>
+</body>
+</html>

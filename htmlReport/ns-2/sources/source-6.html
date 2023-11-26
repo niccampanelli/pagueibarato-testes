@@ -1,0 +1,497 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > RamoController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.pagueibaratoapi.controllers</a>
+</div>
+
+<h1>Coverage Summary for Class: RamoController (com.pagueibaratoapi.controllers)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">RamoController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (14/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    98,3%
+  </span>
+  <span class="absValue">
+    (116/118)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">RamoController$$EnhancerBySpringCGLIB$$17ce561e</td>
+  </tr>
+  <tr>
+    <td class="name">RamoController$$EnhancerBySpringCGLIB$$76bc65fd</td>
+  </tr>
+  <tr>
+    <td class="name">RamoController$$EnhancerBySpringCGLIB$$76bc65fd$$FastClassBySpringCGLIB$$42333b85</td>
+  </tr>
+  <tr>
+    <td class="name">RamoController$$FastClassBySpringCGLIB$$4e8b1df1</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (14/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    98,3%
+  </span>
+  <span class="absValue">
+    (116/118)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.pagueibaratoapi.controllers;
+&nbsp;
+&nbsp;import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+&nbsp;import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;import java.util.NoSuchElementException;
+&nbsp;
+&nbsp;import org.springframework.cache.annotation.CacheEvict;
+&nbsp;import org.springframework.cache.annotation.Cacheable;
+&nbsp;import org.springframework.dao.DataIntegrityViolationException;
+&nbsp;import org.springframework.data.domain.Example;
+&nbsp;import org.springframework.data.domain.ExampleMatcher;
+&nbsp;import org.springframework.web.bind.annotation.DeleteMapping;
+&nbsp;import org.springframework.web.bind.annotation.GetMapping;
+&nbsp;import org.springframework.web.bind.annotation.PatchMapping;
+&nbsp;import org.springframework.web.bind.annotation.PathVariable;
+&nbsp;import org.springframework.web.bind.annotation.PostMapping;
+&nbsp;import org.springframework.web.bind.annotation.PutMapping;
+&nbsp;import org.springframework.web.bind.annotation.RequestBody;
+&nbsp;import org.springframework.web.bind.annotation.RequestMapping;
+&nbsp;import org.springframework.web.bind.annotation.RestController;
+&nbsp;import org.springframework.web.server.ResponseStatusException;
+&nbsp;
+&nbsp;import com.pagueibaratoapi.models.exceptions.DadosConflitantesException;
+&nbsp;import com.pagueibaratoapi.models.exceptions.DadosInvalidosException;
+&nbsp;import com.pagueibaratoapi.models.requests.Ramo;
+&nbsp;import com.pagueibaratoapi.models.responses.ResponseRamo;
+&nbsp;import com.pagueibaratoapi.repository.RamoRepository;
+&nbsp;import com.pagueibaratoapi.utils.EditaRecurso;
+&nbsp;import com.pagueibaratoapi.utils.Tratamento;
+&nbsp;
+&nbsp;/**
+&nbsp; * Classe responsável por controlar as requisições dos Ramos.
+&nbsp; */
+&nbsp;@RestController
+&nbsp;@RequestMapping(&quot;/ramo&quot;)
+&nbsp;public class RamoController {
+&nbsp;
+&nbsp;    // Iniciando as variáveis de instância do repositório.
+&nbsp;    private final RamoRepository ramoRepository;
+&nbsp;
+&nbsp;    // Construtor do controller do ramo, que realiza a injeção de dependência do repositório.
+<b class="fc">&nbsp;    public RamoController(RamoRepository ramoRepository) {</b>
+<b class="fc">&nbsp;        this.ramoRepository = ramoRepository;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Método responsável por criar um novo ramo.
+&nbsp;     * @param requestRamo - Objeto do tipo Ramo que contém os dados do novo ramo.
+&nbsp;     * @return ResponseRamo - Objeto do tipo ResponseRamo com o novo Ramo criado.
+&nbsp;     */
+&nbsp;    @PostMapping
+&nbsp;    @CacheEvict(value = &quot;ramos&quot;, allEntries = true)
+&nbsp;    public ResponseRamo criar(@RequestBody Ramo requestRamo) {
+&nbsp;        try {
+&nbsp;
+&nbsp;            // Validando os dados enviados como parâmetro pelo cliente.
+<b class="fc">&nbsp;            Tratamento.validarRamo(requestRamo, false);</b>
+&nbsp;
+&nbsp;            // Verifica se o nome do ramo já existe.
+<b class="fc">&nbsp;            if(ramoRepository.existsByNomeIgnoreCase(requestRamo.getNome()))</b>
+&nbsp;                // Lança exceção caso o nome do ramo já exista.
+<b class="fc">&nbsp;                throw new DadosConflitantesException(&quot;ramo_existente&quot;);</b>
+&nbsp;
+&nbsp;            // Criando o novo ramo e salvando-o na variável de resposta do tipo ResponseRamo,
+<b class="fc">&nbsp;            ResponseRamo responseRamo = new ResponseRamo(ramoRepository.save(requestRamo));</b>
+&nbsp;
+&nbsp;            // Adicionando à resposta o link para leitura do ramo criado.
+<b class="fc">&nbsp;            responseRamo.add(</b>
+<b class="fc">&nbsp;                linkTo(</b>
+<b class="fc">&nbsp;                    methodOn(RamoController.class).ler(responseRamo.getId())</b>
+&nbsp;                )
+<b class="fc">&nbsp;                .withSelfRel()</b>
+&nbsp;            );
+&nbsp;
+&nbsp;            // Retornando a resposta.
+<b class="fc">&nbsp;            return responseRamo;</b>
+&nbsp;
+<b class="fc">&nbsp;        } catch (DadosConflitantesException e) {</b>
+&nbsp;            // Lança uma exceção indicando que o nome do ramo já existe.
+<b class="fc">&nbsp;            throw new ResponseStatusException(409, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (DadosInvalidosException e) {</b>
+&nbsp;            // Lança uma exceção indicando que os dados enviados são inválidos.
+<b class="fc">&nbsp;            throw new ResponseStatusException(400, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (DataIntegrityViolationException e) {</b>
+&nbsp;            // Lança uma exceção indicando que ocorreu um erro na integridade dos dados.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_insercao&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (IllegalArgumentException e) {</b>
+&nbsp;            // Lança uma exceção indicando que os dados enviados são inválidos.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+&nbsp;            // Lança uma exceção indicando que ocorreu um erro inesperado.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Método responsável por ler um ramo com o id informado.
+&nbsp;     * @param id - Id do ramo que será lido.
+&nbsp;     * @return ResponseRamo - Objeto do tipo ResponseRamo com o ramo lido.
+&nbsp;     */
+&nbsp;    @GetMapping(&quot;/{id}&quot;)
+&nbsp;    public ResponseRamo ler(@PathVariable(&quot;id&quot;) Integer id) {
+&nbsp;        try {
+&nbsp;
+&nbsp;            // Buscando o ramo com o id informado e salvando num objeto de resposta do Ramo.
+<b class="fc">&nbsp;            ResponseRamo responseRamo = new ResponseRamo(ramoRepository.findById(id).get());</b>
+&nbsp;
+&nbsp;            // Adicionando à resposta o link para listagem dos ramos.
+<b class="fc">&nbsp;            responseRamo.add(</b>
+<b class="fc">&nbsp;                linkTo(</b>
+<b class="fc">&nbsp;                    methodOn(RamoController.class).listar(new Ramo())</b>
+&nbsp;                )
+<b class="fc">&nbsp;                .withRel(&quot;collection&quot;)</b>
+&nbsp;            );
+&nbsp;
+&nbsp;            // Retornando a resposta com o ramo encontrado.
+<b class="fc">&nbsp;            return responseRamo;</b>
+&nbsp;
+<b class="fc">&nbsp;        } catch (NoSuchElementException e) {</b>
+&nbsp;            // Lança uma exceção indicando que o ramo não foi encontrado.
+<b class="fc">&nbsp;            throw new ResponseStatusException(404, &quot;nao_encontrado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+&nbsp;            // Lança uma exceção indicando que ocorreu um erro inesperado.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Método responsável por listar todos os ramos.
+&nbsp;     * @param requestRamo - Objeto do tipo Ramo que contém os dados do ramo que será usado para filtrar a listagem.
+&nbsp;     * @return &lt;b&gt;List&lt; ResponseRamo &gt;&lt;/b&gt; - Lista de objetos do tipo ResponseRamo com os ramos encontrados.
+&nbsp;     */
+&nbsp;    @GetMapping
+&nbsp;    @Cacheable(&quot;ramos&quot;)
+&nbsp;    public List&lt;ResponseRamo&gt; listar(Ramo requestRamo) {
+&nbsp;        try {
+&nbsp;
+&nbsp;            // Validando os dados enviados como parâmetro pelo cliente.
+<b class="fc">&nbsp;            Tratamento.validarRamo(requestRamo, true);</b>
+&nbsp;
+&nbsp;            // Buscando todos os ramos que satisfaçam os dados enviados pelo cliente e salvando na lista de ramos.
+<b class="fc">&nbsp;            List&lt;Ramo&gt; ramos = ramoRepository.findAll(</b>
+<b class="fc">&nbsp;                Example.of(</b>
+<b class="fc">&nbsp;                    requestRamo, </b>
+&nbsp;                    ExampleMatcher
+<b class="fc">&nbsp;                        .matching()</b>
+<b class="fc">&nbsp;                        .withIgnoreCase()</b>
+<b class="fc">&nbsp;                        .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING)</b>
+&nbsp;                )
+&nbsp;            );
+&nbsp;
+&nbsp;            // Criando uma lista de objetos do tipo ResponseRamo vazia.
+<b class="fc">&nbsp;            List&lt;ResponseRamo&gt; responseRamo = new ArrayList&lt;ResponseRamo&gt;();</b>
+&nbsp;
+&nbsp;            // Para cada ramo da lista de Ramos
+<b class="fc">&nbsp;            for(Ramo ramo : ramos) {</b>
+&nbsp;                // Criando um novo objeto do tipo ResponseRamo com os dados do ramo atual e adicionando à lista de resposta.
+<b class="fc">&nbsp;                responseRamo.add(new ResponseRamo(ramo));</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            // Se a lista de resposta não estiver vazia.
+<b class="fc">&nbsp;            if(!responseRamo.isEmpty()) {</b>
+&nbsp;                // Para cada ramo da lista de resposta.
+<b class="fc">&nbsp;                for(ResponseRamo ramo : responseRamo) {</b>
+&nbsp;                    // Adicionando à resposta o link para leitura do ramo atual.
+<b class="fc">&nbsp;                    ramo.add(</b>
+<b class="fc">&nbsp;                        linkTo(</b>
+<b class="fc">&nbsp;                            methodOn(RamoController.class).ler(ramo.getId())</b>
+&nbsp;                        )
+<b class="fc">&nbsp;                        .withSelfRel()</b>
+&nbsp;                    );
+&nbsp;                }
+&nbsp;            }
+&nbsp;
+&nbsp;            // Retornando a lista de resposta.
+<b class="fc">&nbsp;            return responseRamo;</b>
+&nbsp;
+<b class="fc">&nbsp;        } catch (DadosInvalidosException e) {</b>
+&nbsp;            // Lança uma exceção indicando que os dados enviados pelo cliente são inválidos.
+<b class="fc">&nbsp;            throw new ResponseStatusException(400, e.getMessage(), e);</b>
+<b class="nc">&nbsp;        } catch (NullPointerException e) {</b>
+&nbsp;            // Lança uma exceção indicando que algum registro não foi encontrado.
+<b class="nc">&nbsp;            throw new ResponseStatusException(404, &quot;nao_encontrado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (UnsupportedOperationException e) {</b>
+&nbsp;            // Lança uma exceção indicando que ocorreu um erro inesperado.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+&nbsp;            // Lança uma exceção indicando que ocorreu um erro inesperado.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Método responsável por atualizar alguns atributos específicos de um ramo.
+&nbsp;     * @param id - Id do ramo que será atualizado.
+&nbsp;     * @param requestRamo - Parâmetros que serão atualizados no ramo.
+&nbsp;     * @return ResponseRamo - Objeto do tipo ResponseRamo com o ramo atualizado.
+&nbsp;     */
+&nbsp;    @PatchMapping(&quot;/{id}&quot;)
+&nbsp;    public ResponseRamo editar(@PathVariable(&quot;id&quot;) Integer id, @RequestBody Ramo requestRamo) {
+&nbsp;        try {
+&nbsp;
+&nbsp;            // Validando os dados enviados como parâmetro pelo cliente.
+<b class="fc">&nbsp;            Tratamento.validarRamo(requestRamo, true);</b>
+&nbsp;
+&nbsp;            // Se o nome do ramo enviado pelo cliente já existir na base de dados.
+<b class="fc">&nbsp;            if(ramoRepository.existsByNomeIgnoreCase(requestRamo.getNome()))</b>
+&nbsp;                // Lança uma exceção indicando que o nome do ramo já existe.
+<b class="fc">&nbsp;                throw new DadosConflitantesException(&quot;ramo_existente&quot;);</b>
+&nbsp;
+&nbsp;            // Buscando o estado atual do ramo com o id informado.
+<b class="fc">&nbsp;            Ramo ramoAtual = ramoRepository.findById(id).get();</b>
+&nbsp;            
+&nbsp;            // Atualizando o ramo e armazenando no objeto de resposta do ramo.
+<b class="fc">&nbsp;            ResponseRamo responseRamo = new ResponseRamo(</b>
+<b class="fc">&nbsp;                ramoRepository.save(</b>
+&nbsp;                    // Atualizando os dados do ramo com os dados enviados pelo cliente.
+<b class="fc">&nbsp;                    EditaRecurso.editarRamo(</b>
+<b class="fc">&nbsp;                        ramoAtual, </b>
+<b class="fc">&nbsp;                        requestRamo</b>
+&nbsp;                    )
+&nbsp;                )
+&nbsp;            );
+&nbsp;            
+&nbsp;            // Adicionando à resposta o link para leitura do ramo atualizado.
+<b class="fc">&nbsp;            responseRamo.add(</b>
+<b class="fc">&nbsp;                linkTo(</b>
+<b class="fc">&nbsp;                    methodOn(RamoController.class).ler(responseRamo.getId())</b>
+&nbsp;                )
+<b class="fc">&nbsp;                .withSelfRel()</b>
+&nbsp;            );
+&nbsp;
+&nbsp;            // Retornando a resposta com o ramo atualizado.
+<b class="fc">&nbsp;            return responseRamo;</b>
+&nbsp;
+<b class="fc">&nbsp;        } catch (DadosConflitantesException e) {</b>
+&nbsp;            // Lança uma exceção indicando que os dados enviados pelo cliente são conflitantes.
+<b class="fc">&nbsp;            throw new ResponseStatusException(409, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (DadosInvalidosException e) {</b>
+&nbsp;            // Lança uma exceção indicando que os dados enviados pelo cliente são inválidos.
+<b class="fc">&nbsp;            throw new ResponseStatusException(400, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (DataIntegrityViolationException e) {</b>
+&nbsp;            // Lança uma exceção indicando que existe uma violação de integridade dos dados.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_insercao&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (IllegalArgumentException e) {</b>
+&nbsp;            // Lança uma exceção indicando que o parâmetro enviado pelo cliente é inválido.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (NoSuchElementException e) {</b>
+&nbsp;            // Lança uma exceção indicando que o registro não foi encontrado.
+<b class="fc">&nbsp;            throw new ResponseStatusException(404, &quot;nao_encontrado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+&nbsp;            // Lança uma exceção indicando que ocorreu um erro inesperado.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Método responsável por atualizar todos os atributos de um ramo.
+&nbsp;     * @param id - Id do ramo que será atualizado.
+&nbsp;     * @param requestRamo - Parâmetros que serão atualizados no ramo.
+&nbsp;     * @return ResponseRamo - Objeto do tipo ResponseRamo com o ramo atualizado.
+&nbsp;     */
+&nbsp;    @PutMapping(&quot;/{id}&quot;)
+&nbsp;    public ResponseRamo atualizar(@PathVariable(&quot;id&quot;) Integer id, @RequestBody Ramo requestRamo) {
+&nbsp;        try {
+&nbsp;
+&nbsp;            // Validando os dados enviados como parâmetro pelo cliente.
+<b class="fc">&nbsp;            Tratamento.validarRamo(requestRamo, false);</b>
+&nbsp;
+&nbsp;            // Se o nome do ramo enviado pelo cliente já existir na base de dados.
+<b class="fc">&nbsp;            if(ramoRepository.existsByNomeIgnoreCase(requestRamo.getNome()))</b>
+&nbsp;                // Lança uma exceção indicando que o nome do ramo já existe.
+<b class="fc">&nbsp;                throw new DadosConflitantesException(&quot;ramo_existente&quot;);</b>
+&nbsp;
+&nbsp;            // Definindo o Id do Ramo enviado pelo cliente como o Id informado na URI do recurso.
+<b class="fc">&nbsp;            requestRamo.setId(id);</b>
+&nbsp;
+&nbsp;            // Atualizando o ramo e armazenando no objeto de resposta do ramo.
+<b class="fc">&nbsp;            ResponseRamo responseRamo = new ResponseRamo(ramoRepository.save(requestRamo));</b>
+&nbsp;
+&nbsp;            // Adicionando à resposta o link para leitura do ramo atualizado.
+<b class="fc">&nbsp;            responseRamo.add(</b>
+<b class="fc">&nbsp;                linkTo(</b>
+<b class="fc">&nbsp;                    methodOn(RamoController.class).ler(responseRamo.getId())</b>
+&nbsp;                )
+<b class="fc">&nbsp;                .withSelfRel()</b>
+&nbsp;            );
+&nbsp;
+&nbsp;            // Retornando a resposta com o ramo atualizado.
+<b class="fc">&nbsp;            return responseRamo;</b>
+&nbsp;
+<b class="fc">&nbsp;        } catch (DadosConflitantesException e) {</b>
+&nbsp;            // Lança uma exceção indicando que os dados enviados pelo cliente são conflitantes.
+<b class="fc">&nbsp;            throw new ResponseStatusException(409, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (DadosInvalidosException e) {</b>
+&nbsp;            // Lança uma exceção indicando que os dados enviados pelo cliente são inválidos.
+<b class="fc">&nbsp;            throw new ResponseStatusException(400, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (NoSuchElementException e) {</b>
+&nbsp;            // Lança uma exceção indicando que o registro não foi encontrado.
+<b class="fc">&nbsp;            throw new ResponseStatusException(404, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (DataIntegrityViolationException e) {</b>
+&nbsp;            // Lança uma exceção indicando que existe uma violação de integridade dos dados.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_insercao&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (IllegalArgumentException e) {</b>
+&nbsp;            // Lança uma exceção indicando que o parâmetro enviado pelo cliente é inválido.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+&nbsp;            // Lança uma exceção indicando que ocorreu um erro inesperado.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Método responsável por remover um ramo com o Id especificado.
+&nbsp;     * @param id - Id do ramo que será removido.
+&nbsp;     * @return Object - Link para a listagem dos ramos.
+&nbsp;     */
+&nbsp;    @DeleteMapping(&quot;/{id}&quot;)
+&nbsp;    @CacheEvict(value = &quot;ramos&quot;, allEntries = true)
+&nbsp;    public Object remover(@PathVariable int id) {
+&nbsp;        try {
+&nbsp;
+&nbsp;            // Se não existir um ramo com o Id informado.
+<b class="fc">&nbsp;            if(!ramoRepository.existsById(id))</b>
+&nbsp;                // Lança uma exceção indicando que o registro não foi encontrado.
+<b class="fc">&nbsp;                throw new NoSuchElementException(&quot;nao_encontrado&quot;);</b>
+&nbsp;            
+&nbsp;            // Removendo o ramo com o Id informado.
+<b class="fc">&nbsp;            ramoRepository.deleteById(id);</b>
+&nbsp;
+&nbsp;            // Retornando o link para a listagem dos ramos.
+<b class="fc">&nbsp;            return linkTo(</b>
+<b class="fc">&nbsp;                        methodOn(RamoController.class).listar(new Ramo())</b>
+&nbsp;                    )
+<b class="fc">&nbsp;                    .withRel(&quot;collection&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        } catch (NoSuchElementException e) {</b>
+&nbsp;            // Lança uma exceção indicando que o registro não foi encontrado.
+<b class="fc">&nbsp;            throw new ResponseStatusException(404, e.getMessage(), e);</b>
+<b class="fc">&nbsp;        } catch (DataIntegrityViolationException e) {</b>
+&nbsp;            // Lança uma exceção indicando que existe uma violação de integridade dos dados.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_remocao&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (IllegalArgumentException e) {</b>
+&nbsp;            // Lança uma exceção indicando que o parâmetro enviado pelo cliente é inválido.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+&nbsp;            // Lança uma exceção indicando que ocorreu um erro inesperado.
+<b class="fc">&nbsp;            throw new ResponseStatusException(500, &quot;erro_inesperado&quot;, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-25 03:05</div>
+</div>
+</body>
+</html>

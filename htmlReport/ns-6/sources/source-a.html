@@ -1,0 +1,237 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ResponseUsuario</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.pagueibaratoapi.models.responses</a>
+</div>
+
+<h1>Coverage Summary for Class: ResponseUsuario (com.pagueibaratoapi.models.responses)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ResponseUsuario</td>
+<td class="coverageStat">
+  <span class="percent">
+    21,7%
+  </span>
+  <span class="absValue">
+    (5/23)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    47,1%
+  </span>
+  <span class="absValue">
+    (16/34)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">ResponseUsuario$$EnhancerBySpringCGLIB$$4ffd807f</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    21,7%
+  </span>
+  <span class="absValue">
+    (5/23)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    47,1%
+  </span>
+  <span class="absValue">
+    (16/34)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.pagueibaratoapi.models.responses;
+&nbsp;
+&nbsp;import org.springframework.hateoas.RepresentationModel;
+&nbsp;
+&nbsp;import com.pagueibaratoapi.models.requests.Usuario;
+&nbsp;
+&nbsp;public class ResponseUsuario extends RepresentationModel&lt;ResponseUsuario&gt; {
+&nbsp;    
+&nbsp;    private Integer id;
+&nbsp;
+&nbsp;    private String nome;
+&nbsp;    private String email;
+&nbsp;    private String senha;
+&nbsp;    private String logradouro;
+&nbsp;    private Integer numero;
+&nbsp;    private String complemento;
+&nbsp;    private String bairro;
+&nbsp;    private String cidade;
+&nbsp;    private String uf;
+&nbsp;    private String cep;
+&nbsp;
+<b class="fc">&nbsp;    public ResponseUsuario(Usuario usuario) {</b>
+<b class="fc">&nbsp;        this.id = usuario.getId();</b>
+<b class="fc">&nbsp;        this.nome = usuario.getNome();</b>
+<b class="fc">&nbsp;        this.email = usuario.getEmail();</b>
+<b class="fc">&nbsp;        this.senha = usuario.getSenha();</b>
+<b class="fc">&nbsp;        this.logradouro = usuario.getLogradouro();</b>
+<b class="fc">&nbsp;        this.numero = usuario.getNumero();</b>
+<b class="fc">&nbsp;        this.complemento = usuario.getComplemento();</b>
+<b class="fc">&nbsp;        this.bairro = usuario.getBairro();</b>
+<b class="fc">&nbsp;        this.cidade = usuario.getCidade();</b>
+<b class="fc">&nbsp;        this.uf = usuario.getUf();</b>
+<b class="fc">&nbsp;        this.cep = usuario.getCep();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Integer getId() {
+<b class="fc">&nbsp;        return id;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setId(Integer id) {
+<b class="nc">&nbsp;        this.id = id;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getNome() {
+<b class="fc">&nbsp;        return nome;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setNome(String nome) {
+<b class="nc">&nbsp;        this.nome = nome;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getEmail() {
+<b class="fc">&nbsp;        return email;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setEmail(String email) {
+<b class="nc">&nbsp;        this.email = email;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getSenha() {
+<b class="nc">&nbsp;        return senha;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setSenha(String senha) {
+<b class="nc">&nbsp;        this.senha = senha;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getLogradouro() {
+<b class="fc">&nbsp;        return logradouro;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setLogradouro(String logradouro) {
+<b class="nc">&nbsp;        this.logradouro = logradouro;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Integer getNumero() {
+<b class="nc">&nbsp;        return numero;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setNumero(Integer numero) {
+<b class="nc">&nbsp;        this.numero = numero;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getComplemento() {
+<b class="nc">&nbsp;        return complemento;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setComplemento(String complemento) {
+<b class="nc">&nbsp;        this.complemento = complemento;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getBairro() {
+<b class="nc">&nbsp;        return bairro;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setBairro(String bairro) {
+<b class="nc">&nbsp;        this.bairro = bairro;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getCidade() {
+<b class="nc">&nbsp;        return cidade;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setCidade(String cidade) {
+<b class="nc">&nbsp;        this.cidade = cidade;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getUf() {
+<b class="nc">&nbsp;        return uf;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setUf(String uf) {
+<b class="nc">&nbsp;        this.uf = uf;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getCep() {
+<b class="nc">&nbsp;        return cep;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setCep(String cep) {
+<b class="nc">&nbsp;        this.cep = cep;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-25 03:04</div>
+</div>
+</body>
+</html>
